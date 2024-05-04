@@ -1,0 +1,12 @@
+{
+  "name": "frontend-challenge",
+  "version": "1.0.0",
+  "description": "Welcome to the Frontend Challenge! This is a knowledge quiz app designed to test your understanding of frontend development concepts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd server && npm start"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -11,7 +11,7 @@ app.use(cors());
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
-const userRoutes = require('./routes/userRoutes');
-app.use('/api/users', userRoutes);
+// const userRoutes = require('./routes/userRoutes');
+// app.use('/api/users', userRoutes);
 
 module.exports = app;
