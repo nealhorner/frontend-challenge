@@ -1,6 +1,11 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import path from 'path';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+
+// const express = require('express');
+// const bodyParser = require('body-parser');
+// const cors = require('cors');
 const app = express();
 
 // Middleware
