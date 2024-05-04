@@ -4,7 +4,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "ts-node-dev --respawn --transpile-only index.ts"
+    "start": "ts-node-dev --respawn --transpile-only src/server/index.ts"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",

@@ -8,17 +8,11 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "node_modules/*"
-      ]
+      "*": ["node_modules/*"]
     },
-    "lib": ["esnext.asynciterable"],  
+    "lib": ["esnext.asynciterable"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": [
-    "graphql/*",
-    "index.ts",
-    "models/*"
-  ]
+  "include": ["graphql/*", "src/server/index.ts", "models/*"]
 }
