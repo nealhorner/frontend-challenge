@@ -1,10 +1,11 @@
 {
   "name": "frontend-challenge",
   "version": "1.0.0",
-  "type": "module",
   "description": "Welcome to the Frontend Challenge! This is a knowledge quiz app designed to test your understanding of frontend development concepts.",
+  "type": "module",
   "scripts": {
     "heroku-prebuild": "npm run build",
+    "help": "rollup --help",
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "ts-node-dev --respawn --transpile-only src/server/server.ts"
