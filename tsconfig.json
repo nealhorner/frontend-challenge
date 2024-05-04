@@ -17,9 +17,8 @@
     "experimentalDecorators": true
   },
   "include": [
-    "src/server/server.ts"
-  ],
-  "exclude": [
-    "node_modules"
+    "graphql/*",
+    "index.ts",
+    "models/*"
   ]
 }
