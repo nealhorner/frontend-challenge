@@ -4,6 +4,8 @@
   "description": "Welcome to the Frontend Challenge! This is a knowledge quiz app designed to test your understanding of frontend development concepts.",
   "scripts": {
     "heroku-prebuild": "npm run build",
+    "help": "rollup --help",
+    "build-2": "rollup -c rollup.config.js -w src/server/server.ts",
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "ts-node-dev --respawn --transpile-only src/server/server.ts"
