@@ -3,17 +3,21 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import helmet from 'helmet';
+import { apiRouter } from './routers/apiRouter';
 
 dotenv.config();
 
 const app = express();
 
 // Security
-// app.use(helmet())
-// app.disable('x-powered-by')
+app.use(helmet())
+app.disable('x-powered-by')
 
 // Middleware
 app.use(cors());
+
+// Routes
+app.get('/api', apiRouter);
 
 app.use(express.static('public'));
 app.get('*', (req, res) => {
