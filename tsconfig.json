@@ -14,5 +14,5 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": ["graphql/*", "src/server/index.ts", "models/*"]
+  "include": ["src/server/index.ts"]
 }
