@@ -8,3 +8,4 @@ dist/
 
 # Env
 .env
+src/prisma/dev.db
