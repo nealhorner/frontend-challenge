@@ -2,7 +2,7 @@
   import Card from '../lib/components/Card.svelte';
 </script>
 
-<main class="pipe-gradient">
+<main>
   <div id="first-section" class="linear-gradient">
     <div>
       <h1>Welcome to the Quiz App!</h1>
@@ -17,6 +17,9 @@
         how to build Svelte apps.
       </p>
     </Card>
+  </div>
+  <div id="third-section" class="pipe-gradient">
+    <p>Hello World</p>
   </div>
 </main>
 
