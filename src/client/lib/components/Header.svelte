@@ -12,25 +12,29 @@
 </script>
 
 <header>
-  <a href="/"><h2>Frontend Challenge</h2></a>
-  <nav>
-    <ul>
-      {#each links as link}
-        <li><a href={link.url}>{link.text}</a></li>
-      {/each}
-    </ul>
-    <button class="toggle-btn" onclick={handleClick}></button>
-    <div id="menu" class={showMenu ? 'show-menu' : ''}>hi</div>
-  </nav>
+  <div id="nav-wrapper">
+    <a href="/"><h2>Frontend Challenge</h2></a>
+    <nav>
+      <ul>
+        {#each links as link}
+          <li><a href={link.url}>{link.text}</a></li>
+        {/each}
+      </ul>
+      <button class="toggle-btn" onclick={handleClick}></button>
+      <div id="menu" class={showMenu ? 'show-menu' : ''}>hi</div>
+    </nav>
+  </div>
+  <div class="border pink"></div>
+  <div class="border orange"></div>
+  <div class="border yellow"></div>
 </header>
 
 <style>
-  header {
+  #nav-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--color-blue);
-    border-bottom: 2px solid #494949;
     padding: 5px 20px;
   }
 
@@ -64,6 +68,24 @@
 
   #menu {
     display: none;
+  }
+
+  .border {
+    height: 2px;
+    width: 100%;
+    background-color: aqua;
+  }
+
+  .border.yellow {
+    background-color: var(--color-yellow);
+  }
+
+  .border.orange {
+    background-color: var(--color-orange);
+  }
+
+  .border.pink {
+    background-color: var(--color-pink);
   }
 
   /* Mobile layout */
