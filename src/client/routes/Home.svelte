@@ -88,34 +88,4 @@
       var(--color-pink) 20px /* determines size */
     );
   }
-
-  /* https://css-irl.info/css-halftone-patterns/ */
-  .halftone {
-    position: relative;
-    aspect-ratio: 1;
-    background-color: var(--color-yellow);
-    filter: contrast(20) invert(0);
-    mix-blend-mode: multiply;
-  }
-
-  .halftone::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(
-      circle at center,
-      rgb(255 255 255) 3%,
-      rgb(255 255 255 / 0.4) 70%
-    );
-    background-size: 0.75rem 0.75rem;
-    background-repeat: round;
-    background-position:
-      0 0,
-      calc(0.75rem / 2) calc(0.75rem / 2);
-    -webkit-mask-image: linear-gradient(rgb(0 0 0), rgb(0 0 0 / 0.5));
-    mask-image: linear-gradient(rgb(0 0 0), rgb(0 0 0 / 0.5));
-    mask-size: cover;
-    mask-position: center;
-    transition: background-size 100ms;
-  }
 </style>

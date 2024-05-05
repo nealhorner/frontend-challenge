@@ -41,7 +41,7 @@
   h2 {
     color: var(--color-yellow);
     text-shadow: 1px 1px var(--color-orange);
-    font-size: 36px;
+    font-size: 2.5rem;
     margin: auto 0;
   }
 
