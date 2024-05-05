@@ -23,6 +23,12 @@ router.get('/questions/:id', async (req, res) => {
   res.json(question);
 });
 
+router.get('/question', async (req, res) => {
+  const questions = await prisma.question.findMany();
+  const shuffled_questions = questions.sort(() => Math.random() - 0.5);
+  res.json(shuffled_questions[0]);
+})
+
 router.get('/quiz', async (req, res) => {
   const questions = await prisma.question.findMany();
   const shuffled_questions = questions.sort(() => Math.random() - 0.5);

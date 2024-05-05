@@ -1,6 +1,7 @@
 <script>
   import Card from '../lib/components/Card.svelte';
   import Button from '../lib/components/Button.svelte';
+  import Question from '../lib/components/Question.svelte';
 </script>
 
 <main>
@@ -21,7 +22,7 @@
       </Card>
     </div>
     <div>
-      <p>Add metrics example</p>
+      <Question />
     </div>
   </div>
   <div id="third-section" class="pipe-gradient">
