@@ -9,11 +9,6 @@
 <div>
 	<Header/>
 	<Router {url}>
-		<nav>
-			<Link to="/">Home</Link>
-		</nav>
-		<div>
-			<Route path="/"><Home /></Route>
-		</div>
+		<Route path="/"><Home /></Route>
 	</Router>
 </div>
