@@ -1,24 +1,18 @@
-import path from 'path';
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+import path from 'path';
+
+dotenv.config();
 
 const app = express();
 
 // Middleware
-app.use(bodyParser.json());
 app.use(cors());
 
-// Routes
 app.use(express.static('public'));
 app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
-app.get('/health', (req, res) => {
-  res.send('Hello World!')
-})
-// const userRoutes = require('./routes/userRoutes');
-// app.use('/api/users', userRoutes);
 
-// Export app
 export { app };

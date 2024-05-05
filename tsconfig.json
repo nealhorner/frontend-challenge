@@ -8,18 +8,11 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "node_modules/*"
-      ]
+      "*": ["node_modules/*"]
     },
-    "lib": ["esnext.asynciterable"],  
+    "lib": ["esnext.asynciterable"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": [
-    "src/server/server.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/server/index.ts"]
 }
