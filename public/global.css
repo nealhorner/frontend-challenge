@@ -4,3 +4,11 @@ body {
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
+
+:root {
+	--color-yellow: #ffb961;
+	--color-orange: #f3826f;
+	--color-pink: #c05c7e;
+	--color-purple: #722d61;
+	--color-blue: #2d3561;
+}

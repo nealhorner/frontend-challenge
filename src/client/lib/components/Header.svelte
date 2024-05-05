@@ -1,16 +1,26 @@
 <script>
+  import { createDocumentRegistry } from 'typescript';
+
   let links = [{ text: 'Home', url: '/' }];
+
+  let showMenu = false;
+
+  function handleClick() {
+    showMenu = !showMenu;
+    console.log(showMenu);
+  }
 </script>
 
 <header>
-  <h2>Frontend Challenge</h2>
+  <a href="/"><h2>Frontend Challenge</h2></a>
   <nav>
     <ul>
       {#each links as link}
         <li><a href={link.url}>{link.text}</a></li>
       {/each}
     </ul>
-    <button class="toggle-btn"></button>
+    <button class="toggle-btn" onclick={handleClick}></button>
+    <div id="menu" class={showMenu ? 'show-menu' : ''}>hi</div>
   </nav>
 </header>
 
@@ -19,9 +29,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #4974a5;
+    background-color: var(--color-blue);
     border-bottom: 2px solid #494949;
     padding: 5px 20px;
+  }
+
+  h2 {
+    color: var(--color-yellow);
+    text-shadow: 1px 1px var(--color-orange);
+    font-size: 36px;
+    margin: auto 0;
   }
 
   nav ul {
@@ -33,9 +50,19 @@
 
   nav ul li {
     margin-right: 20px;
+    color: var(--color-orange);
+  }
+
+  nav ul li a {
+    text-decoration: none;
+    color: var(--color-orange);
   }
 
   .toggle-btn {
+    display: none;
+  }
+
+  #menu {
     display: none;
   }
 
@@ -64,8 +91,15 @@
       font-size: 24px;
     }
 
-    .nav-open {
+    #menu.show-menu {
       display: block;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background-color: #f8f9fa;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      padding: 10px;
     }
   }
 </style>
