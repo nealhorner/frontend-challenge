@@ -10,6 +10,7 @@
     "paths": {
       "*": ["node_modules/*"]
     },
+    "outDir": "dist",
     "lib": ["esnext.asynciterable"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
