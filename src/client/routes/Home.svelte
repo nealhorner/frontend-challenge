@@ -2,8 +2,8 @@
   import Card from '../lib/components/Card.svelte';
 </script>
 
-<main class="gradient">
-  <div id="first-section">
+<main class="pipe-gradient">
+  <div id="first-section" class="linear-gradient">
     <div>
       <h1>Welcome to the Quiz App!</h1>
       <p>Get ready to test your knowledge.</p>
@@ -12,7 +12,7 @@
   </div>
   <div id="second-section">
     <Card>
-      <p>
+      <p style="width: 50%">
         Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
         how to build Svelte apps.
       </p>
@@ -21,10 +21,14 @@
 </main>
 
 <style>
+  main {
+    height: calc(100vh - 59px);
+  }
+
   #first-section {
     background-color: var(--color-purple);
     color: white;
-    padding: 20px;
+    padding: 20px 0px;
     height: 200px;
     width: 100%;
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
@@ -37,7 +41,41 @@
     padding: 20px;
   }
 
-  .gradient {
+  .linear-gradient {
+    background: -moz-linear-gradient(
+      -45deg,
+      rgba(243, 130, 111, 0.25) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ); /* FF3.6+ */
+    background: -webkit-gradient(
+      linear,
+      left top,
+      right bottom,
+      color-stop(0%, rgba(243, 130, 111, 0.25)),
+      color-stop(100%, rgba(0, 0, 0, 0))
+    ); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(
+      -45deg,
+      rgba(243, 130, 111, 0.25) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(
+      -45deg,
+      rgba(243, 130, 111, 0.25) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ); /* Opera 11.10+ */
+    background: -ms-linear-gradient(
+      -45deg,
+      rgba(243, 130, 111, 0.25) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ); /* IE10+ */
+    background: linear-gradient(
+      135deg,
+      rgba(243, 130, 111, 0.25) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ); /* W3C */
+  }
+  .pipe-gradient {
     background-color: var(--color-yellow);
     background-image: repeating-radial-gradient(
       circle at 0 0,
