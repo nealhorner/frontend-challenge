@@ -1,6 +1,7 @@
 {
-  "name": "svelte-app",
+  "name": "frontend-challenge",
   "version": "1.0.0",
+  "description": "Welcome to the Frontend Challenge! This is a knowledge quiz app designed to test your understanding of frontend development concepts.",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
