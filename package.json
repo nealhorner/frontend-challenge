@@ -6,7 +6,8 @@
     "build": "rollup -c && tsc",
     "postinstall": "npm run build",
     "dev": "rollup -c -w",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "dev3": "rollup -c -w & tsc -w && nodemon -w src/client -w src/server -w public src/server/index.ts"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
@@ -19,6 +20,7 @@
     "@typescript-eslint/parser": "^4.6.0",
     "eslint": "^7.12.1",
     "eslint-config-prettier": "^6.15.0",
+    "nodemon": "^3.1.0",
     "prettier": "^2.1.2",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",

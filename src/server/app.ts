@@ -9,8 +9,8 @@ dotenv.config();
 const app = express();
 
 // Security
-app.use(helmet())
-app.disable('x-powered-by')
+// app.use(helmet())
+// app.disable('x-powered-by')
 
 // Middleware
 app.use(cors());
