@@ -7,7 +7,8 @@
     "postinstall": "npm run build",
     "dev": "rollup -c -w",
     "start": "node dist/index.js",
-    "dev3": "rollup -c -w & tsc -w && nodemon -w src/client -w src/server -w public src/server/index.ts"
+    "dev3": "rollup -c -w & tsc -w && nodemon -w src/client -w src/server -w public src/server/index.ts",
+    "prisma-seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
@@ -21,20 +22,26 @@
     "eslint": "^7.12.1",
     "eslint-config-prettier": "^6.15.0",
     "nodemon": "^3.1.0",
-    "prettier": "^2.1.2",
+    "prettier": "^3.2.5",
+    "prettier-plugin-svelte": "^3.2.3",
+    "prisma": "^5.13.0",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^6.1.1",
     "svelte": "^3.0.0",
     "svelte-routing": "^2.12.0",
-    "ts-node": "^9.0.0",
+    "ts-node": "^9.1.1",
     "ts-node-dev": "^1.0.0"
   },
   "dependencies": {
+    "@prisma/client": "^5.13.0",
     "cors": "^2.8.5",
     "dotenv": "^8.6.0",
     "express": "^4.17.1",
     "helmet": "^7.1.0",
     "typescript": "^5.0.0"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

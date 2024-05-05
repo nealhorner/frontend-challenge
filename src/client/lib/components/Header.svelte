@@ -1,9 +1,8 @@
 <script>
-  import { createDocumentRegistry } from 'typescript';
-
-  let links = [{ text: 'Home', url: '/' }];
-
+  import LoginButton from './LoginButton.svelte';
+  import LogoutButton from './LogoutButton.svelte';
   let showMenu = false;
+  let loggedIn = true;
 
   function handleClick() {
     showMenu = !showMenu;
@@ -16,13 +15,21 @@
     <a href="/"><h2>Frontend Challenge</h2></a>
     <nav>
       <ul>
-        {#each links as link}
-          <li><a href={link.url}>{link.text}</a></li>
-        {/each}
+        <li><a href="/">Home</a></li>
+        {#if loggedIn === true}
+          <li><a href="/profile">Profile</a></li>
+        {/if}
       </ul>
       <button class="toggle-btn" onclick={handleClick}></button>
       <div id="menu" class={showMenu ? 'show-menu' : ''}>hi</div>
     </nav>
+    <div>
+      {#if loggedIn === false}
+        <LoginButton />
+      {:else}
+        <LogoutButton />
+      {/if}
+    </div>
   </div>
   <div class="border pink"></div>
   <div class="border orange"></div>

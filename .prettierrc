@@ -1,5 +1,7 @@
 {
   "singleQuote": true,
+  "semi": true,
+  "tabWidth": 2,
   "trailingComma": "all",
   "plugins": [
     "prettier-plugin-svelte"
@@ -9,6 +11,12 @@
       "files": "*.ts",
       "options": {
         "parser": "typescript"
+      }
+    },
+    {
+      "files": "*.svelte",
+      "options": {
+        "parser": "svelte"
       }
     }
   ]

@@ -1,5 +1,6 @@
 <script>
   import Card from '../lib/components/Card.svelte';
+  import Button from '../lib/components/Button.svelte';
 </script>
 
 <main>
@@ -7,16 +8,21 @@
     <div>
       <h1>Welcome to the Quiz App!</h1>
       <p>Get ready to test your knowledge.</p>
-      <button>Start Quiz</button>
+      <Button type="secondary" text="Start Quiz"></Button>
     </div>
   </div>
   <div id="second-section">
-    <Card>
-      <p style="width: 50%">
-        Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-        how to build Svelte apps.
-      </p>
-    </Card>
+    <div>
+      <Card>
+        <p>
+          Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to
+          learn how to build Svelte apps.
+        </p>
+      </Card>
+    </div>
+    <div>
+      <p>Add metrics example</p>
+    </div>
   </div>
   <div id="third-section" class="pipe-gradient">
     <p>Hello World</p>
@@ -41,7 +47,16 @@
     margin: 0 auto;
   }
   #second-section {
-    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  #second-section > div {
+    padding: 80px 40px;
+    margin-top: -100px;
+    padding-top: 140px;
+  }
+  #second-section div:first-child {
+    background-color: var(--color-yellow);
   }
 
   .linear-gradient {
@@ -87,5 +102,11 @@
       var(--color-orange) 10px,
       var(--color-pink) 20px /* determines size */
     );
+  }
+
+  @media (max-width: 600px) {
+    #second-section {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
