@@ -15,7 +15,12 @@
   }
 
   async function handleSubmit() {
-    // Handle submit logic here
+    //Check answer
+
+    // Show answer
+
+    // Get next question
+    promise = getQuestion();
   }
 </script>
 
@@ -53,7 +58,7 @@
     font-size: 1rem;
   }
 
-  #question {
+  .question {
     text-align: left;
   }
 </style>
