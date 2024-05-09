@@ -1,4 +1,7 @@
 <script>
+  import Button from './Button.svelte';
+  let answer = '';
+
   let promise = getQuestion();
 
   async function getQuestion() {
@@ -22,6 +25,28 @@
     // Get next question
     promise = getQuestion();
   }
+
+  // shuffle array function
+  function shuffle(array) {
+    let currentIndex = array.length,
+      randomIndex;
+
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+
+    return array;
+  }
+
+  const haveAnswer = (answer) => {
+    return answer !== '';
+  };
 </script>
 
 <main>
@@ -31,11 +56,35 @@
     <div class="question">
       <h1>{question.title}</h1>
       <p>{question.prompt}</p>
-      <p>{question.type}</p>
-      {#if question.type === 'blind'}
-        <input type="text" placeholder="Enter your answer" />
+      {#if question.type === 'blind_answer'}
+        <input
+          type="text"
+          placeholder="Enter your answer"
+          bind:value={answer}
+        />
+      {:else if question.type === 'multiple_choice'}
+        {#each JSON.parse(question.multipleChoiceOptions) as choice}
+          <label>
+            <input
+              type="radio"
+              name="choice"
+              value={choice}
+              bind:group={answer}
+            />
+            {choice}
+          </label>
+        {/each}
+      {:else}
+        <p>No Implemented: {question.type}</p>
       {/if}
-      <button on:click={handleSubmit}>Submit</button>
+      <div style="margin-top: 15px">
+        <Button
+          on:click={handleSubmit}
+          type="secondary-button"
+          text="Submit"
+          disabled={!haveAnswer(answer)}
+        />
+      </div>
     </div>
   {:catch error}
     <p style="color: red">{error.message}</p>
