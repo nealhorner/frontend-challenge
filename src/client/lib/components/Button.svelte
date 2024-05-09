@@ -1,6 +1,7 @@
 <script>
   export let type = 'primary';
   export let text = 'Button';
+  export let disabled = false;
   export let onClick = () => {};
 
   let buttonClass = '';
@@ -19,7 +20,9 @@
   }
 </script>
 
-<button class="button {buttonClass} noselect" on:click={onClick}>{text}</button>
+<button class="button {buttonClass} noselect" on:click={onClick} {disabled}
+  >{text}</button
+>
 
 <style>
   .button {
@@ -33,11 +36,11 @@
     border: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  .button:hover {
+  .button:hover:enabled {
     text-decoration: underline;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
-  .button:active {
+  .button:active:enabled {
     transform: translateY(1px);
     box-shadow: none;
   }
