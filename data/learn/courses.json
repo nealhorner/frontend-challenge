@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "courses": [
+    {
+      "title": "Frontend Masters",
+      "url": "https://frontendmasters.com/"
+    },
+    {
+      "title": "Just Javascript",
+      "url": "https://justjavascript.com/"
+    }
+  ]
+}
