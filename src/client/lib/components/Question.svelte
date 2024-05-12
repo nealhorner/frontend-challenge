@@ -1,5 +1,6 @@
 <script>
   import Button from './Button.svelte';
+  import RadioGroup from './RadioGroup.svelte';
   let answer = '';
 
   let promise = getQuestion();
@@ -7,7 +8,6 @@
   async function getQuestion() {
     const response = await fetch('/api/question');
     const data = await response.json();
-    console.log('$$$$$$$$$');
     console.log(data);
 
     if (response.ok) {
@@ -17,8 +17,9 @@
     }
   }
 
-  async function handleSubmit() {
+  function handleSubmit() {
     //Check answer
+    console.log(answer);
 
     // Show answer
 
@@ -26,7 +27,6 @@
     promise = getQuestion();
   }
 
-  // shuffle array function
   function shuffle(array) {
     let currentIndex = array.length,
       randomIndex;
@@ -53,38 +53,39 @@
   {#await promise}
     <p>...waiting</p>
   {:then question}
-    <div class="question">
-      <h1>{question.title}</h1>
-      <p>{question.prompt}</p>
-      {#if question.type === 'blind_answer'}
-        <input
-          type="text"
-          placeholder="Enter your answer"
-          bind:value={answer}
-        />
-      {:else if question.type === 'multiple_choice'}
-        {#each JSON.parse(question.multipleChoiceOptions) as choice}
-          <label>
-            <input
-              type="radio"
-              name="choice"
-              value={choice}
-              bind:group={answer}
-            />
-            {choice}
-          </label>
-        {/each}
-      {:else}
-        <p>No Implemented: {question.type}</p>
-      {/if}
-      <div style="margin-top: 15px">
-        <Button
-          on:click={handleSubmit}
-          type="secondary-button"
-          text="Submit"
-          disabled={!haveAnswer(answer)}
-        />
-      </div>
+    <div class="question noselect">
+      <form>
+        <p id="question-title">{question.title}</p>
+        <h2>{question.prompt}</h2>
+        {#if question.type === 'blind_answer'}
+          <input
+            type="text"
+            placeholder="Enter your answer"
+            bind:value={answer}
+          />
+        {:else if question.type === 'multiple_choice'}
+          <RadioGroup
+            label="label"
+            options={JSON.parse(question.multipleChoiceOptions).map(
+              (option) => ({
+                label: option,
+                value: option,
+              }),
+            )}
+            bind:value={answer}
+          />
+        {:else}
+          <p>No Implemented: {question.type}</p>
+        {/if}
+        <div style="margin-top: 15px">
+          <Button
+            on:click={handleSubmit}
+            type="secondary-button"
+            text="Submit"
+            disabled={!haveAnswer(answer)}
+          />
+        </div>
+      </form>
     </div>
   {:catch error}
     <p style="color: red">{error.message}</p>
@@ -97,14 +98,15 @@
     margin-top: 2rem;
   }
 
-  h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+  #question-title {
+    color: #888;
+    margin: 5px 0px;
   }
 
-  button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 0px;
+    margin-bottom: 1rem;
   }
 
   .question {
