@@ -7,8 +7,11 @@
 <main>
   <div id="first-section" class="linear-gradient">
     <div>
-      <h1>Welcome to the Quiz App!</h1>
-      <p>Get ready to test your knowledge.</p>
+      <h1>Welcome to Frontend Challenge!</h1>
+      <p>
+        Get ready to test your frontend knowledge. Track and improve your
+        scores.
+      </p>
       <Button type="secondary" text="Start Quiz"></Button>
     </div>
   </div>
@@ -16,8 +19,18 @@
     <div>
       <Card>
         <p>
-          Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to
-          learn how to build Svelte apps.
+          Our questions are crafted by industry experts to simulate actual
+          development scenarios, helping you to not only test your knowledge but
+          also improve your problem-solving capabilities in a fun and engaging
+          way.
+        </p>
+        <p>
+          Each challenge is designed to push your boundaries and expand your
+          understanding of how web technologies work together.
+        </p>
+        <p>
+          Select a challenge, and see if you can rise to the occasion of
+          becoming a frontend maestro!
         </p>
       </Card>
     </div>
