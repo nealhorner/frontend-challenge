@@ -54,9 +54,9 @@ model QuizResult {
 
 model LearningResources {
   id                                 Int                                  @id @default(autoincrement())
-  title                              String
+  title                              String                               @unique
   type                               String
-  url                                String
+  url                                String                               @unique
   LearningEngagementEvents           LearningEngagementEvents[]
   LearningEngagementEventsAggregated LearningEngagementEventsAggregated[]
 }
