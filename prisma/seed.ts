@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-
 import fs from 'fs';
 
 // Define the interface for each question
@@ -52,11 +51,9 @@ const generate_question_permutations = (question: RawQuestion) => {
       title: question.title,
       prompt: question.prompt,
       type: 'multiple_choice',
-      multiple_choice: question.answers.concat(
-        shuffled_false_answers.slice(0, 3),
-      ),
+      multiple_choice: question.answers.concat(shuffled_false_answers.slice(0, 3)),
       answers: question.answers,
-      tags: question.tags,
+      tags: question.tags
     });
   }
   if (question.false_answers.length > 1) {
@@ -67,7 +64,7 @@ const generate_question_permutations = (question: RawQuestion) => {
       type: 'multiple_choice',
       multiple_choice: shuffled_false_answers.slice(0, 4),
       answers: [],
-      tags: question.tags,
+      tags: question.tags
     });
   }
 
@@ -78,7 +75,7 @@ const generate_question_permutations = (question: RawQuestion) => {
     type: 'blind_answer',
     multiple_choice: [],
     answers: question.answers,
-    tags: question.tags,
+    tags: question.tags
   });
 
   // Fill in the blank
@@ -96,24 +93,18 @@ const replace_question_records_from_json = async () => {
   await prisma.question.deleteMany();
 
   // Load questions data from data/questions.json
-  const question_data = JSON.parse(
-    fs.readFileSync('data/questions.json', 'utf-8'),
-  );
+  const question_data = JSON.parse(fs.readFileSync('data/questions.json', 'utf-8'));
 
   // Insert the questions into the database
   for (const raw_question of question_data.records) {
-    for (const question_permutation of generate_question_permutations(
-      raw_question,
-    )) {
+    for (const question_permutation of generate_question_permutations(raw_question)) {
       const prismaQuestionData = {
         title: question_permutation.title,
         prompt: question_permutation.prompt,
         type: question_permutation.type,
-        multipleChoiceOptions: JSON.stringify(
-          question_permutation.multiple_choice,
-        ),
+        multipleChoiceOptions: JSON.stringify(question_permutation.multiple_choice),
         answers: JSON.stringify(question_permutation.answers),
-        tags: JSON.stringify(question_permutation.tags),
+        tags: JSON.stringify(question_permutation.tags)
       };
       await prisma.question.create({ data: prismaQuestionData });
     }
@@ -122,18 +113,19 @@ const replace_question_records_from_json = async () => {
 
 async function main() {
   // Seed the database with some data
+  console.log('Seeding the database...');
 
-  // Questions
+  console.log('Seeding questions...');
   replace_question_records_from_json();
 
-  // Users
-  prisma.user.deleteMany();
-  prisma.user.createMany({ data: get_records_from_json('data/users.json') });
+  console.log('Seeding users...');
+  await prisma.user.deleteMany({});
+  await prisma.user.createMany({ data: get_records_from_json('data/users.json') });
 
-  // Learning Resources
-  prisma.learningResources.deleteMany();
-  prisma.user.createMany({
-    data: get_records_from_json('data/learning_resources.json'),
+  console.log('Seeding learning resources...');
+  await prisma.learningResources.deleteMany({});
+  await prisma.learningResources.createMany({
+    data: get_records_from_json('data/learning_resources.json')
   });
 }
 main()
