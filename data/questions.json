@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "questions": [
+  "records": [
     {
       "title": "Array Length",
       "prompt": "How do you find the length of an array in JavaScript?",

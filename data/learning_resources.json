@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "records": [
+    {
+      "title": "Syntax",
+      "url": "https://syntax.fm/",
+      "type": "podcast"
+    },
+    {
+      "title": "Frontend Happy Hour",
+      "url": "https://www.frontendhappyhour.com/",
+      "type": "podcast"
+    },
+    {
+      "title": "ShopTalk Show",
+      "url": "https://shoptalkshow.com/",
+      "type": "podcast"
+    },
+    {
+      "title": "Whiskey, Web and Whatnot",
+      "url": "https://whiskey.fm/",
+      "type": "podcast"
+    },
+    {
+      "title": "Frontend Masters",
+      "url": "https://frontendmasters.com/",
+      "type": "course"
+    },
+    {
+      "title": "Just Javascript",
+      "url": "https://justjavascript.com/",
+      "type": "course"
+    },
+    {
+      "title": "Lydia Hallie",
+      "url": "https://www.lydiahallie.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Cassidoo",
+      "url": "https://cassidoo.co/",
+      "type": "blog"
+    },
+    {
+      "title": "Jen Kramer",
+      "url": "https://learntoteach.tech/",
+      "type": "blog"
+    },
+    {
+      "title": "Chris Coyier",
+      "url": "https://css-tricks.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Sarah Drasner",
+      "url": "https://sarah.dev/",
+      "type": "blog"
+    },
+    {
+      "title": "Dan Abramov",
+      "url": "https://overreacted.io/",
+      "type": "blog"
+    }
+  ]
+}
