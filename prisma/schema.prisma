@@ -8,47 +8,72 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id     Int     @id @default(autoincrement())
+  email  String  @unique
+  name   String?
   quizes Quiz[]
 }
 
 model Quiz {
-  id     Int     @id @default(autoincrement())
-  title  String
-  userId Int
-  user   User    @relation(fields: [userId], references: [id])
-  quizResults QuizResult[]
-  score Int
+  id            Int            @id @default(autoincrement())
+  title         String
+  userId        Int
+  user          User           @relation(fields: [userId], references: [id])
+  quizResults   QuizResult[]
+  score         Int
   quizQuestions QuizQuestion[]
 }
 
 model Question {
-  id     Int     @id @default(autoincrement())
-  title  String
-  prompt String
-  type String
+  id                    Int            @id @default(autoincrement())
+  title                 String
+  prompt                String
+  type                  String
   multipleChoiceOptions String
-  answers String
-  tags String
-  quizQuestions QuizQuestion[]
+  answers               String
+  tags                  String
+  quizQuestions         QuizQuestion[]
 }
 
 model QuizQuestion {
   quizId     Int
   questionId Int
-  quiz       Quiz      @relation(fields: [quizId], references: [id])
-  question   Question  @relation(fields: [questionId], references: [id])
+  quiz       Quiz     @relation(fields: [quizId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id])
 
   @@id([quizId, questionId])
 }
 
 model QuizResult {
-  id     Int     @id @default(autoincrement())
+  id     Int  @id @default(autoincrement())
   quizId Int
   userId Int
-  score Int
-  quiz   Quiz    @relation(fields: [quizId], references: [id])
+  score  Int
+  quiz   Quiz @relation(fields: [quizId], references: [id])
 }
 
+model LearningResources {
+  id                                 Int                                  @id @default(autoincrement())
+  title                              String
+  type                               String
+  url                                String
+  LearningEngagementEvents           LearningEngagementEvents[]
+  LearningEngagementEventsAggregated LearningEngagementEventsAggregated[]
+}
+
+model LearningEngagementEvents {
+  id                   Int               @id @default(autoincrement())
+  learningResourceId   Int
+  learningResourceType String
+  date                 DateTime
+  learningResource     LearningResources @relation(fields: [learningResourceId], references: [id])
+}
+
+model LearningEngagementEventsAggregated {
+  id                   Int               @id @default(autoincrement())
+  learningResourceType String
+  learningResourceId   Int
+  date                 DateTime
+  count                Int               @default(0)
+  learningResource     LearningResources @relation(fields: [learningResourceId], references: [id])
+}
