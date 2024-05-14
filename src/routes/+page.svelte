@@ -14,7 +14,9 @@
     <div>
       <h1>Welcome to Frontend Challenge!</h1>
       <p>Get ready to test your frontend knowledge. Track and improve your scores.</p>
-      <Button type="secondary" text="Start Quiz"></Button>
+      <div id="button-tray">
+        <Button type="secondary" text="Start Quiz"></Button>
+      </div>
     </div>
   </div>
   <div id="second-section">
@@ -53,13 +55,20 @@
     background-color: var(--color-purple);
     color: white;
     padding: 20px 0px;
-    height: 200px;
+    min-height: 200px;
     width: 100%;
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
   }
   #first-section > div {
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  #button-tray {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
   }
   #second-section {
     display: grid;
