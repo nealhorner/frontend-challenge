@@ -1,15 +1,31 @@
 <script lang="ts">
   import type { PageData } from './$types';
+  import Button from '$lib/components/Button.svelte';
 
   export let data: PageData;
   const { learning_resources } = data;
   const blogs = learning_resources.filter((resource) => resource.type === 'blog');
   const courses = learning_resources.filter((resource) => resource.type === 'course');
   const podcasts = learning_resources.filter((resource) => resource.type === 'podcast');
+
+  const sendEmail = () => {
+    const email = 'mailto:'; //FIXME: Add your email here
+    window.open(email);
+  };
 </script>
+
+<svelte:head>
+  <title>Learn</title>
+  <meta name="description" content="Learning resources for frontend developers" />
+</svelte:head>
 
 <main>
   <h1>Learning Resources</h1>
+
+  <p>
+    Here you can find a list of learning resources for frontend developers. Feel free to explore the
+    blogs, courses, and podcasts below. Enjoy!
+  </p>
 
   <section>
     <h2>Blogs</h2>
@@ -56,8 +72,12 @@
       <p style="color: red">{error.message}</p>
     {/await}
   </section>
-</main>
 
-<style>
-  /* Add your custom styles here */
-</style>
+  <details>
+    <summary>Submit Learning Resources</summary>
+    <p>
+      If you have any learning resources that you would like to share, feel free to submit them.
+      <Button onClick={sendEmail} text="Send Email" />
+    </p>
+  </details>
+</main>
