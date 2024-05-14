@@ -1,129 +1,201 @@
-<script>
-	import { page } from '$app/stores';
-	import logo from '$lib/images/svelte-logo.svg';
-	import github from '$lib/images/github.svg';
+<script lang="ts">
+  import LoginButton from './LoginButton.svelte';
+  import LogoutButton from './LogoutButton.svelte';
+  let showVerticalMenu = false;
+  let loggedIn = true;
+  let clickContainer: HTMLDivElement;
+  let innerWidth = 0;
+
+  function onWindowClick(event: MouseEvent) {
+    // Hide the vertical menu when clicking outside of it
+    const target = event.target as Node;
+    if (!clickContainer.contains(target)) {
+      showVerticalMenu = false;
+    }
+  }
+
+  function handleClick() {
+    // Show vertical nav menu when the menu button is clicked
+    showVerticalMenu = !showVerticalMenu;
+  }
+
+  $: showVerticalMenu = innerWidth <= 768 ? showVerticalMenu : false;
 </script>
 
+<svelte:window on:click={onWindowClick} bind:innerWidth />
+
 <header>
-	<div class="corner">
-		<a href="https://kit.svelte.dev">
-			<img src={logo} alt="SvelteKit" />
-		</a>
-	</div>
-
-	<nav>
-		<svg viewBox="0 0 2 3" aria-hidden="true">
-			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
-		</svg>
-		<ul>
-			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-				<a href="/">Home</a>
-			</li>
-			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-				<a href="/about">About</a>
-			</li>
-			<li aria-current={$page.url.pathname.startsWith('/sverdle') ? 'page' : undefined}>
-				<a href="/sverdle">Sverdle</a>
-			</li>
-		</ul>
-		<svg viewBox="0 0 2 3" aria-hidden="true">
-			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
-		</svg>
-	</nav>
-
-	<div class="corner">
-		<a href="https://github.com/sveltejs/kit">
-			<img src={github} alt="GitHub" />
-		</a>
-	</div>
+  <div id="nav-wrapper">
+    <a href="/"><h2>Frontend Challenge</h2></a>
+    <div style="height: 45px">
+      <nav>
+        <div class="horizontal-nav">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/learn">Learn</a></li>
+            {#if loggedIn === true}
+              <li><a href="/profile">Profile</a></li>
+            {/if}
+          </ul>
+          <div>
+            {#if !loggedIn}
+              <LoginButton />
+            {:else}
+              <LogoutButton />
+            {/if}
+          </div>
+        </div>
+        <div class="click-container" bind:this={clickContainer}>
+          <div class="toggle-btn-wrapper">
+            <button class="toggle-btn" on:click={handleClick}></button>
+          </div>
+          <div style="display: {showVerticalMenu ? 'flex' : 'none'};">
+            <div class="vertical-nav">
+              <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/learn">Learn</a></li>
+                {#if loggedIn === true}
+                  <li><a href="/profile">Profile</a></li>
+                {/if}
+              </ul>
+              <div>
+                {#if !loggedIn}
+                  <LoginButton />
+                {:else}
+                  <LogoutButton />
+                {/if}
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="border pink"></div>
+  <div class="border orange"></div>
+  <div class="border yellow"></div>
 </header>
 
 <style>
-	header {
-		display: flex;
-		justify-content: space-between;
-	}
+  #nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-blue);
+    padding: 5px 20px;
+  }
 
-	.corner {
-		width: 3em;
-		height: 3em;
-	}
+  h2 {
+    color: var(--color-yellow);
+    text-shadow: 1px 1px var(--color-orange);
+    font-size: 2.5rem;
+    margin: auto 0;
+  }
 
-	.corner a {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-	}
+  #nav-wrapper > div {
+    height: 45px;
+    display: flex;
+    align-items: center;
+  }
 
-	.corner img {
-		width: 2em;
-		height: 2em;
-		object-fit: contain;
-	}
+  .horizontal-nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    gap: 0px 20px;
+  }
 
-	nav {
-		display: flex;
-		justify-content: center;
-		--background: rgba(255, 255, 255, 0.7);
-	}
+  .horizontal-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 0px 20px;
+  }
 
-	svg {
-		width: 2em;
-		height: 3em;
-		display: block;
-	}
+  .horizontal-nav ul li a {
+    color: var(--color-yellow);
+    text-decoration: none;
+  }
 
-	path {
-		fill: var(--background);
-	}
+  nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+  }
 
-	ul {
-		position: relative;
-		padding: 0;
-		margin: 0;
-		height: 3em;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		list-style: none;
-		background: var(--background);
-		background-size: contain;
-	}
+  .toggle-btn-wrapper {
+    display: none;
+    align-items: center;
+    height: 45px;
+  }
 
-	li {
-		position: relative;
-		height: 100%;
-	}
+  .toggle-btn {
+    display: block; /* Hide by default */
+    background: url('hamburger-button.png') no-repeat center center;
+    background-size: contain;
+    border: none;
+    margin-left: 10px;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+  }
 
-	li[aria-current='page']::before {
-		--size: 6px;
-		content: '';
-		width: 0;
-		height: 0;
-		position: absolute;
-		top: 0;
-		left: calc(50% - var(--size));
-		border: var(--size) solid transparent;
-		border-top: var(--size) solid var(--color-theme-1);
-	}
+  .vertical-nav {
+    display: none; /* Hide by default */
+    flex-direction: column;
+    position: absolute;
+    gap: 10px 0px;
+    top: 10;
+    right: 0;
+    padding: 10px;
+    background-color: white;
+    z-index: 1;
+  }
 
-	nav a {
-		display: flex;
-		height: 100%;
-		align-items: center;
-		padding: 0 0.5rem;
-		color: var(--color-text);
-		font-weight: 700;
-		font-size: 0.8rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		text-decoration: none;
-		transition: color 0.2s linear;
-	}
+  .vertical-nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px 0px;
+    padding: 0;
+    margin: 0;
+  }
 
-	a:hover {
-		color: var(--color-theme-1);
-	}
+  .vertical-nav ul li a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .border {
+    height: 2px;
+    width: 100%;
+    background-color: aqua;
+  }
+
+  .border.yellow {
+    background-color: var(--color-yellow);
+  }
+
+  .border.orange {
+    background-color: var(--color-orange);
+  }
+
+  .border.pink {
+    background-color: var(--color-pink);
+  }
+
+  @media (max-width: 768px) {
+    .toggle-btn-wrapper {
+      display: flex; /* Show button on narrow screens */
+    }
+
+    .horizontal-nav {
+      display: none; /* Hide the menu when toggled */
+    }
+
+    .vertical-nav {
+      display: flex;
+    }
+  }
 </style>
