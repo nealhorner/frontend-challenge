@@ -81,3 +81,17 @@
     </p>
   </details>
 </main>
+
+<style>
+  main {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  a {
+    color: var(--color-blue);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
