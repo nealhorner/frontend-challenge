@@ -120,7 +120,7 @@ async function main() {
 
   console.log('Seeding users...');
   await prisma.user.deleteMany({});
-  await prisma.user.createMany({ data: get_records_from_json('data/users.json') });
+  // await prisma.user.createMany({ data: get_records_from_json('data/users.json') });
 
   console.log('Seeding learning resources...');
   await prisma.learningResources.deleteMany({});
