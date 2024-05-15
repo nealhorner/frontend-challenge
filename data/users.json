@@ -2,24 +2,8 @@
   "version": "1.0",
   "records": [
     {
-      "name": "William Garcia",
+      "name": "Test Account",
       "email": "william_garcia@example.com"
-    },
-    {
-      "name": "Elizabeth Jones",
-      "email": "elizabeth_jones@example.com"
-    },
-    {
-      "name": "Mary Brown",
-      "email": "mary_brown@example.com"
-    },
-    {
-      "name": "Jane Brown",
-      "email": "jane_brown@example.com"
-    },
-    {
-      "name": "Mary Smith",
-      "email": "mary_smith@example.com"
     }
   ]
 }
