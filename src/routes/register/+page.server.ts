@@ -2,6 +2,13 @@ import prisma from '$lib/prisma';
 import { fail } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 
+interface ErrorObject {
+  email: string;
+  name: string;
+  password: string;
+  other: string;
+}
+
 const DELAY_MS = 2000;
 
 const findUserByEmail = async (email: string) => {
@@ -48,7 +55,7 @@ export const actions = {
     const email = data.get('email');
     const password = data.get('password');
 
-    const errorResponse = { name: '', email: '', password: '', other: '' };
+    const errorResponse: ErrorObject = { name: '', email: '', password: '', other: '' };
     let statusCode = 201;
 
     if (!isString(name)) {
