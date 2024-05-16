@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { blur } from 'svelte/transition';
   export let label = '';
+  export let type = 'text';
   export let id = '';
   export let name = '';
   export let autocomplete = '';
@@ -11,11 +11,9 @@
 
 <div>
   <label for={name}>{label}</label>
-  <input type="text" {id} {name} {autocomplete} required class={haveError ? 'error-input' : ''} />
+  <input {type} {id} {name} {autocomplete} required class={haveError ? 'error-input' : ''} />
   {#if haveError}
-    <div>
-      <span class="error-message">{error}</span>
-    </div>
+    <div class="error-message">{error}</div>
   {/if}
 </div>
 
@@ -40,7 +38,7 @@
   }
 
   .error-message {
-    padding-top: 2rem;
+    margin-top: 2px;
     color: red;
   }
 </style>
