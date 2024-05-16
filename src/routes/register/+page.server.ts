@@ -1,7 +1,8 @@
 import prisma from '$lib/prisma';
 import { fail } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
-import { validateEmail } from './validateEmail.js';
+import { validateEmail } from './validateEmail';
+import { validateName } from './validateName';
 
 interface ErrorObject {
   email: string;
@@ -29,10 +30,6 @@ const validatePassword = (password: string) => {
   if (uniqueChars.size < 4) return false;
 
   return true;
-};
-
-const validateName = (name: string) => {
-  return name.length >= 1;
 };
 
 const delayAndFail = async (message: object, status: number) => {
