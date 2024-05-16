@@ -1,6 +1,7 @@
 import prisma from '$lib/prisma';
 import { fail } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
+import { validateEmail } from './validateEmail.js';
 
 interface ErrorObject {
   email: string;
@@ -13,11 +14,6 @@ const DELAY_MS = 2000;
 
 const findUserByEmail = async (email: string) => {
   return await prisma.user.findFirst({ where: { email } });
-};
-
-const validateEmail = (email: string) => {
-  const re = /\S+@\S+\.\S+/;
-  return { isValid: re.test(email), invalidReason: 'Invalid email' };
 };
 
 const validatePassword = (password: string) => {
