@@ -3,6 +3,7 @@ import { fail } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import { validateEmail } from './validateEmail';
 import { validateName } from './validateName';
+import { validatePassword } from './validatePassword';
 
 interface ErrorObject {
   email: string;
@@ -15,21 +16,6 @@ const DELAY_MS = 2000;
 
 const findUserByEmail = async (email: string) => {
   return await prisma.user.findFirst({ where: { email } });
-};
-
-const validatePassword = (password: string) => {
-  // check for minimum length
-  if (password.length < 12) return false;
-
-  // check for at least one uppercase, one lowercase, and one number
-  const re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-  if (!re.test(password)) return false;
-
-  // check unique number of characters
-  const uniqueChars = new Set(password);
-  if (uniqueChars.size < 4) return false;
-
-  return true;
 };
 
 const delayAndFail = async (message: object, status: number) => {
