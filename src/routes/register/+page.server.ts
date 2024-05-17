@@ -30,9 +30,9 @@ const isString = (value: any): value is string => {
 export const actions = {
   default: async ({ cookies, request }) => {
     const data = await request.formData();
-    const name = data.get('name');
-    const email = data.get('email');
-    const password = data.get('password');
+    let name = data.get('name');
+    let email = data.get('email');
+    let password = data.get('password');
 
     const errorResponse: ErrorObject = { name: '', email: '', password: '', other: '' };
     let statusCode = 201;
@@ -53,22 +53,30 @@ export const actions = {
       return delayAndFail({ error: errorResponse }, statusCode);
     }
 
+    // Sanitize inputs
+    name = name.trim();
+    email = email.trim();
+    password = password.trim();
+
     const userFound = await findUserByEmail(email);
     if (userFound) {
       errorResponse.email = 'Email already in use';
       statusCode = 409;
     }
 
-    let { isValid, invalidReason } = validateEmail(email);
-    if (!isValid) {
-      errorResponse.email = invalidReason;
+    const { isValid: emailIsValid, invalidReason: emailInvalidReason } = validateEmail(email);
+    if (!emailIsValid) {
+      errorResponse.email = emailInvalidReason;
       statusCode = 400;
     }
     if (!validatePassword(password)) {
       return delayAndFail({ password: 'Invalid password' }, 400);
     }
-    if (!validateName(name)) {
-      return delayAndFail({ name: 'Invalid name' }, 400);
+
+    let { isValid: nameIsValid, invalidReason: nameInvalidReason } = validateName(name);
+    if (!nameIsValid) {
+      errorResponse.name = nameInvalidReason;
+      statusCode = 400;
     }
 
     if (statusCode !== 201) {
