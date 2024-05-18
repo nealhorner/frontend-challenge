@@ -23,12 +23,15 @@ export const validatePassword = (password: string) => {
 
   // check for for sequential numbers
   if (hasMoreThanTwoSequentialNumbers(password))
-    return { isValid: false, invalidReason: 'Password cannot contain sequential numbers' };
+    return {
+      isValid: false,
+      invalidReason: 'Password cannot contain 3 or more sequential numbers'
+    };
 
   // check unique number of characters
   const uniqueChars = new Set(password);
   if (uniqueChars.size < 4)
     return { isValid: false, invalidReason: 'Password must contain at least 4 unique characters' };
 
-  return { isValid: true, invalidReason: undefined };
+  return { isValid: true, invalidReason: null };
 };
