@@ -1,31 +1,24 @@
-<script>
-  export let type = 'primary';
-  export let text = 'Button';
-  export let disabled = false;
-  export let onClick = () => {};
+<script lang="ts">
+  type Kind = 'primary' | 'secondary' | 'warning' | 'accept';
+  type Type = 'button' | 'submit' | 'reset';
 
-  let buttonClass = '';
+  export let kind: Kind = 'primary';
+  export let disabled: boolean = false;
+  export let type: Type = 'button';
 
-  // Set the button class based on the type prop
-  $: {
-    if (type === 'primary') {
-      buttonClass = 'primary-button';
-    } else if (type === 'secondary') {
-      buttonClass = 'secondary-button';
-    } else if (type === 'warning') {
-      buttonClass = 'warning-button';
-    } else if (type === 'accept') {
-      buttonClass = 'accept-button';
-    }
-  }
+  $: buttonProps = {
+    type,
+    disabled,
+    class: ['no-select', kind && `c-button-${kind}`].filter(Boolean).join(' ')
+  };
 </script>
 
-<button class="button {buttonClass} noselect" on:click={onClick} {disabled}
-  >{text}</button
->
+<button {...buttonProps} on:click on:focus on:blur on:mouseover on:mouseenter on:mouseleave>
+  <slot />
+</button>
 
 <style>
-  .button {
+  button {
     padding: 0.5rem 1rem;
     border-radius: 4px;
     font-size: 1rem;
@@ -34,35 +27,32 @@
     outline: none;
     cursor: pointer;
     border: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  .button:hover:enabled {
+  button:hover:enabled {
     text-decoration: underline;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
-  .button:active:enabled {
+  button:active:enabled {
     transform: translateY(1px);
-    box-shadow: none;
   }
-  .primary-button {
+  .c-button-primary {
     /* Primary button styles */
     background-color: var(--color-purple);
     color: white;
   }
 
-  .secondary-button {
+  .c-button-secondary {
     /* Secondary button styles */
     background-color: white;
     color: var(--color-blue);
   }
 
-  .warning-button {
+  .c-button-warning {
     /* Warning button styles */
     background-color: red;
     color: white;
   }
 
-  .accept-button {
+  .c-button-accept {
     /* Accept button styles */
     background-color: green;
     color: white;
