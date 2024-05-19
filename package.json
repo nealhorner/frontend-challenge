@@ -45,6 +45,7 @@
 	},
 	"dependencies": {
 		"@prisma/client": "^5.13.0",
+		"@sentry/sveltekit": "^8.2.1",
 		"bcrypt": "^5.1.1"
 	}
 }
