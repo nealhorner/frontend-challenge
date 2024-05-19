@@ -8,7 +8,7 @@
   <legend>{label}</legend>
   <div>
     {#each options as option}
-      <div class="radio-option noselect">
+      <div class="radio-option no-select">
         <label>
           <input type="radio" bind:group={value} value={option.value} />
           {option.label}
