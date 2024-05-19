@@ -6,10 +6,10 @@ describe('validateEmail', () => {
     const email = 'test@example.com';
     const result = validateEmail(email);
     expect(result.isValid).toBe(true);
-    expect(result.invalidReason).toBeUndefined();
+    expect(result.invalidReason).toBeNull();
   });
 
-  it('should return false for an invalid email', () => {
+  it('should return false for an invalid email without an @ symbol', () => {
     const email = 'invalidemail';
     const result = validateEmail(email);
     expect(result.isValid).toBe(false);
@@ -18,6 +18,14 @@ describe('validateEmail', () => {
 
   it('should return false for an empty email', () => {
     const email = '';
+    const result = validateEmail(email);
+    expect(result.isValid).toBe(false);
+    expect(result.invalidReason).toBe('Invalid email');
+  });
+
+  it('should return false for an undefined email', () => {
+    const email = undefined;
+    // @ts-ignore
     const result = validateEmail(email);
     expect(result.isValid).toBe(false);
     expect(result.invalidReason).toBe('Invalid email');

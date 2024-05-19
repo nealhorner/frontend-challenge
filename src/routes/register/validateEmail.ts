@@ -1,7 +1,8 @@
 export const validateEmail = (email: string) => {
-  const re = /\S+@\S+\.\S+/;
-  if (re.test(email)) {
-    return { isValid: re.test(email), invalidReason: 'Invalid email' };
+  // Simple email validation, not fully compliant
+  // Users should verify their email
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { isValid: false, invalidReason: 'Invalid email' };
   }
-  return { isValid: true, invalidReason: '' };
+  return { isValid: true, invalidReason: null };
 };
