@@ -6,10 +6,10 @@ import { validateName } from './validateName';
 import { validatePassword } from './validatePassword';
 
 interface ErrorObject {
-  email: string;
-  name: string;
-  password: string;
-  other: string;
+  email: string | null;
+  name: string | null;
+  password: string | null;
+  other: string | null;
 }
 
 const DELAY_MS = 2000;
@@ -69,8 +69,12 @@ export const actions = {
       errorResponse.email = emailInvalidReason;
       statusCode = 400;
     }
-    if (!validatePassword(password)) {
-      return delayAndFail({ password: 'Invalid password' }, 400);
+
+    const { isValid: passwordIsValid, invalidReason: passwordInvalidReason } =
+      validatePassword(password);
+    if (!passwordIsValid) {
+      errorResponse.password = passwordInvalidReason;
+      statusCode = 400;
     }
 
     let { isValid: nameIsValid, invalidReason: nameInvalidReason } = validateName(name);
