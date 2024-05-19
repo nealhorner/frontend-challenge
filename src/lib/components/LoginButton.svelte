@@ -3,5 +3,5 @@
 </script>
 
 <a href="/login">
-  <Button type="primary" text="Login"></Button>
+  <Button kind="primary">Login</Button>
 </a>

@@ -7,4 +7,4 @@
   };
 </script>
 
-<Button type="primary" text="Logout" on:click={handleClick}></Button>
+<Button kind="primary" on:click={handleClick}>Logout</Button>

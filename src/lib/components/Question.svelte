@@ -53,7 +53,7 @@
   {#await promise}
     <p>...waiting</p>
   {:then question}
-    <div class="question noselect">
+    <div class="question no-select">
       <form>
         <p id="question-title">{question.title}</p>
         <h2>{question.prompt}</h2>
@@ -80,7 +80,7 @@
         <div style="margin-top: 15px">
           <Button
             on:click={handleSubmit}
-            type="secondary-button"
+            kind="secondary"
             text="Submit"
             disabled={!haveAnswer(answer)}
           />

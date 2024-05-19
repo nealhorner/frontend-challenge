@@ -77,7 +77,7 @@
     <summary>Submit Learning Resources</summary>
     <p>
       If you have any learning resources that you would like to share, feel free to submit them.
-      <Button onClick={sendEmail} text="Send Email" />
+      <Button on:click={sendEmail}>Send Email</Button>
     </p>
   </details>
 </main>

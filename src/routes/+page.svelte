@@ -15,7 +15,7 @@
       <h1>Welcome to Frontend Challenge!</h1>
       <p>Get ready to test your frontend knowledge. Track and improve your scores.</p>
       <div id="button-tray">
-        <Button type="secondary" text="Start Quiz"></Button>
+        <Button kind="secondary">Start Quiz</Button>
       </div>
     </div>
   </div>
