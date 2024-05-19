@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import Button from '$lib/components/Button.svelte';
+  import ResourceListing from './components/ResourceListing.svelte';
 
   export let data: PageData;
   const { learning_resources } = data;
@@ -35,7 +36,7 @@
     {:then blogs}
       <ul>
         {#each blogs as blog}
-          <li><a href={blog.url}>{blog.title}</a></li>
+          <li><ResourceListing title={blog.title} url={blog.url} /></li>
         {/each}
       </ul>
     {:catch error}
@@ -50,7 +51,7 @@
     {:then courses}
       <ul>
         {#each courses as course}
-          <li><a href={course.url}>{course.title}</a></li>
+          <li><ResourceListing title={course.title} url={course.url} /></li>
         {/each}
       </ul>
     {:catch error}
@@ -65,7 +66,7 @@
     {:then podcasts}
       <ul>
         {#each podcasts as podcast}
-          <li><a href={podcast.url}>{podcast.title}</a></li>
+          <li><ResourceListing title={podcast.title} url={podcast.url} /></li>
         {/each}
       </ul>
     {:catch error}
@@ -87,11 +88,15 @@
     max-width: 640px;
     margin: 0 auto;
   }
-  a {
-    color: var(--color-blue);
-    text-decoration: none;
+  h2 {
+    margin-top: 40px;
   }
-  a:hover {
-    text-decoration: underline;
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 10px;
   }
 </style>
