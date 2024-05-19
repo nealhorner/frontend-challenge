@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageData } from './$types';
+  import Faq from '$lib/components/faq/FAQ.svelte';
   import Button from '$lib/components/Button.svelte';
   import ResourceListing from './components/ResourceListing.svelte';
 
@@ -13,6 +14,22 @@
     const email = 'mailto:'; //FIXME: Add your email here
     window.open(email);
   };
+
+  const faqItems = [
+    {
+      question: 'How can I submit a learning resource?',
+      answer:
+        'If you have any learning resources that you would like to share, feel free to submit them. <Button on:click={sendEmail}>Send Email</Button>'
+    },
+    {
+      question: 'Where does the content come from?',
+      answer: 'The data is extracted from OpenGraph data.'
+    },
+    {
+      question: 'How can I contribute to this project?',
+      answer: 'You can contribute by submitting a PR to the GitHub repository.'
+    }
+  ];
 </script>
 
 <svelte:head>
@@ -36,7 +53,9 @@
     {:then blogs}
       <ul>
         {#each blogs as blog}
-          <li><ResourceListing title={blog.title} url={blog.url} /></li>
+          <li>
+            <ResourceListing title={blog.title} url={blog.url} description={blog.description} />
+          </li>
         {/each}
       </ul>
     {:catch error}
@@ -51,7 +70,13 @@
     {:then courses}
       <ul>
         {#each courses as course}
-          <li><ResourceListing title={course.title} url={course.url} /></li>
+          <li>
+            <ResourceListing
+              title={course.title}
+              url={course.url}
+              description={course.description}
+            />
+          </li>
         {/each}
       </ul>
     {:catch error}
@@ -66,21 +91,22 @@
     {:then podcasts}
       <ul>
         {#each podcasts as podcast}
-          <li><ResourceListing title={podcast.title} url={podcast.url} /></li>
+          <li>
+            <ResourceListing
+              title={podcast.title}
+              url={podcast.url}
+              description={podcast.description}
+            />
+          </li>
         {/each}
       </ul>
     {:catch error}
       <p style="color: red">{error.message}</p>
     {/await}
   </section>
-
-  <details>
-    <summary>Submit Learning Resources</summary>
-    <p>
-      If you have any learning resources that you would like to share, feel free to submit them.
-      <Button on:click={sendEmail}>Send Email</Button>
-    </p>
-  </details>
+  <section style="margin-top:40px">
+    <Faq {faqItems} />
+  </section>
 </main>
 
 <style>
@@ -89,9 +115,11 @@
     margin: 0 auto;
   }
   h2 {
-    margin-top: 40px;
+    margin: 40px 0px 10px 0px;
+    color: var(--color-text-secondary);
   }
   ul {
+    margin-top: 10px;
     list-style: none;
     padding: 0;
   }

@@ -1,12 +1,26 @@
 <script lang="ts">
-  export let url = '';
+  import { filterHTML } from '$lib/filterHTML';
+
   export let title = '';
+  export let url = '';
+  export let description = '' as string | null;
+
+  // Remove the protocol from the URL and the trailing slash
+  const displayURL = url.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, '');
+
+  // Sanitize the description
+  if (description) {
+    description = filterHTML(description);
+  }
 </script>
 
-<a href={url}>
+<a href={url} target="_blank">
   <div>
     <h3>{title}</h3>
-    <p>{url}</p>
+    {#if description}
+      <p class="resource-description">{@html description}</p>
+    {/if}
+    <p>{displayURL}</p>
   </div>
 </a>
 
@@ -14,6 +28,10 @@
   a {
     text-decoration: none;
     color: black;
+  }
+
+  a:hover {
+    text-decoration: none;
   }
 
   div {
@@ -36,5 +54,9 @@
 
   p {
     margin: 0;
+  }
+
+  p.resource-description {
+    font-size: smaller;
   }
 </style>

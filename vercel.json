@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/open-graph",
+      "schedule": "0 */6 * * *"
+    }
+  ]
+}

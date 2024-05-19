@@ -14,6 +14,9 @@
   --color-pink: #c05c7e;
   --color-purple: #722d61;
   --color-blue: #2d3561;
+  --color-red: #f73859;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #888e99;
 }
 
 body {
