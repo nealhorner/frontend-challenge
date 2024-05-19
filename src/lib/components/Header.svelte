@@ -2,7 +2,7 @@
   import LoginButton from './LoginButton.svelte';
   import LogoutButton from './LogoutButton.svelte';
   let showVerticalMenu = false;
-  let loggedIn = true;
+  let loggedIn = false;
   let clickContainer: HTMLDivElement;
   let innerWidth = 0;
 
