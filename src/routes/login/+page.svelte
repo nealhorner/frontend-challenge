@@ -17,32 +17,40 @@
 </svelte:head>
 
 <main>
-  <h1>Login</h1>
+  <div>
+    <h1>Login</h1>
 
-  <form id="fromLogin" on:submit|preventDefault={handleLogin}>
-    <label for="email">Email:</label>
-    <input type="email" id="email" autocomplete="username" bind:value={email} required />
+    <form id="fromLogin" on:submit|preventDefault={handleLogin}>
+      <label for="email">Email:</label>
+      <input type="email" id="email" autocomplete="username" bind:value={email} required />
 
-    <label for="password">Password:</label>
-    <input
-      type="password"
-      id="password"
-      autocomplete="current-password"
-      bind:value={password}
-      required
-    />
-    <Button kind="primary">Login</Button>
-    <p>Don't have an account? <a href="/register"> Register here</a></p>
-  </form>
+      <label for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        autocomplete="current-password"
+        bind:value={password}
+        required
+      />
+      <Button kind="primary">Login</Button>
+      <p>Don't have an account? <a href="/register"> Register here</a></p>
+    </form>
+  </div>
 </main>
 
 <style>
   main {
     max-width: 400px;
+    padding: 10px;
+    margin: 0 auto;
+  }
+
+  div {
+    max-width: 400px;
     margin: 100px auto;
-    padding: 2rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    padding: 2rem;
   }
 
   h1 {
