@@ -22,18 +22,19 @@
     {#if description}
       <p class="resource-description">{@html description}</p>
     {/if}
-    <p>{displayURL}</p>
+    <p><a href={url} target="_blank">{displayURL}</a></p>
   </div>
 </a>
 
 <style>
   a {
     text-decoration: none;
-    color: black;
+    color: #333;
   }
 
-  a:hover {
-    text-decoration: none;
+  p > a:hover {
+    text-decoration: underline;
+    color: var(--color-blue);
   }
 
   div {
@@ -43,11 +44,7 @@
       0px 1px 2px -1px rgba(0, 0, 0, 0.1),
       0px 1px 3px 0px rgba(0, 0, 0, 0.1);
     padding: 10px;
-  }
-
-  div:hover {
-    transform: translateY(-1px) translateX(-1px);
-    color: var(--color-orange);
+    color: #333;
   }
 
   h3 {
