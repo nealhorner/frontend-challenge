@@ -10,6 +10,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>Frontend Challenge Profile</title>
+  <meta name="description" content="Profile for Frontend Challenge" />
+</svelte:head>
+
 <main>
   <h1>Private Profile</h1>
 

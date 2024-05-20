@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-  <title>Home</title>
+  <title>Frontend Challenge Home</title>
   <meta name="description" content="Frontend Challenge Home" />
 </svelte:head>
 

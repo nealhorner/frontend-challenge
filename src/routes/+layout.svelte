@@ -13,7 +13,7 @@
   </main>
 
   <footer>
-    <p>&copy; {current_year} Frontend Challenge</p>
+    <p>&copy; {current_year} Frontend Challenge. All Rights Reserved</p>
   </footer>
 </div>
 

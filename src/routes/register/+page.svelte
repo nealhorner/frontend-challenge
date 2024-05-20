@@ -14,6 +14,11 @@
   let errorObject: ErrorObject = form?.error || {};
 </script>
 
+<svelte:head>
+  <title>Frontend Challenge Register</title>
+  <meta name="description" content="Registration for Frontend Challenge" />
+</svelte:head>
+
 <main>
   <h1>Registration</h1>
 

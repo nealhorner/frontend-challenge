@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import Faq from '$lib/components/faq/FAQ.svelte';
-  import Button from '$lib/components/Button.svelte';
   import ResourceListing from './components/ResourceListing.svelte';
 
   export let data: PageData;
@@ -19,7 +18,7 @@
     {
       question: 'How can I submit a learning resource?',
       answer:
-        'If you have any learning resources that you would like to share, feel free to submit them. <Button on:click={sendEmail}>Send Email</Button>'
+        'If you have any learning resources that you would like to share, feel free to submit them.'
     },
     {
       question: 'Where does the content come from?',
@@ -33,7 +32,7 @@
 </script>
 
 <svelte:head>
-  <title>Learn</title>
+  <title>Frontend Challenge Learn</title>
   <meta name="description" content="Learning resources for frontend developers" />
 </svelte:head>
 

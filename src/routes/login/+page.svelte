@@ -11,6 +11,11 @@
   }
 </script>
 
+<svelte:head>
+  <title>Frontend Challenge Login</title>
+  <meta name="description" content="Login for Frontend Challenge" />
+</svelte:head>
+
 <main>
   <h1>Login</h1>
 
