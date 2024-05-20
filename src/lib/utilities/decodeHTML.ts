@@ -11,7 +11,7 @@ export const decodeHTML = function (encodedHTML: string) {
     '&ndash;': '-',
     '&copy;': '©',
     '&reg;': '®',
-    '&apos;': "'",
+    '&apos;': "'", // cspell:disable-line
     '&trade;': '™'
   };
 
