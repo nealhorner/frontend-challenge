@@ -112,6 +112,7 @@
   main {
     max-width: 640px;
     margin: 0 auto;
+    padding: 0px 10px;
   }
   h2 {
     margin: 40px 0px 10px 0px;
