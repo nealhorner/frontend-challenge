@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { filterHTML } from '$lib/filterHTML';
+  import { decodeHTML } from '$lib/utilities/decodeHTML';
+  import { cleanUnsafeHTML } from '$lib/utilities/cleanUnsafeHTML';
 
   export let title = '';
   export let url = '';
@@ -10,7 +11,8 @@
 
   // Sanitize the description
   if (description) {
-    description = filterHTML(description);
+    let decodedHTML = decodeHTML(description);
+    description = cleanUnsafeHTML(decodedHTML);
   }
 </script>
 
