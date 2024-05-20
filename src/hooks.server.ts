@@ -1,10 +1,10 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import { handleErrorWithSentry, sentryHandle } from '@sentry/sveltekit';
 import * as Sentry from '@sentry/sveltekit';
-import { env } from '$env/dynamic/public';
+import { PUBLIC_SENTRY_DSN } from '$env/static/public';
 
 Sentry.init({
-  dsn: env.PUBLIC_SENTRY_DSN,
+  dsn: PUBLIC_SENTRY_DSN,
   tracesSampleRate: 1.0
 
   // uncomment the line below to enable Spotlight (https://spotlightjs.com)
