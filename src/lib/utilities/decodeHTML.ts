@@ -8,7 +8,11 @@ export const decodeHTML = function (encodedHTML: string) {
     '&quot;': '"',
     '&#34;': '"',
     '&#039;': "'",
-    '&ndash;': '-'
+    '&ndash;': '-',
+    '&copy;': '©',
+    '&reg;': '®',
+    '&apos;': "'",
+    '&trade;': '™'
   };
 
   const decodedHTML = encodedHTML.replace(/&[\w#]+;/g, (entity) => {
