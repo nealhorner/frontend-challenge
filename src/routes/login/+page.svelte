@@ -49,7 +49,7 @@
     max-width: 400px;
     margin: 100px auto;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: var(--card-border-radius);
     padding: 2rem;
   }
 

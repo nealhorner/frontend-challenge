@@ -17,6 +17,7 @@
   --color-red: #f73859;
   --color-text-secondary: #6b7280;
   --color-text-tertiary: #888e99;
+  --card-border-radius: 8px;
 }
 
 body {
