@@ -72,13 +72,4 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-
-  button {
-    padding: 0.5rem 1rem;
-    background-color: var(--color-blue);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
 </style>
