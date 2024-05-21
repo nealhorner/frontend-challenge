@@ -1,5 +1,5 @@
 import prisma from '$lib/prisma';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import { validateEmail } from './validateEmail';
 import { validateName } from './validateName';
@@ -97,7 +97,7 @@ export const actions = {
     };
 
     await prisma.user.create({ data: user });
-    console.log('User created:', user);
-    return { ok: true, status: 201 };
+    console.log('User created:', user.name, user.email);
+    redirect(303, '/login');
   }
 };
