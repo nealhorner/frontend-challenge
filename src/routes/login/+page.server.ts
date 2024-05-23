@@ -3,6 +3,9 @@ import bcrypt from 'bcrypt';
 import type { Action, Actions } from './$types';
 import prisma from '$lib/prisma';
 
+const DELAY_MS = 5000;
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 const login: Action = async ({ cookies, request }) => {
   const data = await request.formData();
   const username = data.get('username');
@@ -17,14 +20,14 @@ const login: Action = async ({ cookies, request }) => {
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (!user) {
-    // TODO Add delay to prevent brute force attacks
+    delay(DELAY_MS);
     return fail(400, { credentials: true });
   }
 
-  const userPassword = await bcrypt.compare(password, user.hashedPassword);
+  const isAuthenticated = await bcrypt.compare(password, user.hashedPassword);
 
-  if (!userPassword) {
-    // TODO Add delay to prevent brute force attacks
+  if (!isAuthenticated) {
+    delay(DELAY_MS);
     return fail(400, { credentials: true });
   }
 
