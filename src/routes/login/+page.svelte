@@ -1,14 +1,8 @@
 <!-- FIXME -->
 <script>
+  import AuthTextInput from '$lib/components/AuthTextInput.svelte';
   import Button from '$lib/components/Button.svelte';
-
-  let email = '';
-  let password = '';
-
-  function handleLogin() {
-    // Add your login logic here
-    console.log('Logging in...');
-  }
+  export let form;
 </script>
 
 <svelte:head>
@@ -20,17 +14,21 @@
   <div>
     <h1>Login</h1>
 
-    <form id="fromLogin" on:submit|preventDefault={handleLogin}>
-      <label for="email">Email:</label>
-      <input type="email" id="email" autocomplete="username" bind:value={email} required />
-
-      <label for="password">Password:</label>
-      <input
-        type="password"
+    <form method="post">
+      <AuthTextInput
+        label="Email"
+        id="email"
+        name="email"
+        autocomplete="username"
+        error={form?.error?.email}
+      />
+      <AuthTextInput
+        label="Password"
         id="password"
+        type="password"
+        name="password"
         autocomplete="current-password"
-        bind:value={password}
-        required
+        error={form?.error?.password}
       />
       <Button kind="primary">Login</Button>
       <p>Don't have an account? <a href="/register"> Register here</a></p>
