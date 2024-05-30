@@ -34,22 +34,18 @@ const login: Action = async ({ cookies, request }) => {
   // generate new auth token just in case
   const authenticatedUser = await prisma.user.update({
     where: { email: user.email },
-    data: { userAuthToken: crypto.randomUUID() }
+    data: { authToken: crypto.randomUUID() }
   });
 
-  cookies.set('session', authenticatedUser.userAuthToken, {
-    // send cookie for every page
-    path: '/',
-    // server side only cookie so you can't use `document.cookie`
-    httpOnly: true,
-    // only requests from same site can send cookies
-    // https://developer.mozilla.org/en-US/docs/Glossary/CSRF
-    sameSite: 'strict',
-    // only sent over HTTPS in production
-    secure: process.env.NODE_ENV === 'production',
-    // set cookie to expire after a month
-    maxAge: 60 * 60 * 24 * 30
-  });
+  if (authenticatedUser.authToken) {
+    cookies.set('session', authenticatedUser.authToken, {
+      path: '/',
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 30
+    });
+  }
 
   // redirect the user
   redirect(302, '/');
