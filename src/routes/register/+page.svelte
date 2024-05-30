@@ -50,6 +50,7 @@
       autocomplete="new-password"
       error={errorObject?.password}
     />
+    <!-- TODO Change to button component -->
     <button type="submit">Register</button>
     <p>Already have an account? <a href="/login">Login here</a></p>
   </form>

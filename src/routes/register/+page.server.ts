@@ -28,7 +28,7 @@ const isString = (value: any): value is string => {
 };
 
 export const actions = {
-  default: async ({ cookies, request }) => {
+  default: async ({ request }) => {
     const data = await request.formData();
     let name = data.get('name');
     let email = data.get('email');
