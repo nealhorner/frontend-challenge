@@ -16,6 +16,7 @@ model User {
   name           String
   hashedPassword String
   authToken      String?
+  emailVerified  Boolean  @default(false)
   quizes         Quiz[]
 }
 
