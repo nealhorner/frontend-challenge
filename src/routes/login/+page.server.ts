@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import prisma from '$lib/prisma';
+import { delayAndFail, createEmptyAuthErrorObject } from '$lib/auth/auth-utilities';
 
 const DELAY_MS = 5000;
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -8,16 +9,22 @@ const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 export const actions = {
   default: async ({ cookies, request }) => {
     const data = await request.formData();
-    const username = data.get('username');
+    const email = data.get('email');
     const password = data.get('password');
 
-    console.log('username:', username);
+    console.log('email:', email);
+    const errorResponse = createEmptyAuthErrorObject();
+    let statusCode = 200;
 
-    if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
-      return fail(400, { invalid: true });
+    if (typeof email !== 'string' || !email) {
+      errorResponse.error.email = 'Invalid email';
+      return delayAndFail(errorResponse, 400);
     }
 
-    const email = username; // FIXME this is a hack to make the code work
+    if (typeof password !== 'string' || !password) {
+      errorResponse.error.password = 'Invalid password';
+      return delayAndFail(errorResponse, 400);
+    }
 
     const user = await prisma.user.findUnique({ where: { email } });
 

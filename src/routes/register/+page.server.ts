@@ -1,26 +1,13 @@
 import prisma from '$lib/prisma';
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import { validateEmail } from './validateEmail';
 import { validateName } from './validateName';
 import { validatePassword } from './validatePassword';
-
-interface ErrorObject {
-  email: string | null;
-  name: string | null;
-  password: string | null;
-  other: string | null;
-}
-
-const DELAY_MS = 2000;
+import { delayAndFail, createEmptyAuthErrorObject } from '$lib/auth/auth-utilities';
 
 const findUserByEmail = async (email: string) => {
   return await prisma.user.findFirst({ where: { email } });
-};
-
-const delayAndFail = async (message: object, status: number) => {
-  await new Promise((res) => setTimeout(res, DELAY_MS));
-  return fail(status, { ok: false, error: message });
 };
 
 const isString = (value: any): value is string => {
@@ -34,23 +21,23 @@ export const actions = {
     let email = data.get('email');
     let password = data.get('password');
 
-    const errorResponse: ErrorObject = { name: '', email: '', password: '', other: '' };
+    const errorResponse = createEmptyAuthErrorObject();
     let statusCode = 201;
 
     if (!isString(name)) {
-      errorResponse.name = 'Invalid name';
+      errorResponse.error.name = 'Invalid name';
       statusCode = 400;
-      return delayAndFail({ error: errorResponse }, statusCode);
+      return delayAndFail(errorResponse, statusCode);
     }
     if (!isString(email)) {
-      errorResponse.email = 'Invalid email';
+      errorResponse.error.email = 'Invalid email';
       statusCode = 400;
-      return delayAndFail({ error: errorResponse }, statusCode);
+      return delayAndFail(errorResponse, statusCode);
     }
     if (!isString(password)) {
-      errorResponse.password = 'Invalid password';
+      errorResponse.error.password = 'Invalid password';
       statusCode = 400;
-      return delayAndFail({ error: errorResponse }, statusCode);
+      return delayAndFail(errorResponse, statusCode);
     }
 
     // Sanitize inputs
@@ -60,31 +47,31 @@ export const actions = {
 
     const userFound = await findUserByEmail(email);
     if (userFound) {
-      errorResponse.email = 'Email already in use';
+      errorResponse.error.email = 'Email already in use';
       statusCode = 409;
     }
 
     const { isValid: emailIsValid, invalidReason: emailInvalidReason } = validateEmail(email);
     if (!emailIsValid) {
-      errorResponse.email = emailInvalidReason;
+      errorResponse.error.email = emailInvalidReason;
       statusCode = 400;
     }
 
     const { isValid: passwordIsValid, invalidReason: passwordInvalidReason } =
       validatePassword(password);
     if (!passwordIsValid) {
-      errorResponse.password = passwordInvalidReason;
+      errorResponse.error.password = passwordInvalidReason;
       statusCode = 400;
     }
 
     let { isValid: nameIsValid, invalidReason: nameInvalidReason } = validateName(name);
     if (!nameIsValid) {
-      errorResponse.name = nameInvalidReason;
+      errorResponse.error.name = nameInvalidReason;
       statusCode = 400;
     }
 
     if (statusCode !== 201) {
-      return delayAndFail({ error: errorResponse }, statusCode);
+      return delayAndFail(errorResponse, statusCode);
     }
 
     const salt = bcrypt.genSaltSync(10);
