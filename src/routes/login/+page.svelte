@@ -1,8 +1,17 @@
 <!-- FIXME -->
-<script>
+<script lang="ts">
   import AuthTextInput from '$lib/components/AuthTextInput.svelte';
   import Button from '$lib/components/Button.svelte';
   export let form;
+
+  interface ErrorObject {
+    email?: string;
+    name?: string;
+    password?: string;
+    other?: string;
+  }
+
+  let errorObject: ErrorObject = form?.error || {};
 </script>
 
 <svelte:head>
@@ -20,7 +29,7 @@
         id="email"
         name="email"
         autocomplete="username"
-        error={form?.error?.email}
+        error={errorObject?.email}
       />
       <AuthTextInput
         label="Password"
@@ -28,7 +37,7 @@
         type="password"
         name="password"
         autocomplete="current-password"
-        error={form?.error?.password}
+        error={errorObject?.password}
       />
       <Button kind="primary">Login</Button>
       <p>Don't have an account? <a href="/register"> Register here</a></p>
@@ -59,15 +68,5 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-
-  label {
-    font-weight: bold;
-  }
-
-  input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
   }
 </style>
