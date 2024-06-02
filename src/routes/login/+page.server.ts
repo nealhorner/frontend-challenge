@@ -3,9 +3,6 @@ import bcrypt from 'bcrypt';
 import prisma from '$lib/prisma';
 import { delayAndFail, createEmptyAuthErrorObject } from '$lib/auth/auth-utilities';
 
-const DELAY_MS = 5000;
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
 export const actions = {
   default: async ({ cookies, request }) => {
     const data = await request.formData();
@@ -29,15 +26,15 @@ export const actions = {
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      delay(DELAY_MS);
-      return fail(400, { credentials: true, error: 'User not found' });
+      errorResponse.error.generic = 'Invalid email or password';
+      return delayAndFail(errorResponse, 400);
     }
 
     const isAuthenticated = await bcrypt.compare(password, user.hashedPassword);
 
     if (!isAuthenticated) {
-      delay(DELAY_MS);
-      return fail(400, { credentials: true, error: 'Invalid password' });
+      errorResponse.error.generic = 'Invalid email or password';
+      return delayAndFail(errorResponse, 400);
     }
 
     // generate new auth token just in case

@@ -9,6 +9,7 @@ export const delayAndFail = async (message: object, status: number) => {
 
 interface AuthErrorObject {
   error: {
+    generic: string | null;
     email: string | null;
     name: string | null;
     password: string | null;
@@ -18,5 +19,5 @@ interface AuthErrorObject {
 
 // create a function to generate a new AuthErrorObject with all fields set to empty strings
 export const createEmptyAuthErrorObject = (): AuthErrorObject => {
-  return { error: { email: '', name: '', password: '', other: '' } };
+  return { error: { generic: '', email: '', name: '', password: '', other: '' } };
 };
