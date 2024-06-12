@@ -2,8 +2,6 @@
   import AuthTextInput from '$lib/components/AuthTextInput.svelte';
   export let form;
 
-  // Todo - Add client side form validation
-
   interface ErrorObject {
     email?: string;
     name?: string;
