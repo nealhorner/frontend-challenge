@@ -9,21 +9,33 @@ datasource db {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  email          String   @unique
+  id             String        @id @default(uuid())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  email          String        @unique
   name           String
   hashedPassword String
   authToken      String?
-  emailVerified  Boolean  @default(false)
+  emailVerified  Boolean       @default(false)
   quizes         Quiz[]
+  auth_session   UserSession[]
+}
+
+model UserSession {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model Quiz {
-  id            Int            @id @default(autoincrement())
+  id            String         @id @default(uuid())
   title         String
-  userId        Int
+  userId        String
   user          User           @relation(fields: [userId], references: [id])
   quizResults   QuizResult[]
   score         Int
@@ -31,7 +43,7 @@ model Quiz {
 }
 
 model Question {
-  id                    Int            @id @default(autoincrement())
+  id                    String         @id @default(uuid())
   title                 String
   prompt                String
   type                  String
@@ -42,8 +54,8 @@ model Question {
 }
 
 model QuizQuestion {
-  quizId     Int
-  questionId Int
+  quizId     String
+  questionId String
   quiz       Quiz     @relation(fields: [quizId], references: [id])
   question   Question @relation(fields: [questionId], references: [id])
 
@@ -51,11 +63,11 @@ model QuizQuestion {
 }
 
 model QuizResult {
-  id     Int  @id @default(autoincrement())
-  quizId Int
-  userId Int
+  id     String @id @default(uuid())
+  quizId String
+  userId String
   score  Int
-  quiz   Quiz @relation(fields: [quizId], references: [id])
+  quiz   Quiz   @relation(fields: [quizId], references: [id])
 }
 
 model LearningResources {
