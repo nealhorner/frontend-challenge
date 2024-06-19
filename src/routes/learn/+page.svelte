@@ -9,10 +9,10 @@
   const courses = learning_resources.filter((resource) => resource.type === 'course');
   const podcasts = learning_resources.filter((resource) => resource.type === 'podcast');
 
-  const sendEmail = () => {
-    const email = 'mailto:'; //FIXME: Add your email here
-    window.open(email);
-  };
+  // const sendEmail = () => {
+  //   const email = 'mailto:'; //FIXME: Add your email here
+  //   window.open(email);
+  // };
 
   const faqItems = [
     {
