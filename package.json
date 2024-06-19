@@ -11,7 +11,8 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
-		"test:unit": "vitest"
+		"test:unit": "vitest",
+		"populateLearningResources": "npx tsx src/lib/open-graph/index.ts"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",
