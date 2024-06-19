@@ -1,19 +1,10 @@
 <script lang="ts">
-  import { decodeHTML } from '$lib/utilities/decodeHTML';
-  import { cleanUnsafeHTML } from '$lib/utilities/cleanUnsafeHTML';
-
   export let title = '';
   export let url = '';
   export let description = '' as string | null;
 
   // Remove the protocol from the URL and the trailing slash
   const displayURL = url.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, '');
-
-  // Sanitize the description
-  if (description) {
-    let decodedHTML = decodeHTML(description);
-    description = cleanUnsafeHTML(decodedHTML);
-  }
 </script>
 
 <a href={url} target="_blank">
