@@ -75,6 +75,7 @@ model LearningResources {
   title                              String                               @unique
   type                               String
   url                                String                               @unique
+  imageUrl                           String?
   description                        String?
   LearningEngagementEvents           LearningEngagementEvents[]
   LearningEngagementEventsAggregated LearningEngagementEventsAggregated[]
