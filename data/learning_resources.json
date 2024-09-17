@@ -32,6 +32,16 @@
       "type": "course"
     },
     {
+      "title": "Kent C. Dodds",
+      "url": "https://kentcdodds.com/",
+      "type": "course"
+    },
+    {
+      "title": "egghead.io",
+      "url": "https://egghead.io",
+      "type": "course"
+    },
+    {
       "title": "Lydia Hallie",
       "url": "https://www.lydiahallie.com/",
       "type": "blog"
