@@ -45,56 +45,79 @@ List of topics to later turn into questions.
 16. Styling forms and inputs
 17. Typography in CSS
 18. CSS methodologies (BEM, OOCSS, SMACSS)
-19. CSS preprocessors (SASS, LESS)
-20. Modern CSS functions (calc(), clamp(), min(), max())
-21. CSS Accessibility
-22. CSS Performance
+19. Normalization
+20. CSS preprocessors (SASS, LESS)
+21. Modern CSS functions (calc(), clamp(), min(), max())
+22. CSS Accessibility
+23. CSS Performance
 
 ## JavaScript
 
 1. Execution context
+   1. Call stack
+   2. Memory heap
 2. Variables (var, let, const)
    1. mutability
    2. scope
 3. Data types (Primitive vs Reference)
 4. Operators (Arithmetic, Comparison, Logical)
+   1. Type coercion
+   2. Truthy and Falsy values
+   3. Short-circuit evaluation
+   4. Ternary operator
+   5. Nullish coalescing operator
+   6. Unary operators
+   7. Equality operators
 5. Conditionals (if, else, else if, switch)
 6. Loops (for, while, do-while)
 7. Functions (Declaration vs Expression)
 8. Arrow functions
-9. Scopes (Global, Local, Block)
-10. Hoisting
-11. Closures
-12. Events (addEventListener, onclick)
-13. DOM manipulation
-14. JSON (parse, stringify)
-15. Fetch API / XMLHttpRequest
-16. Promises
-17. Async/Await
-18. Local storage and session storage
-19. Cookies
-20. Error handling (try...catch)
-21. ES6+ features (Destructuring, Template Literals, Spread Operator)
-22. Object-oriented JavaScript
-23. Prototypes and inheritance
-24. Classes (ES6)
-25. Modules (import/export)
-26. Web APIs (Navigator, Location, History)
-27. JavaScript Debugging
-28. Performance optimization
-29. Regular expressions
-30. JavaScript frameworks and libraries (React, Angular, Vue)
-31. Testing JavaScript (unit tests, integration tests)
-32. Algorithms in JavaScript (sorting, searching)
-33. Data structures in JavaScript (Arrays, Objects, Sets, Maps)
-34. Canvas API
-35. WebSockets
-36. Service Workers
-37. Accessibility in JavaScript
-38. Cross-browser compatibility
-39. Security in JavaScript (XSS, CSRF)
-40. Modern tooling (Webpack, Babel, ESLint)
-41. Event loop and concurrency model
+   1. `this` keyword
+   2. Implicit return
+9. Higher-order functions (map, filter, reduce)
+10. Scopes (Global, Local, Block)
+11. Hoisting
+12. Closures
+    1. Definition and invocation
+    2. Use cases
+    3. Memory management
+13. Events (addEventListener, onclick)
+14. DOM manipulation
+15. JSON (parse, stringify)
+16. Fetch API / XMLHttpRequest
+17. Promises
+18. Async/Await
+19. Local storage and session storage
+20. Cookies
+21. Error handling (try...catch)
+22. ES6+ features (Destructuring, Template Literals, Spread Operator)
+23. Object-oriented JavaScript
+24. Prototypes and inheritance
+25. Classes (ES6)
+26. Modules (import/export)
+27. Web APIs (Navigator, Location, History)
+28. JavaScript Debugging
+29. Performance optimization
+30. Regular expressions
+31. JavaScript frameworks and libraries (React, Angular, Vue)
+32. Testing JavaScript (unit tests, integration tests)
+33. Algorithms in JavaScript (sorting, searching)
+    1. Big O notation
+    2. Recursion
+    3. Sorting algorithms (Bubble, Selection, Insertion, Merge, Quick)
+    4. Searching algorithms (Linear, Binary)
+34. Data structures in JavaScript (Arrays, Objects, Sets, Maps, Stack, Queue, Linked List, Tree, Graph)
+35. Canvas API
+36. WebSockets
+37. Service Workers
+38. Accessibility in JavaScript
+39. Cross-browser compatibility
+40. Security in JavaScript (XSS, CSRF)
+41. Modern tooling (Webpack, Babel, ESLint)
+42. Event loop and concurrency model
+43. Common JavaScript design patterns
+44. Common mistakes in JavaScript
+    1. side effects
 
 ## Overall Concepts
 
