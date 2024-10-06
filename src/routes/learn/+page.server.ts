@@ -10,7 +10,7 @@ export const load = (async () => {
     // Sanitize the description
     learning_resources.forEach((learning_resource) => {
       if (learning_resource.description) {
-        let decodedHTML = decodeHTML(learning_resource.description);
+        const decodedHTML = decodeHTML(learning_resource.description);
         learning_resource.description = cleanUnsafeHTML(decodedHTML);
       }
     });
