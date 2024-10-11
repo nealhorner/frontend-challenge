@@ -1,9 +1,9 @@
 <script lang="ts">
   import Progress from './components/progress.svelte';
-  import Question from '$lib/components/Question.svelte';
+  import Prompter from './components/prompter.svelte';
 
-  /** @type {import('./$types').PageData} */
-  export let data;
+  import type { PageData } from './$types';
+  export let data: PageData;
 
   // Compute the number of completed questions from data.questions.length
   let completedQuestions = data.completedQuestions.length;
@@ -13,9 +13,7 @@
 <div>
   <h1>Quiz #{data.quizId}</h1>
 
-  <div>
-    <!-- <Question /> -->
-  </div>
+  <Prompter bind:quizData={data} />
   <div>
     <Progress {completedQuestions} {totalQuestions} />
   </div>
