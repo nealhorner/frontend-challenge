@@ -3,7 +3,11 @@ import { error } from '@sveltejs/kit';
 
 const mockQuiz = {
   quizId: 1,
-  questions: [1, 2, 3, 4, 5, 6],
+  questions: [
+    '3333a5e0-8230-4157-8dbd-f5e10d56fdbd',
+    'ec7ce1bf-52b0-4859-8d59-e19b5da83bca',
+    'fd3119c0-eb10-40fa-b1fa-6109decd4da4'
+  ],
   completedQuestions: []
 };
 

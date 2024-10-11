@@ -9,11 +9,13 @@
     quizData.questions[quizData.questions.length - 1];
 </script>
 
-{#if isComplete}
-  <p>Finished Quiz</p>
-{:else}
-  <p>
-    the current question is: {currentQuestionId}
-    Question: <Question questionId={currentQuestionId} />
-  </p>
-{/if}
+<div
+  style="border-radius: 4px; height: 500px; max-width: 1000px; background-color: #DDD; padding: 10px; margin: 0 auto;"
+>
+  {#if isComplete}
+    <p>Finished Quiz</p>
+  {:else}
+    <h3>The current question is: {currentQuestionId}</h3>
+    <Question questionId={currentQuestionId} />
+  {/if}
+</div>
