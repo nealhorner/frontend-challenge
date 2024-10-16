@@ -1,6 +1,6 @@
 import { populateLearningResourceOpenGraphData } from '$lib/open-graph';
 
-export function GET({ request }) {
+export function GET() {
   populateLearningResourceOpenGraphData();
-  return new Response('Hello Cron!');
+  return new Response('Ran populateLearningResourceOpenGraphData()');
 }

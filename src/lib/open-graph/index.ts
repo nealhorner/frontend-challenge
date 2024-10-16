@@ -68,6 +68,13 @@ export const populateLearningResourceOpenGraphData = async () => {
         data: { description: ogData.description }
       });
     }
+
+    if (ogData.image) {
+      await prisma.learningResources.update({
+        where: { id: resource.id },
+        data: { imageUrl: ogData.image }
+      });
+    }
   }
 };
 

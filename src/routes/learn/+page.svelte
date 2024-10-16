@@ -53,7 +53,12 @@
       <ul>
         {#each blogs as blog}
           <li>
-            <ResourceListing title={blog.title} url={blog.url} description={blog.description} />
+            <ResourceListing
+              title={blog.title}
+              url={blog.url}
+              description={blog.description}
+              imageURL={blog.imageUrl}
+            />
           </li>
         {/each}
       </ul>
@@ -74,6 +79,7 @@
               title={course.title}
               url={course.url}
               description={course.description}
+              imageURL={course.imageUrl}
             />
           </li>
         {/each}
@@ -95,6 +101,7 @@
               title={podcast.title}
               url={podcast.url}
               description={podcast.description}
+              imageURL={podcast.imageUrl}
             />
           </li>
         {/each}
