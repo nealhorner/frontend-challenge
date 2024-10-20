@@ -1,4 +1,4 @@
-<!-- <script>
+<script>
   export let label = '';
   export let options = [];
   export let value = '';
@@ -49,4 +49,4 @@
     white-space: nowrap;
     border-width: 0;
   }
-</style> -->
+</style>

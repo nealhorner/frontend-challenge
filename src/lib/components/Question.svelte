@@ -1,15 +1,19 @@
-<!-- <script>
+<script lang="ts">
+  import { createEventDispatcher, onMount } from 'svelte';
   import Button from './Button.svelte';
   import RadioGroup from './RadioGroup.svelte';
   let answer = '';
+  type MultipleChoiceOption = string[]; // Array of strings type
 
-  let promise = getQuestion();
+  const dispatch = createEventDispatcher();
 
-  async function getQuestion() {
-    const response = await fetch('/api/question');
+  export let questionId: string;
+
+  let promise = getQuestion(questionId);
+
+  async function getQuestion(questionId: string) {
+    const response = await fetch(`/api/question/${questionId}`);
     const data = await response.json();
-    console.log(data);
-
     if (response.ok) {
       return data;
     } else {
@@ -17,17 +21,21 @@
     }
   }
 
+  function parseMultipleChoiceOptions(options: string): MultipleChoiceOption {
+    return JSON.parse(options).map((option: string) => ({
+      label: option,
+      value: option
+    }));
+  }
+
   function handleSubmit() {
     //Check answer
     console.log(answer);
 
-    // Show answer
-
-    // Get next question
-    promise = getQuestion();
+    dispatch('submit');
   }
 
-  function shuffle(array) {
+  function shuffle(array: any[]) {
     let currentIndex = array.length,
       randomIndex;
 
@@ -35,16 +43,13 @@
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
 
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
-      ];
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
 
     return array;
   }
 
-  const haveAnswer = (answer) => {
+  const haveAnswer = (answer: string) => {
     return answer !== '';
   };
 </script>
@@ -58,20 +63,11 @@
         <p id="question-title">{question.title}</p>
         <h2>{question.prompt}</h2>
         {#if question.type === 'blind_answer'}
-          <input
-            type="text"
-            placeholder="Enter your answer"
-            bind:value={answer}
-          />
+          <input type="text" placeholder="Enter your answer" bind:value={answer} />
         {:else if question.type === 'multiple_choice'}
           <RadioGroup
             label="label"
-            options={JSON.parse(question.multipleChoiceOptions).map(
-              (option) => ({
-                label: option,
-                value: option,
-              }),
-            )}
+            options={parseMultipleChoiceOptions(question.multipleChoiceOptions)}
             bind:value={answer}
           />
         {:else}
@@ -81,9 +77,8 @@
           <Button
             on:click={handleSubmit}
             kind="secondary"
-            text="Submit"
-            disabled={!haveAnswer(answer)}
-          />
+            disabled={question.type !== 'multiple_choice' && !haveAnswer(answer)}>Submit</Button
+          >
         </div>
       </form>
     </div>
@@ -112,4 +107,4 @@
   .question {
     text-align: left;
   }
-</style> -->
+</style>

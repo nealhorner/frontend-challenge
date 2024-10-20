@@ -18,6 +18,312 @@
         "arrays",
         "length"
       ]
+    },
+    {
+      "title": "DOM Element Selection",
+      "prompt": "How do you select an element with id 'app' using vanilla JavaScript?",
+      "answers": [
+        "document.getElementById('app')",
+        "document.querySelector('#app')"
+      ],
+      "false_answers": [
+        "document.querySelector('app')",
+        "document.getElementById(app)",
+        "getElementById('#app')",
+        "document.getElementById('#app')",
+        "document.getElementsById('#app')",
+        "document.querySelector(id=app)"
+      ],
+      "tags": [
+        "DOM",
+        "javascript"
+      ]
+    },
+    {
+      "title": "CSS Selectors",
+      "prompt": "Which CSS selector is used to select all paragraph tags?",
+      "answers": [
+        "p"
+      ],
+      "false_answers": [
+        ".p",
+        "#p",
+        ":p",
+        "*p"
+      ],
+      "tags": [
+        "CSS",
+        "selectors"
+      ]
+    },
+    {
+      "title": "Adding Click Event",
+      "prompt": "How do you add a click event to a button with the id 'submit'?",
+      "answers": [
+        "document.getElementById('submit').addEventListener('click', callback)"
+      ],
+      "false_answers": [
+        "document.getElementById('submit').on('click', callback)",
+        "addEventListener.click('submit', callback)",
+        "document.getElementById('submit').click(callback)"
+      ],
+      "tags": [
+        "events",
+        "DOM"
+      ]
+    },
+    {
+      "title": "React State Initialization",
+      "prompt": "How do you initialize state in a React functional component?",
+      "answers": [
+        "const [state, setState] = useState(initialValue)"
+      ],
+      "false_answers": [
+        "const state = useState(initialValue)",
+        "useState('initialValue')",
+        "this.state = initialValue"
+      ],
+      "tags": [
+        "React",
+        "state"
+      ]
+    },
+    {
+      "title": "CSS Box Model",
+      "prompt": "Which property is not part of the CSS box model?",
+      "answers": [
+        "z-index"
+      ],
+      "false_answers": [
+        "padding",
+        "border",
+        "margin",
+        "content"
+      ],
+      "tags": [
+        "CSS",
+        "box model"
+      ]
+    },
+    {
+      "title": "ES6 Destructuring",
+      "prompt": "How do you extract the 'name' property from an object in JavaScript?",
+      "answers": [
+        "const { name } = obj"
+      ],
+      "false_answers": [
+        "const name = obj",
+        "const obj.name = name",
+        "extract('name', obj)"
+      ],
+      "tags": [
+        "JavaScript",
+        "ES6"
+      ]
+    },
+    {
+      "title": "Promise Chaining",
+      "prompt": "What is the correct way to chain promises in JavaScript?",
+      "answers": [
+        "promise.then().catch().finally()"
+      ],
+      "false_answers": [
+        "promise.finally().then().catch()",
+        "promise.then().finally().catch()"
+      ],
+      "tags": [
+        "JavaScript",
+        "promises"
+      ]
+    },
+    {
+      "title": "Local Storage",
+      "prompt": "How do you set an item in local storage?",
+      "answers": [
+        "localStorage.setItem('key', 'value')"
+      ],
+      "false_answers": [
+        "localStorage.add('key', 'value')",
+        "localStorage['key'] = 'value'",
+        "setLocalStorage('key', 'value')"
+      ],
+      "tags": [
+        "JavaScript",
+        "local storage"
+      ]
+    },
+    {
+      "title": "CSS Flexbox Alignment",
+      "prompt": "Which property aligns flex items along the cross axis?",
+      "answers": [
+        "align-items"
+      ],
+      "false_answers": [
+        "justify-content",
+        "align-content",
+        "flex-direction"
+      ],
+      "tags": [
+        "CSS",
+        "flexbox"
+      ]
+    },
+    {
+      "title": "HTTP Methods",
+      "prompt": "Which HTTP method is used to update a resource?",
+      "answers": [
+        "PUT"
+      ],
+      "false_answers": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP",
+        "methods"
+      ]
+    },
+    {
+      "title": "React Props",
+      "prompt": "How do you pass props to a child component in React?",
+      "answers": [
+        "<ChildComponent propName={value} />"
+      ],
+      "false_answers": [
+        "<ChildComponent props={{ propName: value }} />",
+        "<ChildComponent {propName} />"
+      ],
+      "tags": [
+        "React",
+        "props"
+      ]
+    },
+    {
+      "title": "JavaScript Map",
+      "prompt": "What does the map() method return in JavaScript?",
+      "answers": [
+        "A new array"
+      ],
+      "false_answers": [
+        "The original array",
+        "A string",
+        "An object"
+      ],
+      "tags": [
+        "JavaScript",
+        "arrays"
+      ]
+    },
+    {
+      "title": "CSS Media Queries",
+      "prompt": "What is the purpose of media queries in CSS?",
+      "answers": [
+        "To apply styles based on screen size"
+      ],
+      "false_answers": [
+        "To change styles on click",
+        "To load images based on screen size",
+        "To create animations"
+      ],
+      "tags": [
+        "CSS",
+        "media queries"
+      ]
+    },
+    {
+      "title": "JavaScript Hoisting",
+      "prompt": "What variables are hoisted to the top in JavaScript?",
+      "answers": [
+        "var"
+      ],
+      "false_answers": [
+        "let",
+        "const",
+        "function expressions"
+      ],
+      "tags": [
+        "JavaScript",
+        "hoisting"
+      ]
+    },
+    {
+      "title": "Event Delegation",
+      "prompt": "Why is event delegation useful?",
+      "answers": [
+        "It improves performance by reducing the number of event listeners"
+      ],
+      "false_answers": [
+        "It applies events randomly",
+        "It makes events run faster",
+        "It reduces the DOM size"
+      ],
+      "tags": [
+        "events",
+        "JavaScript"
+      ]
+    },
+    {
+      "title": "React Fragment",
+      "prompt": "What is the purpose of React.Fragment?",
+      "answers": [
+        "To group a list of children without adding extra nodes to the DOM"
+      ],
+      "false_answers": [
+        "To create a placeholder component",
+        "To conditionally render elements"
+      ],
+      "tags": [
+        "React",
+        "fragments"
+      ]
+    },
+    {
+      "title": "JavaScript Closures",
+      "prompt": "What is a closure in JavaScript?",
+      "answers": [
+        "A function that remembers the scope in which it was created"
+      ],
+      "false_answers": [
+        "A function without parameters",
+        "A function that only runs once"
+      ],
+      "tags": [
+        "JavaScript",
+        "closures"
+      ]
+    },
+    {
+      "title": "CSS Grid Layout",
+      "prompt": "Which property defines the number of columns in a CSS grid?",
+      "answers": [
+        "grid-template-columns"
+      ],
+      "false_answers": [
+        "grid-columns",
+        "column-template",
+        "grid-column-count"
+      ],
+      "tags": [
+        "CSS",
+        "grid"
+      ]
+    },
+    {
+      "title": "Fetch API",
+      "prompt": "What does the fetch() method return in JavaScript?",
+      "answers": [
+        "A promise"
+      ],
+      "false_answers": [
+        "An XMLHttpRequest object",
+        "A JSON object",
+        "A function"
+      ],
+      "tags": [
+        "JavaScript",
+        "fetch"
+      ]
     }
   ]
 }

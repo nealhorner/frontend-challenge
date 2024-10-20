@@ -1,26 +1,97 @@
-// src/routes/quiz/+page.server.js
+import prisma from '$lib/prisma';
+import { testUserId } from '$lib/constants.js';
+
 import { error } from '@sveltejs/kit';
 
-const mockQuiz = {
-  quizId: 1,
-  questions: [
-    '3333a5e0-8230-4157-8dbd-f5e10d56fdbd',
-    'ec7ce1bf-52b0-4859-8d59-e19b5da83bca',
-    'fd3119c0-eb10-40fa-b1fa-6109decd4da4'
-  ],
-  completedQuestions: []
-};
+async function selectQuestions(numberOfQuestions = 10) {
+  const questions = [];
+  let candidateQuestions = await prisma.question.findMany();
+  candidateQuestions = candidateQuestions.sort(() => 0.5 - Math.random());
+
+  const seenFamilies = new Set();
+
+  for (const question of candidateQuestions) {
+    if (!seenFamilies.has(question.family)) {
+      questions.push(question);
+      seenFamilies.add(question.family);
+    }
+    if (questions.length >= numberOfQuestions) {
+      break;
+    }
+  }
+
+  return questions;
+}
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load() {
+export async function load({ cookies }) {
+  const userId = cookies.get('userId') || testUserId;
+
   try {
-    // TODO Check if the user already has an active quiz and return if so
+    // Check if the user already has an active quiz and return if so
+    const quizWithQuestions = await prisma.quiz.findFirst({
+      where: {
+        userId: userId,
+        isCompleted: false
+      },
+      include: {
+        quizQuestions: {
+          include: {
+            question: true
+          }
+        }
+      }
+    });
 
-    // TODO If not, fetch create a new quiz ID and store in the database
+    if (quizWithQuestions) {
+      return quizWithQuestions;
+    }
 
-    // Return the quiz ID to the client
-    return mockQuiz;
+    // If not, create a new quiz ID and store in the database
+
+    const usersQuizCount =
+      (await prisma.quiz.count({
+        where: {
+          userId: userId
+        }
+      })) || 0;
+
+    const newQuiz = await prisma.quiz.create({
+      data: {
+        userId: userId,
+        title: `Quiz #${usersQuizCount + 1}`
+      }
+    });
+
+    const questions = await selectQuestions();
+
+    await Promise.all(
+      questions.map((question) =>
+        prisma.quizQuestion.create({
+          data: {
+            quizId: newQuiz.id,
+            questionId: question.id
+          }
+        })
+      )
+    );
+
+    const newQuizWithQuestions = await prisma.quiz.findUnique({
+      where: {
+        id: newQuiz.id
+      },
+      include: {
+        quizQuestions: {
+          include: {
+            question: true
+          }
+        }
+      }
+    });
+
+    return newQuizWithQuestions;
   } catch (err) {
-    throw error(500, 'Failed to fetch quiz ID');
+    console.error(err);
+    throw error(500, 'Failed to fetch quiz');
   }
 }

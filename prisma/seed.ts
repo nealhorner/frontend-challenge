@@ -10,11 +10,6 @@ interface RawQuestion {
   tags: string[];
 }
 
-interface QuizDataset {
-  version: string;
-  questions: RawQuestion[];
-}
-
 interface GeneratedQuestion {
   title: string;
   prompt: string;
@@ -97,9 +92,13 @@ const replace_question_records_from_json = async () => {
 
   // Insert the questions into the database
   for (const raw_question of question_data.records) {
+    // Generate a family UUID to link all permutations of the same question
+    const family = crypto.randomUUID();
+
     for (const question_permutation of generate_question_permutations(raw_question)) {
       const prismaQuestionData = {
         title: question_permutation.title,
+        family: family,
         prompt: question_permutation.prompt,
         type: question_permutation.type,
         multipleChoiceOptions: JSON.stringify(question_permutation.multiple_choice),
@@ -119,8 +118,9 @@ async function main() {
   replace_question_records_from_json();
 
   console.log('Seeding users...');
+  await prisma.quiz.deleteMany({});
   await prisma.user.deleteMany({});
-  // await prisma.user.createMany({ data: get_records_from_json('data/users.json') });
+  await prisma.user.createMany({ data: get_records_from_json('data/users.json') });
 
   console.log('Seeding learning resources...');
   await prisma.learningResources.deleteMany({});

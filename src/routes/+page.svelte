@@ -15,7 +15,9 @@
       <h1>Welcome to Frontend Challenge!</h1>
       <p>Get ready to test your frontend knowledge. Track and improve your scores.</p>
       <div id="button-tray">
-        <Button kind="secondary">Start Quiz</Button>
+        <a href="/quiz">
+          <Button kind="secondary">Start Quiz</Button>
+        </a>
       </div>
     </div>
   </div>
@@ -38,7 +40,7 @@
       </Card>
     </div>
     <div>
-      <Question />
+      <Question questionId="" />
     </div>
   </div>
   <div id="third-section" class="pipe-gradient">

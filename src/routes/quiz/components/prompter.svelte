@@ -3,16 +3,16 @@
 
   export let quizData;
 
-  let isComplete = quizData.completedQuestions.length === quizData.questions.length;
-  let currentQuestionId: number =
-    quizData.questions.find((q: number) => !quizData.completedQuestions.includes(q)) ??
-    quizData.questions[quizData.questions.length - 1];
+  let currentQuestionId: string =
+    quizData.quizQuestions.find((question: { isAnswered: boolean }) => {
+      return !question.isAnswered;
+    }).questionId ?? quizData.quizQuestions[quizData.quizQuestions.length - 1].questionId;
 </script>
 
 <div
   style="border-radius: 4px; height: 500px; max-width: 1000px; background-color: #DDD; padding: 10px; margin: 0 auto;"
 >
-  {#if isComplete}
+  {#if quizData.isCompleted}
     <p>Finished Quiz</p>
   {:else}
     <h3>The current question is: {currentQuestionId}</h3>

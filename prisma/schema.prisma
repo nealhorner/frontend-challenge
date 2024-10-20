@@ -14,7 +14,7 @@ model User {
   updatedAt      DateTime      @updatedAt
   email          String        @unique
   name           String
-  hashedPassword String
+  hashedPassword String?
   authToken      String?
   emailVerified  Boolean       @default(false)
   quizes         Quiz[]
@@ -37,13 +37,14 @@ model Quiz {
   title         String
   userId        String
   user          User           @relation(fields: [userId], references: [id])
-  quizResults   QuizResult[]
-  score         Int
+  score         Int            @default(0)
+  isCompleted   Boolean        @default(false)
   quizQuestions QuizQuestion[]
 }
 
 model Question {
   id                    String         @id @default(uuid())
+  family                String
   title                 String
   prompt                String
   type                  String
@@ -54,20 +55,17 @@ model Question {
 }
 
 model QuizQuestion {
-  quizId     String
-  questionId String
-  quiz       Quiz     @relation(fields: [quizId], references: [id])
-  question   Question @relation(fields: [questionId], references: [id])
+  quizId            String
+  questionId        String
+  answer            String?
+  isAnswered        Boolean   @default(false)
+  isCorrect         Boolean?
+  askedTimestamp    DateTime?
+  answeredTimestamp DateTime?
+  quiz              Quiz      @relation(fields: [quizId], references: [id])
+  question          Question  @relation(fields: [questionId], references: [id])
 
   @@id([quizId, questionId])
-}
-
-model QuizResult {
-  id     String @id @default(uuid())
-  quizId String
-  userId String
-  score  Int
-  quiz   Quiz   @relation(fields: [quizId], references: [id])
 }
 
 model LearningResources {
