@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Prompter from './components/prompter.svelte';
+  import Prompter from './components/Prompter.svelte';
   import type { QuizData } from '$lib/types';
 
   export let data: QuizData;
