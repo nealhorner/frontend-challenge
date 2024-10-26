@@ -18,6 +18,9 @@
   --color-text-secondary: #6b7280;
   --color-text-tertiary: #888e99;
   --card-border-radius: 8px;
+  --color-border: rgba(10, 10, 10, 0.1);
+  --page-content-max-width: 1216px;
+  --page-content-padding: 32px;
 }
 
 body {

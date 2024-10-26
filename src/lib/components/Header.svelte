@@ -77,12 +77,18 @@
 </header>
 
 <style>
+  header {
+    width: 100%;
+    background-color: var(--color-blue);
+  }
   #nav-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--color-blue);
-    padding: 5px 20px;
+    padding: 5px var(--page-content-padding);
+    width: 100%;
+    margin: 0 auto;
+    max-width: var(--page-content-max-width);
   }
 
   h2 {
