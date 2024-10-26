@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import prisma from '$lib/prisma';
 import { delayAndFail, createEmptyAuthErrorObject } from '$lib/auth/auth-utilities';
@@ -9,9 +9,7 @@ export const actions = {
     const email = data.get('email');
     const password = data.get('password');
 
-    console.log('email:', email);
     const errorResponse = createEmptyAuthErrorObject();
-    let statusCode = 200;
 
     if (typeof email !== 'string' || !email) {
       errorResponse.error.email = 'Invalid email';
@@ -26,14 +24,14 @@ export const actions = {
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      errorResponse.error.generic = 'Invalid email or password';
+      errorResponse.error.other = 'Invalid email or password';
       return delayAndFail(errorResponse, 400);
     }
 
     const isAuthenticated = await bcrypt.compare(password, user.hashedPassword);
 
     if (!isAuthenticated) {
-      errorResponse.error.generic = 'Invalid email or password';
+      errorResponse.error.other = 'Invalid email or password';
       return delayAndFail(errorResponse, 400);
     }
 
@@ -53,7 +51,6 @@ export const actions = {
       });
     }
 
-    // redirect the user
     redirect(302, '/');
   }
 };

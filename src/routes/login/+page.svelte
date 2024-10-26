@@ -1,4 +1,3 @@
-<!-- FIXME -->
 <script lang="ts">
   import AuthTextInput from '$lib/components/AuthTextInput.svelte';
   import Button from '$lib/components/Button.svelte';
@@ -23,6 +22,10 @@
   <div>
     <h1>Login</h1>
 
+    {#if errorObject?.other}
+      <p class="error">{errorObject.other}</p>
+    {/if}
+
     <form method="post">
       <AuthTextInput
         label="Email"
@@ -39,7 +42,7 @@
         autocomplete="current-password"
         error={errorObject?.password}
       />
-      <Button kind="primary">Login</Button>
+      <Button kind="primary" type="submit">Login</Button>
       <p>Don't have an account? <a href="/register"> Register here</a></p>
     </form>
   </div>

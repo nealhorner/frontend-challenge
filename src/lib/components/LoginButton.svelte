@@ -1,7 +1,5 @@
 <script>
-  import Button from './Button.svelte';
+  import ButtonLink from './ButtonLink.svelte';
 </script>
 
-<a href="/login">
-  <Button kind="primary">Login</Button>
-</a>
+<ButtonLink href="/login" kind="primary">Login</ButtonLink>

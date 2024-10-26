@@ -1,7 +1,7 @@
 <script>
   import Card from '../lib/components/Card.svelte';
-  import Button from '../lib/components/Button.svelte';
   import Question from '../lib/components/Question.svelte';
+  import ButtonLink from '$lib/components/ButtonLink.svelte';
 </script>
 
 <svelte:head>
@@ -15,9 +15,7 @@
       <h1>Welcome to Frontend Challenge!</h1>
       <p>Get ready to test your frontend knowledge. Track and improve your scores.</p>
       <div id="button-tray">
-        <a href="/quiz">
-          <Button kind="secondary">Start Quiz</Button>
-        </a>
+        <ButtonLink href="/quiz" kind="secondary">Start Quiz</ButtonLink>
       </div>
     </div>
   </div>

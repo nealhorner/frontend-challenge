@@ -33,7 +33,7 @@
           <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/learn">Learn</a></li>
-            {#if loggedIn === true}
+            {#if loggedIn}
               <li><a href="/profile">Profile</a></li>
             {/if}
           </ul>
@@ -54,15 +54,15 @@
               <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/learn">Learn</a></li>
-                {#if loggedIn === true}
+                {#if loggedIn}
                   <li><a href="/profile">Profile</a></li>
                 {/if}
               </ul>
               <div>
-                {#if !loggedIn}
-                  <LoginButton />
-                {:else}
+                {#if loggedIn}
                   <LogoutButton />
+                {:else}
+                  <LoginButton />
                 {/if}
               </div>
             </div>
