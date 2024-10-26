@@ -1,11 +1,12 @@
 import { json } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
+import { defaultQuizSize } from '$lib/constants';
 
 export async function GET() {
   // TODO implement this endpoint for global use outside of active quizzes
 
   const questions = await prisma.question.findMany({
-    take: 10
+    take: defaultQuizSize
     // TODO improve randomization
   });
 

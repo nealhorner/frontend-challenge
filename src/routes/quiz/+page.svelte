@@ -1,54 +1,23 @@
 <script lang="ts">
-  import Progress from './components/progress.svelte';
   import Prompter from './components/prompter.svelte';
-
-  interface Question {
-    id: string;
-    family: string;
-    title: string;
-    prompt: string;
-    type: string;
-    multipleChoiceOptions: string;
-    answers: string;
-    tags: string;
-  }
-  interface QuizQuestion {
-    quizId: string;
-    questionId: string;
-    answer: string | null;
-    isAnswered: boolean;
-    isCorrect: boolean | null;
-    askedTimestamp: Date | null;
-    answeredTimestamp: Date | null;
-    question: Question;
-  }
-  interface QuizData {
-    id: string;
-    title: string;
-    userId: string;
-    score: number;
-    isCompleted: boolean;
-    quizQuestions: QuizQuestion[];
-  }
+  import type { QuizData } from '$lib/types';
 
   export let data: QuizData;
-
-  // Compute the number of completed questions from data.questions.length
-  let completedQuestions = data.quizQuestions.reduce((acc, question) => {
-    return question.isAnswered ? acc + 1 : acc;
-  }, 0);
-  let totalQuestions = data.quizQuestions.length;
 </script>
 
-<div>
+<div class="quiz-page">
   <h1>Quiz #{data.id}</h1>
-
-  <Prompter bind:quizData={data} />
-  <div>
-    <Progress {completedQuestions} {totalQuestions} />
-  </div>
-
   <p>
     Test your knowledge with our quiz. Select a category and start answering questions. Good luck!
   </p>
+  <Prompter quizData={data} />
 </div>
+
+<style>
+  .quiz-page {
+    width: 100%;
+    padding: var(--page-content-padding) 0;
+    max-width: var(--page-content-max-width);
+    margin: 0 auto;
+  }
+</style>

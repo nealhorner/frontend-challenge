@@ -1,9 +1,10 @@
 import prisma from '$lib/prisma';
 import { testUserId } from '$lib/constants.js';
+import { defaultQuizSize } from '$lib/constants.js';
 
 import { error } from '@sveltejs/kit';
 
-async function selectQuestions(numberOfQuestions = 10) {
+async function selectQuestions(numberOfQuestions = defaultQuizSize) {
   const questions = [];
   let candidateQuestions = await prisma.question.findMany();
   candidateQuestions = candidateQuestions.sort(() => 0.5 - Math.random());
