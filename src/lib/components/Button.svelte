@@ -24,11 +24,13 @@
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
-    outline: none;
     cursor: pointer;
     border: none;
   }
   button:hover:enabled {
+    text-decoration: underline;
+  }
+  button:focus:enabled {
     text-decoration: underline;
   }
   button:active:enabled {
