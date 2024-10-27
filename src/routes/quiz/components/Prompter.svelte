@@ -4,6 +4,7 @@
   import Progress from './Progress.svelte';
   import type { QuizData } from '$lib/types';
   import { defaultQuizSize } from '$lib/constants';
+  import DebugInfo from '$lib/components/DebugInfo.svelte';
   export let quizData: QuizData;
 
   let currentQuestionId: string | undefined =
@@ -22,7 +23,7 @@
   {#if quizData.isCompleted}
     <p>Finished Quiz</p>
   {:else if currentQuestionId}
-    <h3>The current question is: {currentQuestionId}</h3>
+    <DebugInfo>Question ID: {currentQuestionId}</DebugInfo>
     <Question questionId={currentQuestionId} />
   {/if}
   <Progress {completedQuestions} {totalQuestions} />

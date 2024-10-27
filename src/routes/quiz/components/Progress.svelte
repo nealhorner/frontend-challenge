@@ -24,24 +24,19 @@
     height: 19px;
   }
 
-  /* background: */
   progress::-webkit-progress-bar {
     background-color: var(--color-border);
     width: 100%;
   }
   progress {
+    color: var(--color-purple);
     background-color: var(--color-border);
   }
-
-  /* value: */
   progress::-webkit-progress-value {
     background-color: var(--color-purple) !important;
   }
   progress::-moz-progress-bar {
     background-color: var(--color-purple) !important;
-  }
-  progress {
-    color: var(--color-purple);
   }
   span {
     white-space: nowrap;

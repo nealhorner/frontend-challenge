@@ -90,7 +90,6 @@
 <style>
   main {
     text-align: center;
-    margin-top: 2rem;
   }
 
   #question-title {
