@@ -11,6 +11,16 @@ export async function GET({ params }) {
   }
 
   const question = await prisma.question.findUnique({
+    select: {
+      id: true,
+      family: true,
+      title: true,
+      prompt: true,
+      type: true,
+      multipleChoiceOptions: true,
+      answers: false,
+      tags: true
+    },
     where: {
       id: questionId
     }

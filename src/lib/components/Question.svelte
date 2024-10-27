@@ -1,16 +1,19 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
   import Button from './Button.svelte';
   import RadioGroup from './RadioGroup.svelte';
+  import DebugInfo from './DebugInfo.svelte';
   import type { ParsedMultipleChoiceOptions } from '$lib/types';
 
   let answer = '';
-
-  const dispatch = createEventDispatcher();
+  let promise: Promise<any>;
 
   export let questionId: string;
+  export let submitHandler: (answer: string) => void;
 
-  let promise = getQuestion(questionId);
+  $: if (questionId) {
+    promise = getQuestion(questionId);
+    answer = '';
+  }
 
   async function getQuestion(questionId: string) {
     const response = await fetch(`/api/question/${questionId}`);
@@ -27,13 +30,6 @@
       label: option,
       value: option
     }));
-  }
-
-  function handleSubmit() {
-    //Check answer
-    console.log(answer);
-
-    dispatch('submit');
   }
 
   function shuffle(array: any[]) {
@@ -76,7 +72,7 @@
         {/if}
         <div class="submit-container">
           <Button
-            on:click={handleSubmit}
+            on:click={() => submitHandler(answer)}
             kind="secondary"
             disabled={question.type !== 'multiple_choice' && !haveAnswer(answer)}>Submit</Button
           >
