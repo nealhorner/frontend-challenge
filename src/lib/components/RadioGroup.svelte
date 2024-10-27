@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
+  import type { ParsedMultipleChoiceOptions } from '$lib/types';
+
   export let label = '';
-  export let options = [];
+  export let options: ParsedMultipleChoiceOptions[] = [];
   export let value = '';
 </script>
 

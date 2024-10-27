@@ -27,4 +27,9 @@ interface QuizData {
   quizQuestions: QuizQuestion[];
 }
 
-export type { Question, QuizQuestion, QuizData };
+interface ParsedMultipleChoiceOptions {
+  label: string;
+  value: string;
+}
+
+export type { Question, QuizQuestion, QuizData, ParsedMultipleChoiceOptions };

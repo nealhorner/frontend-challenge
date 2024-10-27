@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
   import Button from './Button.svelte';
   import RadioGroup from './RadioGroup.svelte';
+  import type { ParsedMultipleChoiceOptions } from '$lib/types';
+
   let answer = '';
-  type MultipleChoiceOption = string[]; // Array of strings type
 
   const dispatch = createEventDispatcher();
 
@@ -21,7 +22,7 @@
     }
   }
 
-  function parseMultipleChoiceOptions(options: string): MultipleChoiceOption {
+  function parseMultipleChoiceOptions(options: string): ParsedMultipleChoiceOptions[] {
     return JSON.parse(options).map((option: string) => ({
       label: option,
       value: option
@@ -73,7 +74,7 @@
         {:else}
           <p>No Implemented: {question.type}</p>
         {/if}
-        <div style="margin-top: 15px">
+        <div class="submit-container">
           <Button
             on:click={handleSubmit}
             kind="secondary"
@@ -105,5 +106,9 @@
 
   .question {
     text-align: left;
+  }
+
+  .submit-container {
+    margin: 15px 0px;
   }
 </style>

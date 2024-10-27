@@ -46,6 +46,7 @@
     /* Secondary button styles */
     background-color: white;
     color: var(--color-blue);
+    outline: 1px solid var(--color-text-secondary);
   }
 
   .c-button-warning {
