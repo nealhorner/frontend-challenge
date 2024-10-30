@@ -4,6 +4,7 @@ import { defaultQuizSize } from '$lib/constants';
 
 export async function GET() {
   // TODO implement this endpoint for global use outside of active quizzes
+  // Get a random question from the database
 
   const questions = await prisma.question.findMany({
     take: defaultQuizSize

@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import Card from '$lib/components/Card.svelte';
   import Question from '$lib/components/Question.svelte';
   import Progress from './Progress.svelte';
   import type { QuizData } from '$lib/types';
   import { defaultQuizSize } from '$lib/constants';
   import DebugInfo from '$lib/components/DebugInfo.svelte';
+
   export let quizData: QuizData;
 
   let currentQuestionId: string | undefined = getNextQuestionId();
@@ -29,6 +31,7 @@
 
   if (completedQuestions === totalQuestions) {
     quizData.isCompleted = true;
+    goto(`/quiz/results/${quizData.id}`);
   }
 
   async function handleQuestionSubmit(answer: string) {

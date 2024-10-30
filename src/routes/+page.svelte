@@ -38,7 +38,7 @@
       </Card>
     </div>
     <div>
-      <Question questionId="" />
+      <Question questionId="" submitHandler={() => {}} />
     </div>
   </div>
   <div id="third-section" class="pipe-gradient">

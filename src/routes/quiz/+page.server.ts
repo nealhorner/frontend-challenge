@@ -26,7 +26,7 @@ async function selectQuestions(numberOfQuestions = defaultQuizSize) {
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ cookies }) {
-  const userId = cookies.get('userId') || testUserId;
+  const userId = cookies.get('userId') || testUserId; //TODO clean up after user auth setup
 
   try {
     // Check if the user already has an active quiz and return if so

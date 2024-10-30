@@ -17,6 +17,10 @@
   --color-red: #f73859;
   --color-text-secondary: #6b7280;
   --color-text-tertiary: #888e99;
+  --color-affirmative-light: #f0fdfa;
+  --color-affirmative-dark: #0f766e;
+  --color-negative-light: #fff1f2;
+  --color-negative-dark: #be123c;
   --card-border-radius: 8px;
   --color-border: rgba(10, 10, 10, 0.1);
   --page-content-max-width: 1216px;
