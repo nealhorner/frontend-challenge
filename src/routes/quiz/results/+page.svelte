@@ -33,7 +33,6 @@
     align-items: center;
     margin-bottom: 1rem;
   }
-
   h1 {
     text-align: left;
     margin: 0;
@@ -41,14 +40,12 @@
   p {
     text-align: left;
   }
-
   main {
     padding: var(--page-content-padding);
     width: 100%;
     max-width: var(--page-content-max-width);
     margin: 0 auto;
   }
-
   a {
     text-decoration: none;
     color: var(--link-color);
@@ -56,7 +53,6 @@
   a:visited {
     color: var(--link-visited-color);
   }
-
   section {
     padding: 1rem;
     border: 1px solid var(--color-border);

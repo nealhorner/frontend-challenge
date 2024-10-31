@@ -21,8 +21,9 @@
     border: 1px solid var(--color-border);
     display: inline;
     padding: 5px;
-    border-radius: var(--card-border-radius);
+    border-radius: var(--border-radius-md);
     margin: 0;
     align-self: flex-start;
+    cursor: default;
   }
 </style>

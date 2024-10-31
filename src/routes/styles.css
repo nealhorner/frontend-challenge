@@ -21,7 +21,9 @@
   --color-affirmative-dark: #0f766e;
   --color-negative-light: #fff1f2;
   --color-negative-dark: #be123c;
-  --card-border-radius: 8px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+  --card-border-radius: var(--border-radius-lg);
   --color-border: rgba(10, 10, 10, 0.1);
   --page-content-max-width: 1216px;
   --page-content-padding: 32px;
