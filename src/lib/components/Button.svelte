@@ -36,6 +36,12 @@
   button:active:enabled {
     transform: translateY(1px);
   }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   .c-button-primary {
     /* Primary button styles */
     background-color: var(--color-purple);

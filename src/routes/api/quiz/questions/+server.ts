@@ -30,7 +30,11 @@ export const POST = async ({ request }) => {
   const correctAnswers = JSON.parse(question.answers);
   const isCorrect = correctAnswers.includes(userAnswer);
 
-  console.log('isCorrect', isCorrect, correctAnswers, userAnswer);
+  console.log('isCorrect', {
+    isCorrect: isCorrect,
+    correctAnswers: correctAnswers,
+    userAnswer: userAnswer
+  });
 
   // Save the user's answer, update QuizQuestion
   const savedAnswer = await prisma.quizQuestion.update({

@@ -29,11 +29,6 @@
   let completedQuestions = getCompletedQuestionsCount();
   let totalQuestions = quizData.quizQuestions.length ?? defaultQuizSize;
 
-  if (completedQuestions === totalQuestions) {
-    quizData.isCompleted = true;
-    goto(`/quiz/results/${quizData.id}`);
-  }
-
   async function handleQuestionSubmit(answer: string) {
     console.log('Submitting answer:', answer);
 
@@ -58,6 +53,11 @@
 
     currentQuestionId = getNextQuestionId();
     completedQuestions = getCompletedQuestionsCount();
+
+    if (completedQuestions === totalQuestions) {
+      quizData.isCompleted = true;
+      goto(`/quiz/results/${quizData.id}`);
+    }
   }
 </script>
 
