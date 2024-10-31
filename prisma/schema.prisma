@@ -33,13 +33,15 @@ model UserSession {
 }
 
 model Quiz {
-  id            String         @id @default(uuid())
-  title         String
-  userId        String
-  user          User           @relation(fields: [userId], references: [id])
-  score         Int            @default(0)
-  isCompleted   Boolean        @default(false)
-  quizQuestions QuizQuestion[]
+  id                 String         @id @default(uuid())
+  title              String
+  userId             String
+  user               User           @relation(fields: [userId], references: [id])
+  score              Int            @default(0)
+  isCompleted        Boolean        @default(false)
+  startedTimestamp   DateTime       @default(now())
+  completedTimestamp DateTime?
+  quizQuestions      QuizQuestion[]
 }
 
 model Question {

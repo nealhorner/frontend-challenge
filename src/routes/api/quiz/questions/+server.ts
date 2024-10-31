@@ -51,9 +51,13 @@ export const POST = async ({ request }) => {
   });
   const isCompleted = quizQuestions.length === 0;
 
+  console.log('isCompleted', isCompleted);
+
   // Update the Quiz
   if (isCompleted) {
-    const score = 0; // TODO calculate score
+    const score =
+      ((await prisma.quizQuestion.count({ where: { quizId, isCorrect: true } })) ?? 0) * 10;
+
     await prisma.quiz.update({
       where: { id: quizId },
       data: { isCompleted, score }
