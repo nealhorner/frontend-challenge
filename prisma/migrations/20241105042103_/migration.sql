@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Question" ADD COLUMN     "eloRating" INTEGER NOT NULL DEFAULT 1000;
+
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "eloRating" INTEGER NOT NULL DEFAULT 1000;

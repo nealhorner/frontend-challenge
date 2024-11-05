@@ -84,7 +84,13 @@ const get_records_from_json = (json_file_path: string) => {
 };
 
 const replace_question_records_from_json = async () => {
-  // Remove all existing  question data
+  // Remove all existing quiz question data
+  await prisma.quizQuestion.deleteMany();
+
+  // Remove all existing quiz data
+  await prisma.quiz.deleteMany();
+
+  // Remove all existing question data
   await prisma.question.deleteMany();
 
   // Load questions data from data/questions.json

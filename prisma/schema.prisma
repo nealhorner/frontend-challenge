@@ -17,6 +17,7 @@ model User {
   hashedPassword String?
   authToken      String?
   emailVerified  Boolean       @default(false)
+  eloRating      Int           @default(1000)
   quizes         Quiz[]
   auth_session   UserSession[]
 }
@@ -53,6 +54,7 @@ model Question {
   multipleChoiceOptions String
   answers               String
   tags                  String
+  eloRating             Int            @default(1000)
   quizQuestions         QuizQuestion[]
 }
 
