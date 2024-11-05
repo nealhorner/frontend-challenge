@@ -18,6 +18,9 @@ interface QuizQuestion {
   answeredTimestamp: Date | null;
   question: Question;
 }
+
+type QuizQuestionWithoutQuestion = Omit<QuizQuestion, 'question'>;
+
 interface QuizData {
   id: string;
   title: string;
@@ -27,9 +30,24 @@ interface QuizData {
   quizQuestions: QuizQuestion[];
 }
 
+interface QuizDataWithoutQuestions {
+  id: string;
+  title: string;
+  userId: string;
+  score: number;
+  isCompleted: boolean;
+  quizQuestions: QuizQuestionWithoutQuestion[];
+}
+
 interface ParsedMultipleChoiceOptions {
   label: string;
   value: string;
 }
 
-export type { Question, QuizQuestion, QuizData, ParsedMultipleChoiceOptions };
+export type {
+  Question,
+  QuizQuestion,
+  QuizData,
+  QuizDataWithoutQuestions,
+  ParsedMultipleChoiceOptions
+};

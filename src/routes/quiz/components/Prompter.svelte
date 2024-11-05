@@ -30,8 +30,6 @@
   let totalQuestions = quizData.quizQuestions.length ?? defaultQuizSize;
 
   async function handleQuestionSubmit(answer: string) {
-    console.log('Submitting answer:', answer);
-
     // Update database record
     await fetch('/api/quiz/questions', {
       method: 'POST',
