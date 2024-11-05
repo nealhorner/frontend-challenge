@@ -24,7 +24,9 @@
       "prompt": "How do you select an element with id 'app' using vanilla JavaScript?",
       "answers": [
         "document.getElementById('app')",
-        "document.querySelector('#app')"
+        "document.querySelector('#app')",
+        "document.getElementById(\"app\")",
+        "document.querySelector(\"#app\")"
       ],
       "false_answers": [
         "document.querySelector('app')",
@@ -313,7 +315,7 @@
       "title": "Fetch API",
       "prompt": "What does the fetch() method return in JavaScript?",
       "answers": [
-        "A promise"
+        "promise"
       ],
       "false_answers": [
         "An XMLHttpRequest object",
