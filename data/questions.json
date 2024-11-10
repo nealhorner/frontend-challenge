@@ -15,8 +15,7 @@
         "sizeOf(array)"
       ],
       "tags": [
-        "arrays",
-        "length"
+        "Data Structures"
       ]
     },
     {
@@ -38,7 +37,7 @@
       ],
       "tags": [
         "DOM",
-        "javascript"
+        "Javascript"
       ]
     },
     {
@@ -54,8 +53,7 @@
         "*p"
       ],
       "tags": [
-        "CSS",
-        "selectors"
+        "CSS"
       ]
     },
     {
@@ -70,7 +68,6 @@
         "document.getElementById('submit').click(callback)"
       ],
       "tags": [
-        "events",
         "DOM"
       ]
     },
@@ -86,8 +83,7 @@
         "this.state = initialValue"
       ],
       "tags": [
-        "React",
-        "state"
+        "React"
       ]
     },
     {
@@ -103,8 +99,7 @@
         "content"
       ],
       "tags": [
-        "CSS",
-        "box model"
+        "CSS"
       ]
     },
     {
@@ -119,8 +114,7 @@
         "extract('name', obj)"
       ],
       "tags": [
-        "JavaScript",
-        "ES6"
+        "JavaScript"
       ]
     },
     {
@@ -134,8 +128,7 @@
         "promise.then().finally().catch()"
       ],
       "tags": [
-        "JavaScript",
-        "promises"
+        "JavaScript"
       ]
     },
     {
@@ -166,13 +159,57 @@
         "flex-direction"
       ],
       "tags": [
-        "CSS",
-        "flexbox"
+        "CSS"
       ]
     },
     {
-      "title": "HTTP Methods",
-      "prompt": "Which HTTP method is used to update a resource?",
+      "title": "HTTP Update Method",
+      "prompt": "Which HTTP method is most commonly used to update a resource?",
+      "answers": [
+        "POST"
+      ],
+      "false_answers": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "HTTP Retrieve Method",
+      "prompt": "Which HTTP method is used to retrieve a resource?",
+      "answers": [
+        "GET"
+      ],
+      "false_answers": [
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "HTTP POST Method",
+      "prompt": "Which HTTP method is used to create a new resource?",
+      "answers": [
+        "POST"
+      ],
+      "false_answers": [
+        "GET",
+        "PUT",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "HTTP Replace Method",
+      "prompt": "Which HTTP method is used to replace an existing resource?",
       "answers": [
         "PUT"
       ],
@@ -182,8 +219,187 @@
         "DELETE"
       ],
       "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "HTTP Remove Method",
+      "prompt": "Which HTTP method is used to remove a resource?",
+      "answers": [
+        "DELETE"
+      ],
+      "false_answers": [
+        "GET",
+        "POST",
+        "PUT"
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "HTTP Partial Update Method",
+      "prompt": "Which HTTP method is used to apply partial updates to a resource?",
+      "answers": [
+        "PATCH"
+      ],
+      "false_answers": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "HTTP Headers Method",
+      "prompt": "Which HTTP method is used to retrieve the headers for a resource without the body?",
+      "answers": [
+        "HEAD"
+      ],
+      "false_answers": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "HTTP Possible Methods",
+      "prompt": "Which HTTP method is used to describe the communication options for the target resource?",
+      "answers": [
+        "OPTIONS"
+      ],
+      "false_answers": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "Difference Between GET, PUT and POST",
+      "prompt": "Which HTTP method is typically used to retrieve data without modifying the server's state?",
+      "answers": [
+        "GET"
+      ],
+      "false_answers": [
+        "POST",
+        "PUT"
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "Difference Between POST and PUT",
+      "prompt": "Which HTTP method is idempotent, meaning multiple identical requests have the same effect as a single request?",
+      "answers": [
+        "PUT"
+      ],
+      "false_answers": [
+        "POST",
+        "PATCH"
+      ],
+      "tags": [
+        "HTTP"
+      ]
+    },
+    {
+      "title": "Primary Use of POST",
+      "prompt": "Which HTTP method is mainly used to submit data to the server to create a new resource?",
+      "answers": [
+        "POST"
+      ],
+      "false_answers": [
+        "GET",
+        "PUT",
+        "DELETE"
+      ],
+      "tags": [
         "HTTP",
-        "methods"
+        "POST",
+        "CREATE"
+      ]
+    },
+    {
+      "title": "Primary Use of PUT",
+      "prompt": "Which HTTP method is used to update an existing resource, or create it if it does not exist?",
+      "answers": [
+        "PUT"
+      ],
+      "false_answers": [
+        "POST",
+        "GET",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP",
+        "PUT",
+        "UPDATE"
+      ]
+    },
+    {
+      "title": "GET vs POST Data Handling",
+      "prompt": "Which HTTP method includes data in the URL and is not meant for sensitive information?",
+      "answers": [
+        "GET"
+      ],
+      "false_answers": [
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP",
+        "GET",
+        "POST",
+        "DATA"
+      ]
+    },
+    {
+      "title": "Idempotency of GET and PUT",
+      "prompt": "Which two HTTP methods are generally considered idempotent?",
+      "answers": [
+        "GET",
+        "PUT"
+      ],
+      "false_answers": [
+        "POST",
+        "DELETE",
+        "PATCH"
+      ],
+      "tags": [
+        "HTTP",
+        "GET",
+        "PUT",
+        "Idempotent"
+      ]
+    },
+    {
+      "title": "GET vs POST for Data Submission",
+      "prompt": "Which HTTP method is preferable for submitting data when creating a resource, especially when data privacy is a concern?",
+      "answers": [
+        "POST"
+      ],
+      "false_answers": [
+        "GET",
+        "PUT",
+        "DELETE"
+      ],
+      "tags": [
+        "HTTP",
+        "GET",
+        "POST",
+        "DATA"
       ]
     },
     {
@@ -197,8 +413,7 @@
         "<ChildComponent {propName} />"
       ],
       "tags": [
-        "React",
-        "props"
+        "React"
       ]
     },
     {
@@ -213,8 +428,7 @@
         "An object"
       ],
       "tags": [
-        "JavaScript",
-        "arrays"
+        "JavaScript"
       ]
     },
     {
