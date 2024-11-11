@@ -2,6 +2,7 @@
   import Card from '../lib/components/Card.svelte';
   import Question from '../lib/components/Question.svelte';
   import ButtonLink from '$lib/components/ButtonLink.svelte';
+  import WelcomeSection from '$lib/components/WelcomeSection.svelte';
 </script>
 
 <svelte:head>
@@ -10,15 +11,7 @@
 </svelte:head>
 
 <section>
-  <div id="first-section" class="linear-gradient">
-    <div>
-      <h1>Welcome to Frontend Challenge!</h1>
-      <p>Get ready to test your frontend knowledge. Track and improve your scores.</p>
-      <div id="button-tray">
-        <ButtonLink href="/quiz" kind="secondary">Start Quiz</ButtonLink>
-      </div>
-    </div>
-  </div>
+  <WelcomeSection />
   <div id="second-section">
     <div>
       <Card>
@@ -50,26 +43,6 @@
   section {
     height: calc(100vh - 59px);
   }
-
-  #first-section {
-    background-color: var(--color-purple);
-    color: white;
-    padding: 20px 0px;
-    min-height: 200px;
-    width: 100%;
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-  }
-  #first-section > div {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  #button-tray {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-  }
   #second-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -83,40 +56,6 @@
     background-color: var(--color-yellow);
   }
 
-  .linear-gradient {
-    background: -moz-linear-gradient(
-      -45deg,
-      rgba(243, 130, 111, 0.25) 0%,
-      rgba(0, 0, 0, 0) 100%
-    ); /* FF3.6+ */
-    background: -webkit-gradient(
-      linear,
-      left top,
-      right bottom,
-      color-stop(0%, rgba(243, 130, 111, 0.25)),
-      color-stop(100%, rgba(0, 0, 0, 0))
-    ); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(
-      -45deg,
-      rgba(243, 130, 111, 0.25) 0%,
-      rgba(0, 0, 0, 0) 100%
-    ); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(
-      -45deg,
-      rgba(243, 130, 111, 0.25) 0%,
-      rgba(0, 0, 0, 0) 100%
-    ); /* Opera 11.10+ */
-    background: -ms-linear-gradient(
-      -45deg,
-      rgba(243, 130, 111, 0.25) 0%,
-      rgba(0, 0, 0, 0) 100%
-    ); /* IE10+ */
-    background: linear-gradient(
-      135deg,
-      rgba(243, 130, 111, 0.25) 0%,
-      rgba(0, 0, 0, 0) 100%
-    ); /* W3C */
-  }
   .pipe-gradient {
     background-color: var(--color-yellow);
     background-image: repeating-radial-gradient(
