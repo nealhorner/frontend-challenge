@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import CorrectFlair from '$lib/components/CorrectFlair.svelte';
+  import QuestionTag from '$lib/components/QuestionTag.svelte';
 
   export let data: PageData;
 
@@ -21,6 +22,10 @@
         <p>Correct Answer(s): {JSON.parse(question.question.answers).join(', ')}</p>
       </div>
       <CorrectFlair isCorrect={question.isCorrect} />
+
+      {#each JSON.parse(question.question.tags) as tag}
+        <QuestionTag {tag} />
+      {/each}
     </section>
   {/each}
 </main>

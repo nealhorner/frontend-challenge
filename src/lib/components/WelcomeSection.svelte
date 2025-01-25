@@ -12,7 +12,7 @@
               <img
                 class="welcome-icon"
                 src={`welcome-icons/icon-${i + 1}.svg`}
-                alt={`Decorative Web Development  Icon ${i + 1}`}
+                alt={`Decorative Web Development Icon ${i + 1}`}
               />
             {/each}
           </div>
