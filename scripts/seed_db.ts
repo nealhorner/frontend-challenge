@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import fs from 'fs';
 
 // Define the interface for each question
@@ -18,8 +17,6 @@ interface GeneratedQuestion {
   answers: string[];
   tags: string[];
 }
-
-const prisma = new PrismaClient();
 
 const shuffle_array = (array: string[]) => {
   const shuffled: string[] = [];
