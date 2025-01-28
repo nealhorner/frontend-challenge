@@ -1,3 +1,6 @@
+import { sequence } from '@sveltejs/kit/hooks';
+import type { Handle } from '@sveltejs/kit';
+import * as auth from '$lib/server/auth.js';
 import { handleErrorWithSentry, sentryHandle } from '@sentry/sveltekit';
 import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SENTRY_DSN } from '$env/static/public';
@@ -10,8 +13,28 @@ Sentry.init({
   // spotlight: import.meta.env.DEV,
 });
 
-// If you have custom handlers, make sure to place them after `sentryHandle()` in the `sequence` function.
-export const handle = sentryHandle();
-
 // If you have a custom error handler, pass it to `handleErrorWithSentry`
 export const handleError = handleErrorWithSentry();
+
+const handleAuth: Handle = async ({ event, resolve }) => {
+  const sessionToken = event.cookies.get(auth.sessionCookieName);
+  if (!sessionToken) {
+    event.locals.user = null;
+    event.locals.session = null;
+    return resolve(event);
+  }
+
+  const { session, user } = await auth.validateSessionToken(sessionToken);
+  if (session) {
+    auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+  } else {
+    auth.deleteSessionTokenCookie(event);
+  }
+
+  event.locals.user = user;
+  event.locals.session = session;
+
+  return resolve(event);
+};
+
+export const handle = sequence(sentryHandle(), handleAuth);
