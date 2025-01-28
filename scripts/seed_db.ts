@@ -1,4 +1,5 @@
 import fs from 'fs';
+import prisma from '../src/lib/prisma.ts';
 
 // Define the interface for each question
 interface RawQuestion {
