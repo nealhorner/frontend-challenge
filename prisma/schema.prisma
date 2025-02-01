@@ -13,7 +13,7 @@ model User {
   updatedAt      DateTime      @updatedAt
   email          String        @unique
   name           String
-  hashedPassword String?
+  hashedPassword String
   authToken      String?
   emailVerified  Boolean       @default(false)
   eloRating      Int           @default(1000)
