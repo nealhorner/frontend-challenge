@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -12,12 +12,12 @@ model User {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   email          String        @unique
-  name           String
+  name           String        @unique
   hashedPassword String
   authToken      String?
   emailVerified  Boolean       @default(false)
   eloRating      Int           @default(1000)
-  quizes         Quiz[]
+  quizzes        Quiz[]
   auth_session   UserSession[]
 }
 
