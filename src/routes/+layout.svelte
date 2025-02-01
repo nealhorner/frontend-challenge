@@ -2,10 +2,12 @@
   import Footer from '$lib/components/Footer.svelte';
   import Header from '$lib/components/Header.svelte';
   import './styles.css';
+
+  export let data;
 </script>
 
 <div class="app">
-  <Header />
+  <Header isAuthenticated={data.isAuthenticated} />
   <main>
     <slot />
   </main>

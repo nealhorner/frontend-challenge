@@ -1,10 +1,14 @@
 <script lang="ts">
   import LoginButton from './LoginButton.svelte';
   import LogoutButton from './LogoutButton.svelte';
+
+  export let isAuthenticated;
+
   let showVerticalMenu = false;
-  let loggedIn = false;
   let clickContainer: HTMLDivElement;
   let innerWidth = 0;
+
+  console.log(isAuthenticated);
 
   function onWindowClick(event: MouseEvent) {
     // Hide the vertical menu when clicking outside of it
@@ -33,12 +37,12 @@
           <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/learn">Learn</a></li>
-            {#if loggedIn}
+            {#if isAuthenticated}
               <li><a href="/profile">Profile</a></li>
             {/if}
           </ul>
           <div>
-            {#if !loggedIn}
+            {#if !isAuthenticated}
               <LoginButton />
             {:else}
               <LogoutButton />
@@ -54,12 +58,12 @@
               <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/learn">Learn</a></li>
-                {#if loggedIn}
+                {#if isAuthenticated}
                   <li><a href="/profile">Profile</a></li>
                 {/if}
               </ul>
               <div>
-                {#if loggedIn}
+                {#if isAuthenticated}
                   <LogoutButton />
                 {:else}
                   <LoginButton />
