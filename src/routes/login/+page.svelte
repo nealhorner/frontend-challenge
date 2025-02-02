@@ -1,7 +1,6 @@
 <script lang="ts">
-  import AuthTextInput from '$lib/components/AuthTextInput.svelte';
+  import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
   import Button from '$lib/components/Button.svelte';
-  export let form;
 
   interface ErrorObject {
     email?: string;
@@ -9,8 +8,6 @@
     password?: string;
     other?: string;
   }
-
-  let errorObject: ErrorObject = form?.error || {};
 </script>
 
 <svelte:head>
@@ -22,25 +19,20 @@
   <div>
     <h1>Login</h1>
 
-    {#if errorObject?.other}
+    //TODO - Add error handling
+    <!-- {#if errorObject?.other}
       <p class="error">{errorObject.other}</p>
-    {/if}
+    {/if} -->
 
-    <form method="post">
-      <AuthTextInput
-        label="Email"
-        id="email"
-        name="email"
-        autocomplete="username"
-        error={errorObject?.email}
-      />
+    <form method="post" action="?/login">
+      <AuthTextInput label="Email" id="email" name="email" autocomplete="username" error="" />
       <AuthTextInput
         label="Password"
         id="password"
         type="password"
         name="password"
         autocomplete="current-password"
-        error={errorObject?.password}
+        error=""
       />
       <Button kind="primary" type="submit">Login</Button>
       <p>Don't have an account? <a href="/register"> Register here</a></p>

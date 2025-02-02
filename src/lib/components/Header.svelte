@@ -1,14 +1,12 @@
 <script lang="ts">
-  import LoginButton from './LoginButton.svelte';
-  import LogoutButton from './LogoutButton.svelte';
+  import LoginButton from '$lib/components/auth/LoginButton.svelte';
+  import LogoutButton from '$lib/components/auth/LogoutButton.svelte';
 
   export let isAuthenticated;
 
   let showVerticalMenu = false;
   let clickContainer: HTMLDivElement;
   let innerWidth = 0;
-
-  console.log(isAuthenticated);
 
   function onWindowClick(event: MouseEvent) {
     // Hide the vertical menu when clicking outside of it
