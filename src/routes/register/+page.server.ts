@@ -1,90 +1,72 @@
 import prisma from '$lib/prisma';
-import { redirect } from '@sveltejs/kit';
-import bcrypt from 'bcrypt';
-import { validateEmail } from './validateEmail';
-import { validateName } from './validateName';
-import { validatePassword } from './validatePassword';
-import { delayAndFail, createEmptyAuthErrorObject } from '$lib/auth/auth-utilities';
+import { hash } from '@node-rs/argon2';
+import { fail, redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
+import { validateEmail, validateName, validatePassword } from '$lib/server/validation/';
+import {
+  createSession,
+  generateUserId,
+  generateSessionToken,
+  setSessionTokenCookie
+} from '$lib/server/auth';
 
-const findUserByEmail = async (email: string) => {
-  return await prisma.user.findFirst({ where: { email } });
+export const load: PageServerLoad = async (event) => {
+  // If user is already logged in, redirect to the main page
+  if (event.locals.user) {
+    console.log('User is already logged in');
+    return redirect(302, '/');
+  }
+  return {};
 };
 
-const isString = (value: any): value is string => {
-  return typeof value === 'string';
-};
+export const actions: Actions = {
+  default: async (event) => {
+    const formData = await event.request.formData();
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const name = formData.get('name') as string;
 
-export const actions = {
-  default: async ({ request }) => {
-    const data = await request.formData();
-    let name = data.get('name');
-    let email = data.get('email');
-    let password = data.get('password');
-
-    const errorResponse = createEmptyAuthErrorObject();
-    let statusCode = 201;
-
-    if (!isString(name)) {
-      errorResponse.error.name = 'Invalid name';
-      statusCode = 400;
-      return delayAndFail(errorResponse, statusCode);
+    if (!validateEmail(email)) {
+      return fail(400, { message: 'Invalid email', loginError: true });
     }
-    if (!isString(email)) {
-      errorResponse.error.email = 'Invalid email';
-      statusCode = 400;
-      return delayAndFail(errorResponse, statusCode);
+    if (!validatePassword(password)) {
+      return fail(400, { message: 'Invalid password', loginError: true });
     }
-    if (!isString(password)) {
-      errorResponse.error.password = 'Invalid password';
-      statusCode = 400;
-      return delayAndFail(errorResponse, statusCode);
+    if (!validateName(name)) {
+      return fail(400, { message: 'Invalid name', loginError: true });
     }
 
-    // Sanitize inputs
-    name = name.trim();
-    email = email.trim();
-    password = password.trim();
+    const userId = generateUserId();
+    const passwordHash = await hash(password, {
+      // recommended minimum parameters
+      memoryCost: 19456,
+      timeCost: 2,
+      outputLen: 32,
+      parallelism: 1
+    });
 
-    const userFound = await findUserByEmail(email);
-    if (userFound) {
-      errorResponse.error.email = 'Email already in use';
-      statusCode = 409;
+    try {
+      await prisma.user.create({
+        data: {
+          id: userId,
+          email: email,
+          hashedPassword: passwordHash,
+          name: email // TODO name be populated here
+        }
+      });
+
+      await prisma.userDetail.create({
+        data: {
+          userId: userId
+        }
+      });
+
+      const sessionToken = generateSessionToken();
+      const session = await createSession(sessionToken, userId);
+      setSessionTokenCookie(event, sessionToken, session.expiresAt);
+    } catch (e) {
+      return fail(500, { message: 'An error has occurred' });
     }
-
-    const { isValid: emailIsValid, invalidReason: emailInvalidReason } = validateEmail(email);
-    if (!emailIsValid) {
-      errorResponse.error.email = emailInvalidReason;
-      statusCode = 400;
-    }
-
-    const { isValid: passwordIsValid, invalidReason: passwordInvalidReason } =
-      validatePassword(password);
-    if (!passwordIsValid) {
-      errorResponse.error.password = passwordInvalidReason;
-      statusCode = 400;
-    }
-
-    let { isValid: nameIsValid, invalidReason: nameInvalidReason } = validateName(name);
-    if (!nameIsValid) {
-      errorResponse.error.name = nameInvalidReason;
-      statusCode = 400;
-    }
-
-    if (statusCode !== 201) {
-      return delayAndFail(errorResponse, statusCode);
-    }
-
-    const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = await bcrypt.hashSync(password, salt);
-
-    const user = {
-      name,
-      email,
-      hashedPassword
-    };
-
-    await prisma.user.create({ data: user });
-    console.log('User created:', user.name, user.email);
-    redirect(303, '/login');
+    return redirect(302, '/');
   }
 };

@@ -25,7 +25,6 @@ describe('validateEmail', () => {
 
   it('should return false for an undefined email', () => {
     const email = undefined;
-    // @ts-ignore
     const result = validateEmail(email);
     expect(result.isValid).toBe(false);
     expect(result.invalidReason).toBe('Invalid email');

@@ -1,3 +1,4 @@
+import { encodeBase32LowerCase } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
@@ -86,4 +87,11 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
   event.cookies.delete(sessionCookieName, {
     path: '/'
   });
+}
+
+export function generateUserId() {
+  // ID with 120 bits of entropy, or about the same as UUID v4.
+  const bytes = crypto.getRandomValues(new Uint8Array(15));
+  const id = encodeBase32LowerCase(bytes);
+  return id;
 }
