@@ -17,16 +17,11 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
   login: async (event) => {
     const formData = await event.request.formData();
-    const email = formData.get('email');
-    const password = formData.get('password');
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
-    if (!validateEmail(email)) {
-      return fail(400, {
-        message: 'Invalid email (min 3, max 31 characters, alphanumeric only)'
-      });
-    }
-    if (!validatePassword(password)) {
-      return fail(400, { message: 'Invalid password (min 6, max 255 characters)' });
+    if (!email || !password) {
+      return fail(400, { message: 'Incorrect email or password', loginError: true });
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -34,7 +29,7 @@ export const actions: Actions = {
     });
 
     if (!existingUser) {
-      return fail(400, { message: 'Incorrect email or password' });
+      return fail(400, { message: 'Incorrect email or password', loginError: true });
     }
 
     const validPassword = await verify(existingUser.hashedPassword, password, {
@@ -44,7 +39,7 @@ export const actions: Actions = {
       parallelism: 1
     });
     if (!validPassword) {
-      return fail(400, { message: 'Incorrect email or password' });
+      return fail(400, { message: 'Incorrect email or password', loginError: true });
     }
 
     const sessionToken = auth.generateSessionToken();
@@ -61,13 +56,13 @@ export const actions: Actions = {
     const name = formData.get('name');
 
     if (!validateEmail(email)) {
-      return fail(400, { message: 'Invalid email' });
+      return fail(400, { message: 'Invalid email', loginError: true });
     }
     if (!validatePassword(password)) {
-      return fail(400, { message: 'Invalid password' });
+      return fail(400, { message: 'Invalid password', loginError: true });
     }
     if (!validateName(name)) {
-      return fail(400, { message: 'Invalid name' });
+      return fail(400, { message: 'Invalid name', loginError: true });
     }
 
     const userId = generateUserId();
@@ -86,6 +81,12 @@ export const actions: Actions = {
           email: email,
           hashedPassword: passwordHash,
           name: email // TODO name be populated here
+        }
+      });
+
+      await prisma.userDetail.create({
+        data: {
+          userId: userId
         }
       });
 

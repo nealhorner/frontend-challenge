@@ -1,13 +1,9 @@
 <script lang="ts">
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
   import Button from '$lib/components/Button.svelte';
+  import ErrorMessage from '$lib/components/form/ErrorMessage.svelte';
 
-  interface ErrorObject {
-    email?: string;
-    name?: string;
-    password?: string;
-    other?: string;
-  }
+  export let form: HTMLFormElement;
 </script>
 
 <svelte:head>
@@ -19,10 +15,9 @@
   <div>
     <h1>Login</h1>
 
-    //TODO - Add error handling
-    <!-- {#if errorObject?.other}
-      <p class="error">{errorObject.other}</p>
-    {/if} -->
+    {#if form?.loginError}
+      <ErrorMessage errorMessage={form.message} />
+    {/if}
 
     <form method="post" action="?/login">
       <AuthTextInput label="Email" id="email" name="email" autocomplete="username" error="" />

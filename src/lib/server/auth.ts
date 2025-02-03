@@ -34,7 +34,8 @@ export async function validateSessionToken(token: string) {
       user: {
         select: {
           id: true,
-          name: true
+          name: true,
+          email: true
         }
       }
     }
@@ -76,7 +77,8 @@ export async function invalidateSession(sessionId: string) {
 export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date) {
   event.cookies.set(sessionCookieName, token, {
     expires: expiresAt,
-    path: '/'
+    path: '/',
+    sameSite: 'strict'
   });
 }
 
