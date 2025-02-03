@@ -1,3 +1,11 @@
 {
-  "cSpell.words": ["autoincrement", "dompurify", "fontawesome", "ndash", "oslojs", "unplugin"]
+  "cSpell.words": [
+    "autoincrement",
+    "dompurify",
+    "fontawesome",
+    "ndash",
+    "oslojs",
+    "unplugin",
+    "vitest"
+  ]
 }
