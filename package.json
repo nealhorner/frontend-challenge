@@ -13,7 +13,8 @@
     "test:integration": "playwright test",
     "test:unit": "vitest",
     "populateLearningResources": "npx tsx src/lib/open-graph/index.ts",
-    "prisma_migrate": "npx prisma migrate dev"
+    "prisma_migrate": "npx prisma migrate dev",
+    "postinstall": "prisma generate"
   },
   "devDependencies": {
     "@fontsource/fira-mono": "^4.5.10",
