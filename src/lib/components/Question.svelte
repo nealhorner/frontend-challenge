@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import Button from './Button.svelte';
   import RadioGroup from './RadioGroup.svelte';
-  import type { ParsedMultipleChoiceOptions, Question } from '$lib/types';
+  import type { ParsedMultipleChoiceOptions } from '$lib/types';
 
   let answer = '';
   let questionPromise: Promise<any>;
