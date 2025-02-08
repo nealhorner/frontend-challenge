@@ -1,8 +1,12 @@
 <script lang="ts">
-  export let completedQuestions = 0;
-  export let totalQuestions = 0;
+  interface Props {
+    completedQuestions?: number;
+    totalQuestions?: number;
+  }
 
-  $: value = Math.round((completedQuestions / totalQuestions) * 100);
+  let { completedQuestions = 0, totalQuestions = 0 }: Props = $props();
+
+  let value = $derived(Math.round((completedQuestions / totalQuestions) * 100));
 </script>
 
 <div>
@@ -11,7 +15,7 @@
     {value}
     max="100"
     title={`Completed ${completedQuestions} of ${totalQuestions} questions`}
-  /><span>{value}%</span>
+></progress><span>{value}%</span>
 </div>
 
 <style>
