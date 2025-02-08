@@ -20,7 +20,8 @@
       {#if description}
         <p class="resource-description">{@html sanitizedDescription}</p>
       {/if}
-      <p><a href={url} target="_blank">{displayURL}</a></p>
+      <p>{displayURL}</p>
+      <!-- TODO make this line look like a link-->
     </div>
     {#if imageURL}
       <div class="resource-image">
