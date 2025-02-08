@@ -1,4 +1,5 @@
 <script lang="ts">
+  /* eslint-disable svelte/no-at-html-tags */
   import DOMPurify from 'dompurify';
 
   export let title = '';
@@ -15,6 +16,7 @@
 <a href={url} target="_blank">
   <div class="card">
     <div class="resource-content">
+      <h3>{title}</h3>
       {#if description}
         <p class="resource-description">{@html sanitizedDescription}</p>
       {/if}
