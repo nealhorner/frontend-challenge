@@ -1,5 +1,9 @@
 <script lang="ts">
   import ButtonLink from './ButtonLink.svelte';
+
+  const images = Array(9)
+    .fill(0)
+    .map((_, i) => `welcome-icons/icon-${i + 1}.svg`);
 </script>
 
 <div class="welcome-section">
@@ -8,10 +12,10 @@
       <div class="vertical-center">
         <div>
           <div class="icon-grid">
-            {#each Array(9) as _, i}
+            {#each images as image, i}
               <img
                 class="welcome-icon"
-                src={`welcome-icons/icon-${i + 1}.svg`}
+                src={image}
                 alt={`Decorative Web Development Icon ${i + 1}`}
               />
             {/each}
