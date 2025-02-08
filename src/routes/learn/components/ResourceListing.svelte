@@ -13,6 +13,7 @@
     <div class="resource-content">
       <h3>{title}</h3>
       {#if description}
+        <!-- svelte-ignore svelte/no-at-html-tags -->
         <p class="resource-description">{@html description}</p>
       {/if}
       <p><a href={url} target="_blank">{displayURL}</a></p>
