@@ -2,20 +2,31 @@
   type Kind = 'primary' | 'secondary' | 'warning' | 'accept';
   type Type = 'button' | 'submit' | 'reset';
 
-  export let href: string = '';
-  export let kind: Kind = 'primary';
-  export let disabled: boolean = false;
-  export let type: Type = 'button';
+  interface Props {
+    href?: string;
+    kind?: Kind;
+    disabled?: boolean;
+    type?: Type;
+    children?: import('svelte').Snippet;
+  }
 
-  $: buttonProps = {
+  let {
+    href = '',
+    kind = 'primary',
+    disabled = false,
+    type = 'button',
+    children
+  }: Props = $props();
+
+  let buttonProps = $derived({
     type,
     disabled,
     class: ['no-select', kind && `c-button-${kind}`].filter(Boolean).join(' ')
-  };
+  });
 </script>
 
 <a {href} {...buttonProps}>
-  <slot />
+  {@render children?.()}
 </a>
 
 <style>

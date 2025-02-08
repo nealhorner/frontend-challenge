@@ -3,7 +3,11 @@
   import Button from '$lib/components/Button.svelte';
   import ErrorMessage from '$lib/components/form/ErrorMessage.svelte';
 
-  export let form: HTMLFormElement;
+  interface Props {
+    form: HTMLFormElement;
+  }
+
+  let { form }: Props = $props();
 </script>
 
 <svelte:head>

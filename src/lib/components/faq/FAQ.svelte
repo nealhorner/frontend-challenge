@@ -7,9 +7,13 @@
     answer: string;
   };
 
-  export let faqItems: FAQItem[] = [];
+  interface Props {
+    faqItems?: FAQItem[];
+  }
 
-  let activeItem: number | null = null;
+  let { faqItems = [] }: Props = $props();
+
+  let activeItem: number | null = $state(null);
 
   function toggleItem(index: number) {
     activeItem = activeItem === index ? null : index;
@@ -23,7 +27,7 @@
       <div class="faq-item">
         <summary
           class="faq-question no-select {activeItem === index ? 'active' : ''}"
-          on:click={() => toggleItem(index)}
+          onclick={() => toggleItem(index)}
         >
           {item.question}
           {#if activeItem === index}

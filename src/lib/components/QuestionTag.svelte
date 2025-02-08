@@ -1,5 +1,9 @@
 <script lang="ts">
-  export let tag: string;
+  interface Props {
+    tag: string;
+  }
+
+  let { tag }: Props = $props();
   const colors = [
     '#636EFA',
     '#EF553B',
@@ -21,7 +25,7 @@
     return colors[Math.abs(hash) % colors.length];
   }
 
-  $: backgroundColor = getColor(tag);
+  let backgroundColor = $derived(getColor(tag));
 </script>
 
 <div style="background-color: {backgroundColor}">{tag}</div>

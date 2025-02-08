@@ -1,10 +1,21 @@
 <script lang="ts">
-  export let label = '';
-  export let type = 'text';
-  export let id = '';
-  export let name = '';
-  export let autocomplete = '';
-  export let error = '';
+  interface Props {
+    label?: string;
+    type?: string;
+    id?: string;
+    name?: string;
+    autocomplete?: string;
+    error?: string;
+  }
+
+  let {
+    label = '',
+    type = 'text',
+    id = '',
+    name = '',
+    autocomplete = '',
+    error = ''
+  }: Props = $props();
 
   let haveError = error !== '';
 </script>

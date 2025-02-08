@@ -1,9 +1,18 @@
 <script lang="ts">
   import { FontAwesomeIcon } from '@fortawesome/svelte-fontawesome';
-  export let text;
-  export let faIcon;
-  export let title;
-  export let optional = false;
+  interface Props {
+    text: any;
+    faIcon: any;
+    title: any;
+    optional?: boolean;
+  }
+
+  let {
+    text,
+    faIcon,
+    title,
+    optional = false
+  }: Props = $props();
 
   let display = !!text || !optional;
 </script>
