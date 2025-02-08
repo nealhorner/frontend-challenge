@@ -33,7 +33,7 @@
           {/if}
         </summary>
         {#if activeItem === index}
-          <div class="faq-answer active">{@html item.answer}</div>
+          <div class="faq-answer active">{item.answer}</div>
         {/if}
       </div>
     {/each}

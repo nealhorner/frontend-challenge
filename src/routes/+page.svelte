@@ -1,7 +1,6 @@
 <script>
   import Card from '../lib/components/Card.svelte';
   import Question from '../lib/components/Question.svelte';
-  import ButtonLink from '$lib/components/ButtonLink.svelte';
   import WelcomeSection from '$lib/components/WelcomeSection.svelte';
 </script>
 
