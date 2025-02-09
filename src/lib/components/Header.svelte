@@ -1,12 +1,17 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import LoginButton from '$lib/components/auth/LoginButton.svelte';
   import LogoutButton from '$lib/components/auth/LogoutButton.svelte';
 
-  export let isAuthenticated;
+  let { isAuthenticated } = $props();
 
-  let showVerticalMenu = false;
-  let clickContainer: HTMLDivElement;
-  let innerWidth = 0;
+  let showVerticalMenu = $state(false);
+  let innerWidth = $state(0);
+  let clickContainer: HTMLElement;
+
+  onMount(() => {
+    innerWidth = window.innerWidth;
+  });
 
   function onWindowClick(event: MouseEvent) {
     // Hide the vertical menu when clicking outside of it
@@ -21,10 +26,12 @@
     showVerticalMenu = !showVerticalMenu;
   }
 
-  $: showVerticalMenu = innerWidth <= 768 ? showVerticalMenu : false;
+  $effect(() => {
+    showVerticalMenu = innerWidth <= 768 ? showVerticalMenu : false;
+  });
 </script>
 
-<svelte:window on:click={onWindowClick} bind:innerWidth />
+<svelte:window onclick={onWindowClick} bind:innerWidth />
 
 <header>
   <div id="nav-wrapper">
@@ -49,7 +56,7 @@
         </div>
         <div class="click-container" bind:this={clickContainer}>
           <div class="toggle-btn-wrapper">
-            <button class="toggle-btn" on:click={handleClick}></button>
+            <button class="toggle-btn" onclick={handleClick}>Menu</button>
           </div>
           <div style="display: {showVerticalMenu ? 'flex' : 'none'};">
             <div class="vertical-nav">
