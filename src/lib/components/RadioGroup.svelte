@@ -1,9 +1,13 @@
 <script lang="ts">
   import type { ParsedMultipleChoiceOptions } from '$lib/types';
+  import type { ChangeEventHandler } from 'svelte/elements';
 
-  export let label = '';
-  export let options: ParsedMultipleChoiceOptions[] = [];
-  export let value = '';
+  interface Props {
+    label: string;
+    options: ParsedMultipleChoiceOptions[];
+    onchange: ChangeEventHandler<HTMLInputElement>;
+  }
+  let { label, options, onchange }: Props = $props();
 </script>
 
 <fieldset>
@@ -12,7 +16,7 @@
     {#each options as option}
       <div class="radio-option no-select">
         <label>
-          <input type="radio" bind:group={value} value={option.value} />
+          <input type="radio" value={option.value} {onchange} />
           {option.label}
         </label>
       </div>
