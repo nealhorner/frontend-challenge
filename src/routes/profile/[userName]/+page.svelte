@@ -6,12 +6,7 @@
     completedQuizzes?: string;
   }
 
-  let {
-    userName = '',
-    dateJoined = '',
-    rank = '',
-    completedQuizzes = ''
-  }: Props = $props();
+  let { userName = '', dateJoined = '', rank = '', completedQuizzes = '' }: Props = $props();
 </script>
 
 <h1>Public Profile</h1>

@@ -15,7 +15,7 @@
     {value}
     max="100"
     title={`Completed ${completedQuestions} of ${totalQuestions} questions`}
-></progress><span>{value}%</span>
+  ></progress><span>{value}%</span>
 </div>
 
 <style>

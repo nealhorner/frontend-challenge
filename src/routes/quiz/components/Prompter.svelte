@@ -25,7 +25,7 @@
 
   function getCompletedQuestionsCount() {
     return quizData.quizQuestions.reduce((acc, question) => {
-      return question.isAnswered ? acc + 1 : acc ?? 0;
+      return question.isAnswered ? acc + 1 : (acc ?? 0);
     }, 0);
   }
 

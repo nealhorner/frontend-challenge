@@ -7,12 +7,7 @@
     optional?: boolean;
   }
 
-  let {
-    text,
-    faIcon,
-    title,
-    optional = false
-  }: Props = $props();
+  let { text, faIcon, title, optional = false }: Props = $props();
 
   let display = !!text || !optional;
 </script>
