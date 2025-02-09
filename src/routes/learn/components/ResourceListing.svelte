@@ -20,7 +20,7 @@
       {#if description}
         <p class="resource-description">{@html sanitizedDescription}</p>
       {/if}
-      <p>{displayURL}</p>
+      <p class="link-text">{displayURL}</p>
       <!-- TODO make this line look like a link-->
     </div>
     {#if imageURL}
@@ -37,7 +37,7 @@
     color: #333;
   }
 
-  p > a:hover {
+  p.link-text:hover {
     text-decoration: underline;
     color: var(--color-blue);
   }
