@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
+
   type Kind = 'primary' | 'secondary' | 'warning' | 'accept';
 
   interface ComponentProps extends HTMLButtonAttributes {
