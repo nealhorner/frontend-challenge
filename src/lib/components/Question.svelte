@@ -4,22 +4,21 @@
   import RadioGroup from './RadioGroup.svelte';
   import type { ParsedMultipleChoiceOptions, Question } from '$lib/types';
 
-  let answer = '';
-  let questionPromise: Promise<Question>;
+  let answer = $state('');
+  let questionPromise: Promise<Question> | undefined = $state();
 
-  export let questionId: string;
-  export let submitHandler: (answer: string) => void;
+  interface Props {
+    questionId: string;
+    submitHandler: (answer: string) => void;
+  }
+
+  let { questionId = $bindable(), submitHandler }: Props = $props();
 
   onMount(async () => {
     if (!questionId) {
       questionId = await getRandomQuestionId();
     }
   });
-
-  $: if (questionId) {
-    questionPromise = getQuestion(questionId);
-    answer = '';
-  }
 
   async function getRandomQuestionId() {
     const response = await fetch('/api/question');
@@ -51,6 +50,18 @@
   const haveAnswer = (answer: string) => {
     return answer !== '';
   };
+
+  $effect(() => {
+    if (questionId) {
+      questionPromise = getQuestion(questionId);
+      answer = '';
+    }
+  });
+
+  function handleAnswerChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    answer = target.value;
+  }
 </script>
 
 <main>
@@ -65,19 +76,19 @@
           {/if}
           <h2>{question.prompt}</h2>
           {#if question.type === 'blind_answer'}
-            <input type="text" placeholder="Enter your answer" bind:value={answer} />
+            <input type="text" placeholder="Enter your answer" onchange={handleAnswerChange} />
           {:else if question.type === 'multiple_choice'}
             <RadioGroup
               label="label"
               options={parseMultipleChoiceOptions(question.multipleChoiceOptions)}
-              bind:value={answer}
+              onchange={handleAnswerChange}
             />
           {:else}
             <p>No Implemented: {question.type}</p>
           {/if}
           <div class="submit-container">
             <Button
-              on:click={() => submitHandler(answer)}
+              onclick={() => submitHandler(answer)}
               kind="secondary"
               disabled={question.type !== 'multiple_choice' && !haveAnswer(answer)}>Submit</Button
             >
