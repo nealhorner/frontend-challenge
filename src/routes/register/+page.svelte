@@ -1,6 +1,6 @@
 <script lang="ts">
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
-  export let form;
+  let { form } = $props();
 
   interface ErrorObject {
     email?: string;
