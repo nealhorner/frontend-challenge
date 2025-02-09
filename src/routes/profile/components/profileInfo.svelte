@@ -1,9 +1,10 @@
 <script lang="ts">
+  import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
   import { FontAwesomeIcon } from '@fortawesome/svelte-fontawesome';
   interface Props {
-    text: any;
-    faIcon: any;
-    title: any;
+    text?: string | null;
+    faIcon: IconDefinition;
+    title: string;
     optional?: boolean;
   }
 

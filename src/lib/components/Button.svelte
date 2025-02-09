@@ -18,7 +18,12 @@
   }: ComponentProps = $props();
 
   let classList = $derived(['no-select', kind && `c-button-${kind}`].filter(Boolean).join(' '));
-  let buttonProps: HTMLButtonAttributes = $derived({ class: classList, ...restProps });
+  let buttonProps: HTMLButtonAttributes = $derived({
+    class: classList,
+    type,
+    disabled,
+    ...restProps
+  });
 </script>
 
 <button {...buttonProps}>
