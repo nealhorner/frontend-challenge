@@ -1,8 +1,12 @@
 <script lang="ts">
-  export let userName = '';
-  export let dateJoined = '';
-  export let rank = '';
-  export let completedQuizzes = '';
+  interface Props {
+    userName?: string;
+    dateJoined?: string;
+    rank?: string;
+    completedQuizzes?: string;
+  }
+
+  let { userName = '', dateJoined = '', rank = '', completedQuizzes = '' }: Props = $props();
 </script>
 
 <h1>Public Profile</h1>

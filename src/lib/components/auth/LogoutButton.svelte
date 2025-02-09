@@ -6,4 +6,4 @@
   }
 </script>
 
-<Button kind="primary" on:click={logout}>Logout</Button>
+<Button kind="primary" onclick={logout}>Logout</Button>

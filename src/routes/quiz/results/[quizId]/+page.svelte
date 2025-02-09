@@ -3,7 +3,11 @@
   import CorrectFlair from '$lib/components/CorrectFlair.svelte';
   import QuestionTag from '$lib/components/QuestionTag.svelte';
 
-  export let data: PageData;
+  interface Props {
+    data: PageData;
+  }
+
+  let { data }: Props = $props();
 
   console.log(data);
   console.log(data.quizResult.quizQuestions);

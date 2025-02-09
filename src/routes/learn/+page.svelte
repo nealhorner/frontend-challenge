@@ -3,7 +3,11 @@
   import Faq from '$lib/components/faq/FAQ.svelte';
   import ResourceListing from './components/ResourceListing.svelte';
 
-  export let data: PageData;
+  interface Props {
+    data: PageData;
+  }
+
+  let { data }: Props = $props();
   const { learning_resources } = data;
   const blogs = learning_resources.filter((resource) => resource.type === 'blog');
   const courses = learning_resources.filter((resource) => resource.type === 'course');

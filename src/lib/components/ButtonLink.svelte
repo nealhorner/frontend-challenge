@@ -1,21 +1,22 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
+  import type { HTMLAnchorAttributes } from 'svelte/elements';
+
   type Kind = 'primary' | 'secondary' | 'warning' | 'accept';
-  type Type = 'button' | 'submit' | 'reset';
 
-  export let href: string = '';
-  export let kind: Kind = 'primary';
-  export let disabled: boolean = false;
-  export let type: Type = 'button';
+  interface ComponentProps extends HTMLAnchorAttributes {
+    children?: Snippet;
+    kind?: Kind;
+  }
 
-  $: buttonProps = {
-    type,
-    disabled,
-    class: ['no-select', kind && `c-button-${kind}`].filter(Boolean).join(' ')
-  };
+  let { children, kind = 'primary', ...restProps }: ComponentProps = $props();
+
+  let classList = $derived(['no-select', kind && `c-button-${kind}`].filter(Boolean).join(' '));
+  let buttonLinkProps: HTMLAnchorAttributes = $derived({ class: classList, ...restProps });
 </script>
 
-<a {href} {...buttonProps}>
-  <slot />
+<a {...buttonLinkProps}>
+  {@render children?.()}
 </a>
 
 <style>

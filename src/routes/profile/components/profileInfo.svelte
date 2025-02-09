@@ -1,9 +1,14 @@
 <script lang="ts">
+  import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
   import { FontAwesomeIcon } from '@fortawesome/svelte-fontawesome';
-  export let text;
-  export let faIcon;
-  export let title;
-  export let optional = false;
+  interface Props {
+    text?: string | null;
+    faIcon: IconDefinition;
+    title: string;
+    optional?: boolean;
+  }
+
+  let { text, faIcon, title, optional = false }: Props = $props();
 
   let display = !!text || !optional;
 </script>

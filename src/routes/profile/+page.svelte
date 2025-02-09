@@ -8,11 +8,15 @@
   import { enhance } from '$app/forms';
   import ErrorMessage from '$lib/components/form/ErrorMessage.svelte';
 
-  export let data: PageServerData;
-  export let form: HTMLFormElement;
+  interface Props {
+    data: PageServerData;
+    form: HTMLFormElement;
+  }
 
-  let edit = false;
-  let confirmDeleteAccount = false;
+  let { data, form }: Props = $props();
+
+  let edit = $state(false);
+  let confirmDeleteAccount = $state(false);
 </script>
 
 <svelte:head>
@@ -32,7 +36,8 @@
 
   <section>
     {#if edit}
-      <form on:submit>
+      <form>
+        <!-- TODO add submit event handling-->
         <!--TODO Name should only be able to be changed every 30 days -->
         <label for="name">Name</label>
         <input type="text" id="name" required />
@@ -91,7 +96,7 @@
         title="BlueSky Profile Link"
         optional
       />
-      <button on:click={() => (edit = true)}>Edit Settings</button>
+      <button onclick={() => (edit = true)}>Edit Settings</button>
     {/if}
   </section>
 
@@ -125,13 +130,13 @@
         {#if form?.deleteAccountIncorrectEmail}<ErrorMessage errorMessage={form.message} />{/if}
         <label for="confirmDeleteAccount">Type your email address to confirm</label>
         <input type="text" id="confirmDeleteAccount" name="email" autocomplete="off" required />
-        <Button type="reset" kind="secondary" on:click={() => (confirmDeleteAccount = false)}
+        <Button type="reset" kind="secondary" onclick={() => (confirmDeleteAccount = false)}
           >Cancel</Button
         >
         <Button type="submit" kind="warning">Confirm Delete Account</Button>
       </form>
     {:else}
-      <Button type="button" kind="warning" on:click={() => (confirmDeleteAccount = true)}
+      <Button type="button" kind="warning" onclick={() => (confirmDeleteAccount = true)}
         >Delete Account</Button
       >
     {/if}

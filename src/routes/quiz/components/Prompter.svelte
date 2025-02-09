@@ -7,9 +7,13 @@
   import { defaultQuizSize } from '$lib/constants';
   import DebugInfo from '$lib/components/DebugInfo.svelte';
 
-  export let quizData: QuizData;
+  interface Props {
+    quizData: QuizData;
+  }
 
-  let currentQuestionId: string | undefined = getNextQuestionId();
+  let { quizData = $bindable() }: Props = $props();
+
+  let currentQuestionId: string | undefined = $state(getNextQuestionId());
 
   function getNextQuestionId() {
     return (
@@ -21,12 +25,12 @@
 
   function getCompletedQuestionsCount() {
     return quizData.quizQuestions.reduce((acc, question) => {
-      return question.isAnswered ? acc + 1 : acc ?? 0;
+      return question.isAnswered ? acc + 1 : (acc ?? 0);
     }, 0);
   }
 
   // Compute the number of completed questions from data.questions.length
-  let completedQuestions = getCompletedQuestionsCount();
+  let completedQuestions = $state(getCompletedQuestionsCount());
   let totalQuestions = quizData.quizQuestions.length ?? defaultQuizSize;
 
   async function handleQuestionSubmit(answer: string) {

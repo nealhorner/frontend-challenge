@@ -2,7 +2,11 @@
   import Prompter from './components/Prompter.svelte';
   import type { QuizData } from '$lib/types';
 
-  export let data: QuizData;
+  interface Props {
+    data: QuizData;
+  }
+
+  let { data }: Props = $props();
 </script>
 
 <div class="quiz-page">

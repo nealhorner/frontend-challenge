@@ -1,5 +1,9 @@
 <script lang="ts">
-  export let isCorrect: boolean | undefined | null;
+  interface Props {
+    isCorrect: boolean | undefined | null;
+  }
+
+  let { isCorrect }: Props = $props();
 </script>
 
 {#if isCorrect === true}

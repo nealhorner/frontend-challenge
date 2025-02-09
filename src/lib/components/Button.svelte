@@ -1,20 +1,33 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
+  import type { HTMLButtonAttributes } from 'svelte/elements';
+
   type Kind = 'primary' | 'secondary' | 'warning' | 'accept';
-  type Type = 'button' | 'submit' | 'reset';
 
-  export let kind: Kind = 'primary';
-  export let disabled: boolean = false;
-  export let type: Type = 'button';
+  interface ComponentProps extends HTMLButtonAttributes {
+    children?: Snippet;
+    kind?: Kind;
+  }
 
-  $: buttonProps = {
+  let {
+    children,
+    kind = 'primary',
+    type = 'button',
+    disabled = false,
+    ...restProps
+  }: ComponentProps = $props();
+
+  let classList = $derived(['no-select', kind && `c-button-${kind}`].filter(Boolean).join(' '));
+  let buttonProps: HTMLButtonAttributes = $derived({
+    class: classList,
     type,
     disabled,
-    class: ['no-select', kind && `c-button-${kind}`].filter(Boolean).join(' ')
-  };
+    ...restProps
+  });
 </script>
 
-<button {...buttonProps} on:click on:focus on:blur on:mouseover on:mouseenter on:mouseleave>
-  <slot />
+<button {...buttonProps}>
+  {@render children?.()}
 </button>
 
 <style>

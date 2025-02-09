@@ -2,7 +2,11 @@
   import { enhance } from '$app/forms';
   import type { PageServerData } from './$types';
 
-  export let data: PageServerData;
+  interface Props {
+    data: PageServerData;
+  }
+
+  let { data }: Props = $props();
 </script>
 
 <h1>Hi, {data.user.username}!</h1>

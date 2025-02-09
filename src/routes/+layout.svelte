@@ -1,15 +1,15 @@
-<script>
+<script lang="ts">
   import Footer from '$lib/components/Footer.svelte';
   import Header from '$lib/components/Header.svelte';
   import './styles.css';
 
-  export let data;
+  let { data, children } = $props();
 </script>
 
 <div class="app">
   <Header isAuthenticated={data.isAuthenticated} />
   <main>
-    <slot />
+    {@render children?.()}
   </main>
   <Footer />
 </div>
