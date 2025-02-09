@@ -15,6 +15,7 @@
     "populateLearningResources": "npx tsx src/lib/open-graph/index.ts",
     "db:migrate": "npx prisma migrate dev",
     "db:seed": "npx tsx prisma/seed.ts",
+    "db:ui": "npx prisma studio",
     "postinstall": "prisma generate"
   },
   "devDependencies": {
