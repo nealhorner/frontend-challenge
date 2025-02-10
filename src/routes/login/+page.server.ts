@@ -48,19 +48,3 @@ export const actions: Actions = {
     return redirect(302, '/');
   }
 };
-
-// function validateName(name: unknown): name is string {
-//   //TODO more robust name validation
-//   return (
-//     typeof name === 'string' && name.length >= 3 && name.length <= 31 && /^[a-z0-9_-]+$/.test(name)
-//   );
-// }
-
-// function validateEmail(email: unknown): email is string {
-//   return typeof email === 'string' && email.length >= 3 && email.length <= 255; // TODO more robust email validation
-// }
-
-// function validatePassword(password: unknown): password is string {
-//   //TODO more robust password validation
-//   return typeof password === 'string' && password.length >= 6 && password.length <= 255;
-// }
