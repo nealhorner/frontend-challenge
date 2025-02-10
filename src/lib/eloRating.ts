@@ -1,7 +1,7 @@
 import prisma from '$lib/prisma';
 
 interface UserRating {
-  id: string;
+  userId: string;
   eloRating: number;
 }
 
@@ -47,12 +47,12 @@ async function updateEloRankings(
   questionId: string,
   questionAnsweredCorrectly: boolean
 ) {
-  const userRating = await prisma.user.findUnique({
+  const userRating = await prisma.userStats.findUnique({
     select: {
-      id: true,
+      userId: true,
       eloRating: true
     },
-    where: { id: userId }
+    where: { userId: userId }
   });
 
   const questionRating = await prisma.question.findUnique({
@@ -79,14 +79,14 @@ async function updateEloRankings(
   console.log(
     `User ${userId} Elo ranking updated to ${updatedUserRating.eloRating} from ${userRating.eloRating}`
   );
-  await prisma.user.update({
-    where: { id: userId },
+  await prisma.userStats.update({
+    where: { userId: userId },
     data: { eloRating: updatedUserRating.eloRating }
   });
 
   // Update the question's ranking
   console.log(
-    `Question ${questionId} Elo ranking updated to ${updatedQuestionRating.eloRating}  from ${questionRating.eloRating}`
+    `Question ${questionId} Elo ranking updated to ${updatedQuestionRating.eloRating} from ${questionRating.eloRating}`
   );
   await prisma.question.update({
     where: { id: questionId },
