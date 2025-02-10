@@ -14,7 +14,6 @@ model User {
   email          String        @unique
   name           String        @unique
   hashedPassword String
-  authToken      String?
   emailVerified  Boolean       @default(false)
   quizzes        Quiz[]
   auth_session   UserSession[]
