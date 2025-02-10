@@ -3,7 +3,7 @@
 
   const images = Array(9)
     .fill(0)
-    .map((_, i) => `welcome-icons/icon-${i + 1}.svg`);
+    .map((_, i) => `images/welcome-icons/icon-${i + 1}.svg`);
 </script>
 
 <div class="welcome-section">
