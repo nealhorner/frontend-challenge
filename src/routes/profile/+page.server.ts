@@ -25,7 +25,27 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
       updatedAt: true,
       email: true,
       name: true,
-      eloRating: true
+      UserStats: {
+        select: {
+          totalQuizzesTaken: true,
+          totalQuestionsAnswered: true,
+          totalCorrectAnswers: true,
+          rank: true,
+          eloRating: true
+        }
+      },
+      UserDetail: {
+        select: {
+          company: true,
+          website: true,
+          location: true,
+          github: true,
+          linkedIn: true,
+          twitter: true,
+          bluesky: true,
+          pronouns: true
+        }
+      }
     }
   });
 
@@ -35,23 +55,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
     });
   }
 
-  // TODO move this into user query above
-  const userDetail = await prisma.userDetail.findUnique({
-    where: {
-      userId: userId
-    }
-  });
-
-  if (!userDetail) {
-    // Backfill UserDetail if it doesn't exist
-    await prisma.userDetail.create({
-      data: {
-        userId: userId
-      }
-    });
-  }
-
-  return { ...user, userDetail };
+  return user;
 };
 
 export const actions: Actions = {
