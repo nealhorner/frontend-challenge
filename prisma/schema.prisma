@@ -68,7 +68,7 @@ model UserStatsTrends {
   id                     String    @id @default(uuid())
   userStats              UserStats @relation(fields: [userStatsId], references: [id])
   userStatsId            String
-  date                   DateTime  @updatedAt
+  date                   DateTime
   totalQuizzesTaken      Int       @default(0)
   totalQuestionsAnswered Int       @default(0)
   totalCorrectAnswers    Int       @default(0)
@@ -76,7 +76,7 @@ model UserStatsTrends {
   eloRating              Int       @default(1000)
   updatedAt              DateTime  @updatedAt
 
-  @@unique([date, userStatsId])
+  @@unique([date, userStatsId], name: "user_stats_trend_user_id_date")
   @@index([userStatsId])
 }
 
