@@ -76,7 +76,7 @@ model UserStatsTrends {
   eloRating              Int       @default(1000)
   updatedAt              DateTime  @updatedAt
 
-  @@unique([date, userStatsId], name: "user_stats_trend_user_id_date")
+  @@unique([date, userStatsId])
   @@index([userStatsId])
 }
 
