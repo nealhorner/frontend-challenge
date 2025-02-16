@@ -2,6 +2,7 @@ import prisma from '$lib/prisma';
 import { json } from '@sveltejs/kit';
 import { updateEloRankings } from '$lib/eloRating';
 import type { QuizDataWithoutQuestions } from '$lib/types';
+import { getUTCDate } from '$lib/datetime/date';
 
 export const POST = async ({ request }) => {
   const { quizId, questionId, userAnswer } = await request.json();
@@ -93,7 +94,31 @@ export const POST = async ({ request }) => {
 };
 
 async function postQuizTasksNonBlocking(quizWithQuestions: QuizDataWithoutQuestions) {
-  // Update the Elo rankings
+  const correctAnswers = quizWithQuestions.quizQuestions.filter((q) => q.isCorrect).length;
+
+  // Update the UserStats
+  const userStats = await prisma.userStats.upsert({
+    where: { userId: quizWithQuestions.userId },
+    update: {
+      totalQuizzesTaken: {
+        increment: 1
+      },
+      totalQuestionsAnswered: {
+        increment: quizWithQuestions.quizQuestions.length
+      },
+      totalCorrectAnswers: {
+        increment: correctAnswers
+      }
+    },
+    create: {
+      userId: quizWithQuestions.userId,
+      totalQuizzesTaken: 1,
+      totalQuestionsAnswered: quizWithQuestions.quizQuestions.length,
+      totalCorrectAnswers: correctAnswers
+    }
+  });
+
+  // Update the Elo Ratings
   for (const quizQuestion of quizWithQuestions.quizQuestions) {
     await updateEloRankings(
       quizWithQuestions.userId,
@@ -103,4 +128,48 @@ async function postQuizTasksNonBlocking(quizWithQuestions: QuizDataWithoutQuesti
       console.error('Failed to update Elo rating:', error);
     });
   }
+
+  // Update user ranking by their eloRating from the UserStats table
+  await prisma.$executeRaw`
+    WITH RankedData AS (
+        SELECT 
+            us.id, 
+            us."userId", 
+            RANK() OVER (PARTITION BY "userId" ORDER BY "eloRating" DESC) AS new_rank
+        FROM "UserStats" us
+    )
+    UPDATE "UserStats"
+    SET "rank" = RankedData.new_rank
+    FROM RankedData
+    WHERE "UserStats".id = RankedData.id;
+  `;
+
+  // Update the Stats Trends
+  const dateUTC: Date = getUTCDate();
+  await prisma.userStatsTrends.upsert({
+    where: {
+      user_stats_trend_user_id_date: {
+        userStatsId: userStats.id,
+        date: dateUTC
+      }
+    },
+    update: {
+      totalQuizzesTaken: {
+        increment: 1
+      },
+      totalQuestionsAnswered: {
+        increment: quizWithQuestions.quizQuestions.length
+      },
+      totalCorrectAnswers: {
+        increment: correctAnswers
+      }
+    },
+    create: {
+      userStatsId: userStats.id,
+      date: dateUTC,
+      totalQuizzesTaken: 1,
+      totalQuestionsAnswered: quizWithQuestions.quizQuestions.length,
+      totalCorrectAnswers: correctAnswers
+    }
+  });
 }

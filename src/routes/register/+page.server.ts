@@ -55,6 +55,12 @@ export const actions: Actions = {
         }
       });
 
+      await prisma.userStats.create({
+        data: {
+          userId: userId
+        }
+      });
+
       await prisma.userDetail.create({
         data: {
           userId: userId

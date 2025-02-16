@@ -1,8 +1,8 @@
 import prisma from '$lib/prisma';
-import { testUserId } from '$lib/constants.js';
 import { defaultQuizSize } from '$lib/constants.js';
 
 import { error } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
 async function selectQuestions(numberOfQuestions = defaultQuizSize) {
   const questions = [];
@@ -24,9 +24,10 @@ async function selectQuestions(numberOfQuestions = defaultQuizSize) {
   return questions;
 }
 
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ cookies }) {
-  const userId = cookies.get('userId') || testUserId; //TODO clean up after user auth setup
+export const load: PageServerLoad = async ({ locals }) => {
+  // TODO: Implement guest user tracking
+
+  const userId = !locals.user ? 'guest' : locals.user.id;
 
   try {
     // Check if the user already has an active quiz and return if so
@@ -49,7 +50,6 @@ export async function load({ cookies }) {
     }
 
     // If not, create a new quiz ID and store in the database
-
     const usersQuizCount =
       (await prisma.quiz.count({
         where: {
@@ -95,4 +95,4 @@ export async function load({ cookies }) {
     console.error(err);
     throw error(500, 'Failed to fetch quiz');
   }
-}
+};
