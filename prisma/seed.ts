@@ -121,9 +121,6 @@ async function main() {
   console.log('Seeding questions...');
   replace_question_records_from_json();
 
-  // console.log('Seeding users...');
-  // await prisma.user.createMany({ data: get_records_from_json('data/users.json') });
-
   console.log('Seeding learning resources...');
   await prisma.learningResources.deleteMany({});
   await prisma.learningResources.createMany({
