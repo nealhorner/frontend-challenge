@@ -137,12 +137,16 @@
         </p>
         {#if form?.deleteAccountUnauthorized}<ErrorMessage errorMessage={form.message} />{/if}
         {#if form?.deleteAccountIncorrectEmail}<ErrorMessage errorMessage={form.message} />{/if}
-        <label for="confirmDeleteAccount">Type your email address to confirm</label>
-        <input type="text" id="confirmDeleteAccount" name="email" autocomplete="off" required />
-        <Button type="reset" kind="secondary" onclick={() => (confirmDeleteAccount = false)}
-          >Cancel</Button
+        <label for="confirmDeleteAccount"
+          >Type your email address, {userAuthenticated.email}, to confirm</label
         >
-        <Button type="submit" kind="warning">Confirm Delete Account</Button>
+        <input type="text" id="confirmDeleteAccount" name="email" autocomplete="off" required />
+        <div>
+          <Button type="reset" kind="secondary" onclick={() => (confirmDeleteAccount = false)}
+            >Cancel</Button
+          >
+          <Button type="submit" kind="warning">Confirm Delete Account</Button>
+        </div>
       </form>
     {:else}
       <Button type="button" kind="warning" onclick={() => (confirmDeleteAccount = true)}
