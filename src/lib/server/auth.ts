@@ -35,8 +35,7 @@ export async function validateSessionToken(token: string) {
       user: {
         select: {
           id: true,
-          name: true,
-          email: true
+          role: true
         }
       }
     }
