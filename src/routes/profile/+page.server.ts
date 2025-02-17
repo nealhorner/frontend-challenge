@@ -16,46 +16,42 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
   const userId = locals.user.id;
 
   // Get the user from the session
-  const user = await prisma.user.findUnique({
+  const userNested = await prisma.user.findUnique({
     where: {
       id: userId
     },
-    select: {
-      createdAt: true,
-      updatedAt: true,
-      email: true,
-      name: true,
-      UserStats: {
-        select: {
-          totalQuizzesTaken: true,
-          totalQuestionsAnswered: true,
-          totalCorrectAnswers: true,
-          rank: true,
-          eloRating: true
+    include: {
+      UserAuthenticated: {
+        include: {
+          UserDetail: true
+        },
+        omit: {
+          hashedPassword: true
         }
       },
-      UserDetail: {
-        select: {
-          company: true,
-          website: true,
-          location: true,
-          github: true,
-          linkedIn: true,
-          twitter: true,
-          bluesky: true,
-          pronouns: true
-        }
-      }
+      UserStats: true
     }
   });
 
-  if (!user) {
-    error(400, {
-      message: 'User not found'
-    });
+  if (
+    !userNested ||
+    !userNested.UserStats ||
+    !userNested.UserAuthenticated ||
+    userNested.UserAuthenticated.UserDetail === null
+  ) {
+    console.warn('User or related data not found');
+    return redirect(302, '/');
   }
 
-  return user;
+  const { UserStats, UserAuthenticated, ...user } = userNested;
+  const { UserDetail, ...userAuthenticated } = UserAuthenticated;
+
+  if (!UserDetail) {
+    console.warn('User or related data not found');
+    return redirect(302, '/');
+  }
+
+  return { user, userAuthenticated, userDetail: UserDetail, userStats: UserStats };
 };
 
 export const actions: Actions = {
@@ -74,8 +70,21 @@ export const actions: Actions = {
     // Check that email matches
     const formData = await event.request.formData();
     const email = formData.get('email');
+    const user = await prisma.userAuthenticated.findUnique({
+      where: {
+        userId: userId
+      }
+    });
 
-    if (email !== event.locals.user.email) {
+    if (!user) {
+      console.warn('Unauthorized deleteAccount');
+      return fail(401, {
+        message: 'Unauthorized',
+        deleteAccountUnauthorized: true
+      });
+    }
+
+    if (email !== user.email) {
       return fail(400, {
         message: 'Email does not match',
         deleteAccountIncorrectEmail: true
@@ -83,21 +92,12 @@ export const actions: Actions = {
     }
 
     // Delete the user and associated data
-    await prisma.userSession.delete({
-      where: {
-        userId: userId
-      }
-    });
-    await prisma.userDetail.delete({
-      where: {
-        userId: userId
-      }
-    });
-    await prisma.user.delete({
-      where: {
-        id: userId
-      }
-    });
+    await prisma.$transaction([
+      prisma.userSession.delete({ where: { userId: userId } }),
+      prisma.userDetail.delete({ where: { userId: userId } }),
+      prisma.userAuthenticated.delete({ where: { userId: userId } }),
+      prisma.user.delete({ where: { id: userId } })
+    ]);
     auth.deleteSessionTokenCookie(event);
 
     console.log('Successfully deleted user', userId);
