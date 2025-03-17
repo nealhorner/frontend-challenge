@@ -4,9 +4,9 @@ import type { Actions, PageServerLoad } from './$types';
 import { createSession, generateSessionToken, setSessionTokenCookie } from '$lib/server/auth';
 import prisma from '$lib/prisma';
 
-export const load: PageServerLoad = async (event) => {
+export const load: PageServerLoad = async ({ locals }) => {
   // If user is already logged in, redirect to the main page
-  if (event.locals.user) {
+  if (locals.isAuthenticated) {
     console.log('User is already logged in');
     return redirect(302, '/');
   }
@@ -23,7 +23,7 @@ export const actions: Actions = {
       return fail(400, { message: 'Incorrect email or password', loginError: true });
     }
 
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.userAuthenticated.findUnique({
       where: { email: email }
     });
 
