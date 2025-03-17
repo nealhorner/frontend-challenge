@@ -30,8 +30,19 @@
   --page-content-padding: 32px;
 }
 
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 body {
   min-height: 100vh;
+  min-width: 375px;
   margin: 0;
 }
 
