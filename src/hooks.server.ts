@@ -1,4 +1,5 @@
-import { error, sequence } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
+import { error } from '@sveltejs/kit';
 import type { Handle } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth.js';
 import { handleErrorWithSentry, sentryHandle } from '@sentry/sveltekit';
