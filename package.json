@@ -70,7 +70,7 @@
     "@oslojs/encoding": "^1.1.0",
     "@prisma/client": "^6.3.0",
     "@sentry/sveltekit": "^8.2.1",
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^6.0.0",
     "isomorphic-dompurify": "^2.21.0",
     "tsx": "^4.10.2"
   }
