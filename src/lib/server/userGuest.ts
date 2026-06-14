@@ -29,6 +29,18 @@ export const deleteUserGuest = async function (userId: string) {
   await prisma.user.delete({ where: { id: userId } });
 };
 
+export const deleteExpiredGuests = async function () {
+  const result = await prisma.user.deleteMany({
+    where: {
+      role: 'GUEST',
+      UserGuest: {
+        expiresAt: { lt: new Date() }
+      }
+    }
+  });
+  return result.count;
+};
+
 export const migrateGuestToUser = async function (guestId: string, newUserId: string) {
   await prisma.$transaction(async (tx) => {
     await tx.quiz.updateMany({

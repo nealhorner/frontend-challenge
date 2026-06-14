@@ -10,7 +10,7 @@
 
   let { text, faIcon, title, optional = false }: Props = $props();
 
-  let display = !!text || !optional;
+  let display = $derived(!!text || !optional);
 </script>
 
 {#if display}
