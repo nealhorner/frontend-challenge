@@ -52,8 +52,6 @@ async function getOpenGraphData(url: string): Promise<OpenGraphData> {
   return parseOpenGraphTags(html);
 }
 
-getOpenGraphData('https://syntax.fm/');
-
 export const populateLearningResourceOpenGraphData = async () => {
   const learning_resources = await prisma.learningResources.findMany({
     select: { id: true, url: true }
@@ -77,5 +75,3 @@ export const populateLearningResourceOpenGraphData = async () => {
     }
   }
 };
-
-populateLearningResourceOpenGraphData();

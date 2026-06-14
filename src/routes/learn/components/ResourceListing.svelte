@@ -1,13 +1,17 @@
 <script lang="ts">
   /* eslint-disable svelte/no-at-html-tags */
 
-  export let title = '';
-  export let url = '';
-  export let description = '' as string | null;
-  export let imageURL = '' as string | null;
+  interface Props {
+    title?: string;
+    url?: string;
+    description?: string | null;
+    imageURL?: string | null;
+  }
+
+  let { title = '', url = '', description = '', imageURL = '' }: Props = $props();
 
   // Remove the protocol from the URL and the trailing slash
-  const displayURL = url.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, '');
+  let displayURL = $derived(url.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ''));
 </script>
 
 <a href={url} target="_blank">
