@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PageServerData } from './$types';
+  import type { PageServerData, ActionData } from './$types';
   import ProfileInfo from './components/profileInfo.svelte';
   import ProfileHeader from './components/ProfileHeader.svelte';
   import ProfileBio from './components/ProfileBio.svelte';
@@ -13,7 +13,7 @@
 
   interface Props {
     data: PageServerData;
-    form: HTMLFormElement;
+    form: ActionData;
   }
 
   let { data, form }: Props = $props();

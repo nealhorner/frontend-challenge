@@ -8,8 +8,11 @@ import type { Actions, PageServerLoad } from './$types';
 
 async function selectQuestions(numberOfQuestions = defaultQuizSize) {
   const questions = [];
-  let candidateQuestions = await prisma.question.findMany();
-  candidateQuestions = candidateQuestions.sort(() => 0.5 - Math.random());
+  const candidateQuestions = await prisma.question.findMany();
+  for (let i = candidateQuestions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [candidateQuestions[i], candidateQuestions[j]] = [candidateQuestions[j], candidateQuestions[i]];
+  }
 
   const seenFamilies = new Set();
 
