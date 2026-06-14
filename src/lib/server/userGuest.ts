@@ -1,7 +1,7 @@
 import prisma from '$lib/prisma';
 
 export const createUserGuest = async function () {
-  // Create a new guess user in the database
+  // Create a new guest user in the database
 
   const uuid = crypto.randomUUID();
 
@@ -45,7 +45,15 @@ export const deleteExpiredGuests = async function () {
 };
 
 export const migrateGuestToUser = async function (guestId: string, newUserId: string) {
+  if (!guestId || !newUserId) throw new Error('Guest ID and new user ID are required');
+  if (guestId === newUserId) throw new Error('Cannot migrate guest to itself');
+
   await prisma.$transaction(async (tx) => {
+    const guestUser = await tx.user.findUnique({ where: { id: guestId }, select: { role: true } });
+    if (!guestUser || guestUser.role !== 'GUEST') {
+      throw new Error(`User ${guestId} is not a guest user`);
+    }
+
     await tx.quiz.updateMany({
       where: { userId: guestId },
       data: { userId: newUserId }
@@ -53,9 +61,17 @@ export const migrateGuestToUser = async function (guestId: string, newUserId: st
 
     const guestStats = await tx.userStats.findUnique({ where: { userId: guestId } });
     if (guestStats) {
-      const newUserStats = await tx.userStats.update({
+      const newUserStats = await tx.userStats.upsert({
         where: { userId: newUserId },
-        data: {
+        update: {
+          totalQuizzesTaken: guestStats.totalQuizzesTaken,
+          totalQuestionsAnswered: guestStats.totalQuestionsAnswered,
+          totalCorrectAnswers: guestStats.totalCorrectAnswers,
+          rank: guestStats.rank,
+          eloRating: guestStats.eloRating
+        },
+        create: {
+          userId: newUserId,
           totalQuizzesTaken: guestStats.totalQuizzesTaken,
           totalQuestionsAnswered: guestStats.totalQuestionsAnswered,
           totalCorrectAnswers: guestStats.totalCorrectAnswers,

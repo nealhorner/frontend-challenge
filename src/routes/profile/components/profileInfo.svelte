@@ -28,7 +28,6 @@
   .profile-info-icon-container {
     margin-right: 0.5rem;
     width: 16px;
-    background-color: aqua;
     display: flex;
     align-items: center;
     justify-content: center;
