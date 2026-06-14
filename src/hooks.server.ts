@@ -1,5 +1,4 @@
 import { sequence } from '@sveltejs/kit/hooks';
-import { error } from '@sveltejs/kit';
 import type { Handle } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth.js';
 import { handleErrorWithSentry, sentryHandle } from '@sentry/sveltekit';
@@ -16,16 +15,6 @@ Sentry.init({
 
 // If you have a custom error handler, pass it to `handleErrorWithSentry`
 export const handleError = handleErrorWithSentry();
-
-const handleCron: Handle = async ({ event, resolve }) => {
-  if (event.url.pathname.startsWith('/api/cron')) {
-    const cronSecret = process.env.CRON_SECRET;
-    if (!cronSecret || event.request.headers.get('Authorization') !== `Bearer ${cronSecret}`) {
-      throw error(401, 'Unauthorized');
-    }
-  }
-  return resolve(event);
-};
 
 const handleAuth: Handle = async ({ event, resolve }) => {
   const sessionToken = event.cookies.get(auth.sessionCookieName);
@@ -51,4 +40,4 @@ const handleAuth: Handle = async ({ event, resolve }) => {
   return resolve(event);
 };
 
-export const handle = sequence(sentryHandle(), handleCron, handleAuth);
+export const handle = sequence(sentryHandle(), handleAuth);

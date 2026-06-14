@@ -1,10 +1,9 @@
 /**
  * Scheduled cleanup: delete expired guest users (and their related rows).
  *
- * Run as a one-shot Railway cron service via `npm run cleanupGuests`. This
- * replaces the old `/api/cron/cleanup-guests` HTTP trigger by calling the same
- * `deleteExpiredGuests()` logic directly, so no public endpoint or CRON_SECRET
- * is needed for scheduling.
+ * Run as a one-shot Railway cron service via `npm run cleanupGuests`. It calls
+ * `deleteExpiredGuests()` directly against the database, so no public endpoint
+ * is involved.
  *
  * Best-effort by design: a failure is logged and must not crash the cron
  * runner in a confusing way, but we still surface a non-zero state so Railway's
