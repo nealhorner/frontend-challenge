@@ -81,7 +81,7 @@ async function updateEloRankings(
   );
   await prisma.userStats.update({
     where: { userId: userId },
-    data: { eloRating: updatedUserRating.eloRating }
+    data: { eloRating: Math.round(updatedUserRating.eloRating) }
   });
 
   // Update the question's ranking
@@ -90,7 +90,7 @@ async function updateEloRankings(
   );
   await prisma.question.update({
     where: { id: questionId },
-    data: { eloRating: updatedQuestionRating.eloRating }
+    data: { eloRating: Math.round(updatedQuestionRating.eloRating) }
   });
 }
 

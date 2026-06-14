@@ -7,7 +7,7 @@
     rank: number;
   }
 
-  let { completedQuizzes = 0, accuracy = 1, rank = 0 }: Props = $props();
+  let { completedQuizzes = 0, accuracy = 0, rank = 0 }: Props = $props();
 
   function formatPercentage(value: number) {
     return `${Math.round(value * 100)}%`;
@@ -17,7 +17,8 @@
   }
 
   function OrdinalNumberSuffix(value: number) {
-    if (value > 3 && value < 21) return 'th';
+    const mod100 = value % 100;
+    if (mod100 >= 11 && mod100 <= 13) return 'th';
     switch (value % 10) {
       case 1:
         return 'st';

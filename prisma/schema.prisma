@@ -139,7 +139,7 @@ model QuizQuestion {
   isCorrect         Boolean?
   askedTimestamp    DateTime?
   answeredTimestamp DateTime?
-  quiz              Quiz      @relation(fields: [quizId], references: [id])
+  quiz              Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
   question          Question  @relation(fields: [questionId], references: [id])
 
   @@id([quizId, questionId])

@@ -87,7 +87,9 @@ export const POST = async ({ request }) => {
     });
 
     // Perform post-quiz tasks
-    postQuizTasksNonBlocking(quizWithQuestions);
+    void postQuizTasksNonBlocking(quizWithQuestions).catch((error) => {
+      console.error('postQuizTasksNonBlocking failed', { quizId: quizWithQuestions.id, error });
+    });
   }
 
   return json(savedAnswer);
@@ -135,7 +137,7 @@ async function postQuizTasksNonBlocking(quizWithQuestions: QuizDataWithoutQuesti
         SELECT 
             us.id, 
             us."userId", 
-            RANK() OVER (PARTITION BY "userId" ORDER BY "eloRating" DESC) AS new_rank
+            RANK() OVER (ORDER BY "eloRating" DESC, us.id ASC) AS new_rank
         FROM "UserStats" us
     )
     UPDATE "UserStats"

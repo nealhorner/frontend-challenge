@@ -4,7 +4,7 @@
     rating: number;
     profilePhoto?: string;
   }
-  let { username, rating, profilePhoto = 'images/profile/default-profile.png' }: Props = $props();
+  let { username, rating, profilePhoto = '/images/profile/default-profile.png' }: Props = $props();
 </script>
 
 <section class="profile-header">

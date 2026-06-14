@@ -3,8 +3,8 @@ import { defaultQuizSize } from '$lib/constants.js';
 import { createUserGuest } from '$lib/server/userGuest';
 import { createSession, generateSessionToken, setSessionTokenCookie } from '$lib/server/auth';
 
-import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { error, fail, redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
 
 async function selectQuestions(numberOfQuestions = defaultQuizSize) {
   const questions = [];
@@ -27,8 +27,6 @@ async function selectQuestions(numberOfQuestions = defaultQuizSize) {
 }
 
 export const load: PageServerLoad = async (event) => {
-  // TODO: Implement guest user tracking
-
   let userId;
 
   if (!event.locals.user) {
@@ -42,7 +40,6 @@ export const load: PageServerLoad = async (event) => {
   }
 
   try {
-    // Check if the user already has an active quiz and return if so
     const quizWithQuestions = await prisma.quiz.findFirst({
       where: {
         userId: userId,
@@ -57,54 +54,49 @@ export const load: PageServerLoad = async (event) => {
       }
     });
 
-    if (quizWithQuestions) {
-      return quizWithQuestions;
-    }
-
-    // If not, create a new quiz ID and store in the database
-    const usersQuizCount =
-      (await prisma.quiz.count({
-        where: {
-          userId: userId
-        }
-      })) || 0;
-
-    const newQuiz = await prisma.quiz.create({
-      data: {
-        userId: userId,
-        title: `Quiz #${usersQuizCount + 1}`
-      }
-    });
-
-    const questions = await selectQuestions();
-
-    await Promise.all(
-      questions.map((question) =>
-        prisma.quizQuestion.create({
-          data: {
-            quizId: newQuiz.id,
-            questionId: question.id
-          }
-        })
-      )
-    );
-
-    const newQuizWithQuestions = await prisma.quiz.findUnique({
-      where: {
-        id: newQuiz.id
-      },
-      include: {
-        quizQuestions: {
-          include: {
-            question: true
-          }
-        }
-      }
-    });
-
-    return newQuizWithQuestions;
+    return { quiz: quizWithQuestions };
   } catch (err) {
     console.error(err);
     throw error(500, 'Failed to fetch quiz');
+  }
+};
+
+export const actions: Actions = {
+  start: async (event) => {
+    const userId = event.locals.user?.id;
+    if (!userId) {
+      return redirect(302, '/quiz');
+    }
+
+    try {
+      const usersQuizCount =
+        (await prisma.quiz.count({
+          where: { userId }
+        })) || 0;
+
+      const newQuiz = await prisma.quiz.create({
+        data: {
+          userId,
+          title: `Quiz #${usersQuizCount + 1}`
+        }
+      });
+
+      const questions = await selectQuestions();
+      await Promise.all(
+        questions.map((question) =>
+          prisma.quizQuestion.create({
+            data: {
+              quizId: newQuiz.id,
+              questionId: question.id
+            }
+          })
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      return fail(500, { message: 'Failed to create quiz' });
+    }
+
+    return redirect(302, '/quiz');
   }
 };

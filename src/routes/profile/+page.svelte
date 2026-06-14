@@ -17,7 +17,9 @@
   }
 
   let { data, form }: Props = $props();
-  const { user, userAuthenticated, userDetail, userStats } = data;
+  let userAuthenticated = $derived(data.userAuthenticated);
+  let userDetail = $derived(data.userDetail);
+  let userStats = $derived(data.userStats);
 
   let profilePhoto: string | undefined = undefined; // TODO - get profile photo from data
 
@@ -37,7 +39,7 @@
     <ProfileStats
       completedQuizzes={userStats.totalQuizzesTaken}
       accuracy={userStats.totalQuestionsAnswered === 0
-        ? 1
+        ? 0
         : userStats.totalCorrectAnswers / userStats.totalQuestionsAnswered}
       rank={userStats.rank}
     />
@@ -73,8 +75,8 @@
         <button type="submit">Save</button><button type="reset">Cancel</button>
       </form>
     {:else}
-      <ProfileInfo text={userDetail.company} faIcon={faBuilding} title="Company" optional />
-      <ProfileInfo text={userDetail.website} faIcon={faGlobe} title="Website " optional />
+      <ProfileInfo text={userDetail?.company} faIcon={faBuilding} title="Company" optional />
+      <ProfileInfo text={userDetail?.website} faIcon={faGlobe} title="Website " optional />
       <ProfileInfo
         text={data.userDetail?.location}
         faIcon={faLocationDot}

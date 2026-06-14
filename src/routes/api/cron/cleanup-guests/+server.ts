@@ -1,10 +1,12 @@
 import { json } from '@sveltejs/kit';
 import { deleteExpiredGuests } from '$lib/server/userGuest';
+import { env } from '$env/dynamic/private';
 
-// TODO: This endpoint is currently unauthenticated and publicly triggerable.
-// Revisit during the host provider migration to protect it (e.g. a cron secret
-// header) and wire it up to the new scheduler.
-export async function GET() {
+export async function GET({ request }) {
+  const secret = env.CRON_SECRET;
+  if (!secret || request.headers.get('x-cron-secret') !== secret) {
+    return json({ error: 'Unauthorized' }, { status: 401 });
+  }
   const deleted = await deleteExpiredGuests();
   return json({ deleted });
 }

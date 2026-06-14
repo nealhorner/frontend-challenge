@@ -22,6 +22,10 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
   default: async (event) => {
+    if (event.locals.isAuthenticated) {
+      return redirect(302, '/');
+    }
+
     const formData = await event.request.formData();
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
@@ -69,7 +73,7 @@ export const actions: Actions = {
       });
 
       if (event.locals.user?.id) {
-        const guestUser = await prisma.user.findUnique({
+        const guestUser = await prisma.user.findFirst({
           where: { id: event.locals.user.id, role: 'GUEST' }
         });
 

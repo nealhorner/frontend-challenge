@@ -26,7 +26,10 @@ export const createUserGuest = async function () {
 };
 
 export const deleteUserGuest = async function (userId: string) {
-  await prisma.user.delete({ where: { id: userId } });
+  const result = await prisma.user.deleteMany({ where: { id: userId, role: 'GUEST' } });
+  if (result.count !== 1) {
+    throw new Error(`Guest user not found: ${userId}`);
+  }
 };
 
 export const deleteExpiredGuests = async function () {
