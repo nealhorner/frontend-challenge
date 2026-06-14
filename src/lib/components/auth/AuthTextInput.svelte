@@ -17,7 +17,7 @@
     error = ''
   }: Props = $props();
 
-  let haveError = error !== '';
+  let haveError = $derived(error !== '');
 </script>
 
 <div>

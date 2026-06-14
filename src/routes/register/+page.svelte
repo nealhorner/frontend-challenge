@@ -10,7 +10,7 @@
     other?: string;
   }
 
-  let errorObject: ErrorObject = form?.error || {}; //TODO fix error handling on registration form
+  let errorObject: ErrorObject = $derived(form?.error || {});
 </script>
 
 <svelte:head>

@@ -72,29 +72,28 @@ export const actions: Actions = {
     }
 
     try {
-      const usersQuizCount =
-        (await prisma.quiz.count({
-          where: { userId }
-        })) || 0;
-
-      const newQuiz = await prisma.quiz.create({
-        data: {
-          userId,
-          title: `Quiz #${usersQuizCount + 1}`
-        }
-      });
+      const existingQuiz = await prisma.quiz.findFirst({ where: { userId, isCompleted: false } });
+      if (existingQuiz) {
+        return fail(409, { message: 'You already have an active quiz' });
+      }
 
       const questions = await selectQuestions();
-      await Promise.all(
-        questions.map((question) =>
-          prisma.quizQuestion.create({
-            data: {
-              quizId: newQuiz.id,
-              questionId: question.id
-            }
-          })
-        )
-      );
+
+      await prisma.$transaction(async (tx) => {
+        const usersQuizCount = (await tx.quiz.count({ where: { userId } })) || 0;
+
+        const newQuiz = await tx.quiz.create({
+          data: { userId, title: `Quiz #${usersQuizCount + 1}` }
+        });
+
+        await Promise.all(
+          questions.map((question) =>
+            tx.quizQuestion.create({
+              data: { quizId: newQuiz.id, questionId: question.id }
+            })
+          )
+        );
+      });
     } catch (err) {
       console.error(err);
       return fail(500, { message: 'Failed to create quiz' });

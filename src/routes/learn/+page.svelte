@@ -8,10 +8,10 @@
   }
 
   let { data }: Props = $props();
-  const { learning_resources } = data;
-  const blogs = learning_resources.filter((resource) => resource.type === 'blog');
-  const courses = learning_resources.filter((resource) => resource.type === 'course');
-  const podcasts = learning_resources.filter((resource) => resource.type === 'podcast');
+  let learning_resources = $derived(data.learning_resources);
+  let blogs = $derived(learning_resources.filter((resource) => resource.type === 'blog'));
+  let courses = $derived(learning_resources.filter((resource) => resource.type === 'course'));
+  let podcasts = $derived(learning_resources.filter((resource) => resource.type === 'podcast'));
 
   // const sendEmail = () => {
   //   const email = 'mailto:'; //FIXME: Add your email here

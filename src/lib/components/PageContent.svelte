@@ -5,11 +5,11 @@
     children: Snippet;
   }
 
-  let props: Props = $props();
+  let { children }: Props = $props();
 </script>
 
 <main class="page-content">
-  {@render props.children?.()}
+  {@render children?.()}
 </main>
 
 <style>

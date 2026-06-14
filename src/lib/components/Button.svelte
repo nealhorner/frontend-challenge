@@ -9,6 +9,7 @@
     kind?: Kind;
   }
 
+  /* eslint-disable svelte/valid-compile */
   let {
     children,
     kind = 'primary',
@@ -16,6 +17,7 @@
     disabled = false,
     ...restProps
   }: ComponentProps = $props();
+  /* eslint-enable svelte/valid-compile */
 
   let classList = $derived(['no-select', kind && `c-button-${kind}`].filter(Boolean).join(' '));
   let buttonProps: HTMLButtonAttributes = $derived({

@@ -8,9 +8,6 @@
   }
 
   let { data }: Props = $props();
-
-  console.log(data);
-  console.log(data.quizResult.quizQuestions);
 </script>
 
 <main>

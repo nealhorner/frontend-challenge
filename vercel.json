@@ -1,9 +1,0 @@
-{
-  "outputDirectory": "build",
-  "crons": [
-    {
-      "path": "/api/cron/open-graph",
-      "schedule": "0 0 * * *"
-    }
-  ]
-}
