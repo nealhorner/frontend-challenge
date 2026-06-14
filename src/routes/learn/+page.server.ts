@@ -1,19 +1,18 @@
 import prisma from '$lib/prisma';
 import type { PageServerLoad } from './$types';
-import { decodeHTML } from '$lib/utilities/decodeHTML';
-import { cleanUnsafeHTML } from '$lib/utilities/cleanUnsafeHTML';
+import DOMPurify from 'isomorphic-dompurify';
 
 export const load = (async () => {
   try {
     const learning_resources = await prisma.learningResources.findMany();
 
-    // Sanitize the description
-    learning_resources.forEach((learning_resource) => {
-      if (learning_resource.description) {
-        const decodedHTML = decodeHTML(learning_resource.description);
-        learning_resource.description = cleanUnsafeHTML(decodedHTML);
+    // Sanitize the description field
+    // TODO move this to cron job
+    for (const resource of learning_resources) {
+      if (resource.description) {
+        resource.description = DOMPurify.sanitize(resource.description);
       }
-    });
+    }
 
     return { learning_resources };
   } catch (error) {

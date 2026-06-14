@@ -9,10 +9,11 @@ import {
   generateSessionToken,
   setSessionTokenCookie
 } from '$lib/server/auth';
+import { migrateGuestToUser } from '$lib/server/userGuest';
 
 export const load: PageServerLoad = async (event) => {
   // If user is already logged in, redirect to the main page
-  if (event.locals.user) {
+  if (event.locals.isAuthenticated) {
     console.log('User is already logged in');
     return redirect(302, '/');
   }
@@ -21,6 +22,10 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
   default: async (event) => {
+    if (event.locals.isAuthenticated) {
+      return redirect(302, '/');
+    }
+
     const formData = await event.request.formData();
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
@@ -46,25 +51,42 @@ export const actions: Actions = {
     });
 
     try {
+      // Create a new authenticated user in the database with related records
       await prisma.user.create({
         data: {
           id: userId,
-          email: email,
-          hashedPassword: passwordHash,
-          name: email // TODO name be populated here
+          role: 'USER',
+          UserAuthenticated: {
+            create: {
+              email: email,
+              hashedPassword: passwordHash,
+              name: name,
+              UserDetail: {
+                create: {}
+              }
+            }
+          },
+          UserStats: {
+            create: {}
+          }
         }
       });
 
-      await prisma.userDetail.create({
-        data: {
-          userId: userId
+      if (event.locals.user?.id) {
+        const guestUser = await prisma.user.findFirst({
+          where: { id: event.locals.user.id, role: 'GUEST' }
+        });
+
+        if (guestUser) {
+          await migrateGuestToUser(guestUser.id, userId);
         }
-      });
+      }
 
       const sessionToken = generateSessionToken();
       const session = await createSession(sessionToken, userId);
       setSessionTokenCookie(event, sessionToken, session.expiresAt);
     } catch (e) {
+      console.error(e);
       return fail(500, { message: 'An error has occurred' });
     }
     return redirect(302, '/');

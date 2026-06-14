@@ -8,18 +8,41 @@ datasource db {
 }
 
 model User {
-  id             String        @id
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  email          String        @unique
-  name           String        @unique
+  id                String             @id
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  role              String             @default("GUEST")
+  quizzes           Quiz[]
+  UserSession       UserSession?
+  UserStats         UserStats?
+  UserGuest         UserGuest?
+  UserAuthenticated UserAuthenticated?
+}
+
+model UserGuest {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+
+  @@index([userId])
+}
+
+model UserAuthenticated {
+  id             String      @id @default(uuid())
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  email          String      @unique
+  name           String      @unique
   hashedPassword String
-  authToken      String?
-  emailVerified  Boolean       @default(false)
-  eloRating      Int           @default(1000)
-  quizzes        Quiz[]
-  auth_session   UserSession[]
-  UserDetail     UserDetail[]
+  emailVerified  Boolean     @default(false)
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String      @unique
+  UserDetail     UserDetail?
+
+  @@index([userId])
 }
 
 model UserSession {
@@ -27,39 +50,72 @@ model UserSession {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @unique
 
   @@index([userId])
 }
 
 model UserDetail {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
-  company   String?
-  website   String?
-  location  String?
-  github    String?
-  linkedIn  String?
-  twitter   String?
-  bluesky   String?
-  pronouns  String?
-  updatedAt DateTime @updatedAt
+  id                String            @id @default(uuid())
+  UserAuthenticated UserAuthenticated @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String            @unique
+  company           String?
+  website           String?
+  location          String?
+  github            String?
+  linkedIn          String?
+  twitter           String?
+  bluesky           String?
+  pronouns          String?
+  updatedAt         DateTime          @updatedAt
 
   @@index([userId])
+}
+
+model UserStats {
+  id                     String            @id @default(uuid())
+  user                   User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                 String            @unique
+  totalQuizzesTaken      Int               @default(0)
+  totalQuestionsAnswered Int               @default(0)
+  totalCorrectAnswers    Int               @default(0)
+  rank                   Int               @default(0)
+  eloRating              Int               @default(1000)
+  updatedAt              DateTime          @updatedAt
+  UserStatsTrends        UserStatsTrends[]
+
+  @@index([userId])
+}
+
+model UserStatsTrends {
+  id                     String    @id @default(uuid())
+  userStats              UserStats @relation(fields: [userStatsId], references: [id], onDelete: Cascade)
+  userStatsId            String
+  date                   DateTime
+  totalQuizzesTaken      Int       @default(0)
+  totalQuestionsAnswered Int       @default(0)
+  totalCorrectAnswers    Int       @default(0)
+  rank                   Int       @default(0)
+  eloRating              Int       @default(1000)
+  updatedAt              DateTime  @updatedAt
+
+  @@unique([userStatsId, date], name: "user_stats_trend_user_id_date")
+  @@index([userStatsId])
 }
 
 model Quiz {
   id                 String         @id @default(uuid())
   title              String
   userId             String
-  user               User           @relation(fields: [userId], references: [id])
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   score              Int            @default(0)
   isCompleted        Boolean        @default(false)
   startedTimestamp   DateTime       @default(now())
   completedTimestamp DateTime?
   quizQuestions      QuizQuestion[]
+
+  @@index([userId])
 }
 
 model Question {
@@ -83,7 +139,7 @@ model QuizQuestion {
   isCorrect         Boolean?
   askedTimestamp    DateTime?
   answeredTimestamp DateTime?
-  quiz              Quiz      @relation(fields: [quizId], references: [id])
+  quiz              Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
   question          Question  @relation(fields: [questionId], references: [id])
 
   @@id([quizId, questionId])

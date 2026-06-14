@@ -4,9 +4,9 @@ import type { Actions, PageServerLoad } from './$types';
 import { createSession, generateSessionToken, setSessionTokenCookie } from '$lib/server/auth';
 import prisma from '$lib/prisma';
 
-export const load: PageServerLoad = async (event) => {
+export const load: PageServerLoad = async ({ locals }) => {
   // If user is already logged in, redirect to the main page
-  if (event.locals.user) {
+  if (locals.isAuthenticated) {
     console.log('User is already logged in');
     return redirect(302, '/');
   }
@@ -23,7 +23,7 @@ export const actions: Actions = {
       return fail(400, { message: 'Incorrect email or password', loginError: true });
     }
 
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.userAuthenticated.findUnique({
       where: { email: email }
     });
 
@@ -42,25 +42,9 @@ export const actions: Actions = {
     }
 
     const sessionToken = generateSessionToken();
-    const session = await createSession(sessionToken, existingUser.id);
+    const session = await createSession(sessionToken, existingUser.userId);
     setSessionTokenCookie(event, sessionToken, session.expiresAt);
 
     return redirect(302, '/');
   }
 };
-
-// function validateName(name: unknown): name is string {
-//   //TODO more robust name validation
-//   return (
-//     typeof name === 'string' && name.length >= 3 && name.length <= 31 && /^[a-z0-9_-]+$/.test(name)
-//   );
-// }
-
-// function validateEmail(email: unknown): email is string {
-//   return typeof email === 'string' && email.length >= 3 && email.length <= 255; // TODO more robust email validation
-// }
-
-// function validatePassword(password: unknown): password is string {
-//   //TODO more robust password validation
-//   return typeof password === 'string' && password.length >= 6 && password.length <= 255;
-// }

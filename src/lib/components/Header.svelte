@@ -56,7 +56,7 @@
         </div>
         <div class="click-container" bind:this={clickContainer}>
           <div class="toggle-btn-wrapper">
-            <button class="toggle-btn" onclick={handleClick}>Menu</button>
+            <button class="toggle-btn" aria-label="Menu" onclick={handleClick}></button>
           </div>
           <div style="display: {showVerticalMenu ? 'flex' : 'none'};">
             <div class="vertical-nav">
@@ -105,6 +105,7 @@
     text-shadow: 1px 1px var(--color-orange);
     font-size: 2.5rem;
     margin: auto 0;
+    white-space: nowrap;
   }
 
   #nav-wrapper > div {
@@ -201,6 +202,13 @@
   }
 
   @media (max-width: 768px) {
+    #nav-wrapper {
+      padding: 5px;
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
     .toggle-btn-wrapper {
       display: flex; /* Show button on narrow screens */
     }

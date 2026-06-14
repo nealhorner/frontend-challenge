@@ -8,9 +8,9 @@
 
 <div class="app">
   <Header isAuthenticated={data.isAuthenticated} />
-  <main>
+  <div class="page-content">
     {@render children?.()}
-  </main>
+  </div>
   <Footer />
 </div>
 
@@ -20,7 +20,7 @@
     flex-direction: column;
     min-height: 100vh;
   }
-  main {
+  .page-content {
     flex: 1;
     display: flex;
     flex-direction: column;

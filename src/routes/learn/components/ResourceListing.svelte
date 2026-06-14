@@ -1,13 +1,10 @@
 <script lang="ts">
   /* eslint-disable svelte/no-at-html-tags */
-  import DOMPurify from 'dompurify';
 
   export let title = '';
   export let url = '';
   export let description = '' as string | null;
   export let imageURL = '' as string | null;
-
-  $: sanitizedDescription = description ? DOMPurify.sanitize(description) : null;
 
   // Remove the protocol from the URL and the trailing slash
   const displayURL = url.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, '');
@@ -18,7 +15,7 @@
     <div class="resource-content">
       <h3>{title}</h3>
       {#if description}
-        <p class="resource-description">{@html sanitizedDescription}</p>
+        <p class="resource-description">{@html description}</p>
       {/if}
       <p class="link-text">{displayURL}</p>
       <!-- TODO make this line look like a link-->

@@ -7,8 +7,6 @@
   }
 
   let { data }: Props = $props();
-
-  console.log(data);
 </script>
 
 <main>

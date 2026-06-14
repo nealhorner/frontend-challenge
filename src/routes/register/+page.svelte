@@ -1,5 +1,6 @@
 <script lang="ts">
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
+  import Button from '$lib/components/Button.svelte';
   let { form } = $props();
 
   interface ErrorObject {
@@ -9,7 +10,7 @@
     other?: string;
   }
 
-  let errorObject: ErrorObject = form?.error || {};
+  let errorObject: ErrorObject = $derived(form?.error || {});
 </script>
 
 <svelte:head>
@@ -48,8 +49,7 @@
       autocomplete="new-password"
       error={errorObject?.password}
     />
-    <!-- TODO Change to button component -->
-    <button type="submit">Register</button>
+    <Button type="submit" kind="primary">Register</Button>
     <p>Already have an account? <a href="/login">Login here</a></p>
   </form>
 </main>
@@ -71,15 +71,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-
-  button {
-    padding: 0.5rem 1rem;
-    background-color: var(--color-blue);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
   }
 
   .error {
