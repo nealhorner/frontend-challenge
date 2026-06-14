@@ -1,16 +1,11 @@
 <script lang="ts">
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
   import Button from '$lib/components/Button.svelte';
-  let { form } = $props();
+  import type { ActionData } from './$types';
 
-  interface ErrorObject {
-    email?: string;
-    name?: string;
-    password?: string;
-    other?: string;
-  }
+  let { form }: { form: ActionData } = $props();
 
-  let errorObject: ErrorObject = $derived(form?.error || {});
+  let errorMessage = $derived(form?.message ?? '');
 </script>
 
 <svelte:head>
@@ -21,33 +16,19 @@
 <main>
   <h1>Registration</h1>
 
-  {#if errorObject?.other}
-    <p class="error">{errorObject.other}</p>
+  {#if errorMessage}
+    <p class="error">{errorMessage}</p>
   {/if}
 
   <form method="post">
-    <AuthTextInput
-      label="Name"
-      id="name"
-      name="name"
-      autocomplete="name"
-      error={errorObject?.name}
-    />
-    <AuthTextInput
-      label="Email"
-      id="email"
-      type="email"
-      name="email"
-      autocomplete="email"
-      error={errorObject?.email}
-    />
+    <AuthTextInput label="Name" id="name" name="name" autocomplete="name" />
+    <AuthTextInput label="Email" id="email" type="email" name="email" autocomplete="email" />
     <AuthTextInput
       label="Password"
       id="password"
       type="password"
       name="password"
       autocomplete="new-password"
-      error={errorObject?.password}
     />
     <Button type="submit" kind="primary">Register</Button>
     <p>Already have an account? <a href="/login">Login here</a></p>
