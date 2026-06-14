@@ -1,5 +1,7 @@
 import prisma from '$lib/prisma';
 import { defaultQuizSize } from '$lib/constants.js';
+import { createUserGuest } from '$lib/server/userGuest';
+import { createSession, generateSessionToken, setSessionTokenCookie } from '$lib/server/auth';
 
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
@@ -24,10 +26,20 @@ async function selectQuestions(numberOfQuestions = defaultQuizSize) {
   return questions;
 }
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async (event) => {
   // TODO: Implement guest user tracking
 
-  const userId = !locals.user ? 'guest' : locals.user.id;
+  let userId;
+
+  if (!event.locals.user) {
+    const guestUser = await createUserGuest();
+    const sessionToken = generateSessionToken();
+    const session = await createSession(sessionToken, guestUser.id);
+    setSessionTokenCookie(event, sessionToken, session.expiresAt);
+    userId = guestUser.id;
+  } else {
+    userId = event.locals.user.id;
+  }
 
   try {
     // Check if the user already has an active quiz and return if so

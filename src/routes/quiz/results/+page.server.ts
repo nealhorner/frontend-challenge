@@ -1,10 +1,14 @@
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
-import { testUserId } from '$lib/constants';
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ cookies }) => {
-  const userId = cookies.get('userId') || testUserId; //TODO clean up after user auth setup
+export const load = (async ({ locals }) => {
+  if (!locals.user) {
+    console.error('No user found in locals for results page');
+    redirect(302, '/');
+  }
+
+  const userId = locals.user.id;
   const quizResult = await prisma.quiz.findMany({
     where: {
       isCompleted: true,

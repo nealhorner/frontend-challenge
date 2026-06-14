@@ -75,8 +75,8 @@ model UserDetail {
 
 model UserStats {
   id                     String            @id @default(uuid())
-  user                   User              @relation(fields: [userId], references: [id], onDelete: SetDefault)
-  userId                 String            @unique @default(uuid())
+  user                   User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                 String            @unique
   totalQuizzesTaken      Int               @default(0)
   totalQuestionsAnswered Int               @default(0)
   totalCorrectAnswers    Int               @default(0)
@@ -108,12 +108,14 @@ model Quiz {
   id                 String         @id @default(uuid())
   title              String
   userId             String
-  user               User           @relation(fields: [userId], references: [id])
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   score              Int            @default(0)
   isCompleted        Boolean        @default(false)
   startedTimestamp   DateTime       @default(now())
   completedTimestamp DateTime?
   quizQuestions      QuizQuestion[]
+
+  @@index([userId])
 }
 
 model Question {

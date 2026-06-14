@@ -91,13 +91,8 @@ export const actions: Actions = {
       });
     }
 
-    // Delete the user and associated data
-    await prisma.$transaction([
-      prisma.userSession.delete({ where: { userId: userId } }),
-      prisma.userDetail.delete({ where: { userId: userId } }),
-      prisma.userAuthenticated.delete({ where: { userId: userId } }),
-      prisma.user.delete({ where: { id: userId } })
-    ]);
+    // Delete the user (related records are removed via cascading deletes)
+    await prisma.user.delete({ where: { id: userId } });
     auth.deleteSessionTokenCookie(event);
 
     console.log('Successfully deleted user', userId);
