@@ -18,96 +18,113 @@ const ARGON2_OPTIONS = {
   parallelism: 1
 } as const;
 
-export const auth = betterAuth({
-  database: prismaAdapter(prisma, { provider: 'postgresql' }),
+function createAuth() {
+  return betterAuth({
+    database: prismaAdapter(prisma, { provider: 'postgresql' }),
 
-  emailAndPassword: {
-    enabled: true,
-    // Keep Argon2 hashing so pre-migration credentials still authenticate.
-    password: {
-      hash: (password) => argon2Hash(password, ARGON2_OPTIONS),
-      verify: ({ hash, password }) => argon2Verify(hash, password, ARGON2_OPTIONS)
-    }
-  },
-
-  socialProviders: {
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID ?? '',
-      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? ''
+    emailAndPassword: {
+      enabled: true,
+      // Keep Argon2 hashing so pre-migration credentials still authenticate.
+      password: {
+        hash: (password) => argon2Hash(password, ARGON2_OPTIONS),
+        verify: ({ hash, password }) => argon2Verify(hash, password, ARGON2_OPTIONS)
+      }
     },
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
-    }
-  },
 
-  // Every user (guest or real) needs a UserStats row for quiz tracking; real
-  // users also get a UserDetail row (the profile page expects one). This
-  // replaces the related-record creation the old createUserGuest/register did.
-  databaseHooks: {
-    user: {
-      create: {
-        after: async (user) => {
-          await prisma.userStats.upsert({
-            where: { userId: user.id },
-            update: {},
-            create: { userId: user.id }
-          });
+    socialProviders: {
+      github: {
+        clientId: process.env.GITHUB_CLIENT_ID ?? '',
+        clientSecret: process.env.GITHUB_CLIENT_SECRET ?? ''
+      },
+      google: {
+        clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
+      }
+    },
 
-          if (!user.isAnonymous) {
-            await prisma.userDetail.upsert({
+    // Every user (guest or real) needs a UserStats row for quiz tracking; real
+    // users also get a UserDetail row (the profile page expects one). This
+    // replaces the related-record creation the old createUserGuest/register did.
+    databaseHooks: {
+      user: {
+        create: {
+          after: async (user) => {
+            await prisma.userStats.upsert({
               where: { userId: user.id },
               update: {},
               create: { userId: user.id }
             });
+
+            if (!user.isAnonymous) {
+              await prisma.userDetail.upsert({
+                where: { userId: user.id },
+                update: {},
+                create: { userId: user.id }
+              });
+            }
           }
         }
       }
-    }
-  },
+    },
 
-  // Enforce the app's existing name/email/password rules on email sign-up by
-  // reusing the validators in src/lib/server/validation.
-  hooks: {
-    before: createAuthMiddleware(async (ctx) => {
-      if (ctx.path !== '/sign-up/email') return;
+    // Enforce the app's existing name/email/password rules on email sign-up by
+    // reusing the validators in src/lib/server/validation.
+    hooks: {
+      before: createAuthMiddleware(async (ctx) => {
+        if (ctx.path !== '/sign-up/email') return;
 
-      const { email, password, name } = ctx.body ?? {};
+        const { email, password, name } = ctx.body ?? {};
 
-      const emailResult = validateEmail(email);
-      if (!emailResult.isValid) {
-        throw new APIError('BAD_REQUEST', {
-          message: emailResult.invalidReason ?? 'Invalid email'
-        });
-      }
+        const emailResult = validateEmail(email);
+        if (!emailResult.isValid) {
+          throw new APIError('BAD_REQUEST', {
+            message: emailResult.invalidReason ?? 'Invalid email'
+          });
+        }
 
-      const passwordResult = validatePassword(password ?? '');
-      if (!passwordResult.isValid) {
-        throw new APIError('BAD_REQUEST', {
-          message: passwordResult.invalidReason ?? 'Invalid password'
-        });
-      }
+        const passwordResult = validatePassword(password ?? '');
+        if (!passwordResult.isValid) {
+          throw new APIError('BAD_REQUEST', {
+            message: passwordResult.invalidReason ?? 'Invalid password'
+          });
+        }
 
-      const nameResult = validateName(name ?? '');
-      if (!nameResult.isValid) {
-        throw new APIError('BAD_REQUEST', { message: nameResult.invalidReason ?? 'Invalid name' });
-      }
-    })
-  },
+        const nameResult = validateName(name ?? '');
+        if (!nameResult.isValid) {
+          throw new APIError('BAD_REQUEST', {
+            message: nameResult.invalidReason ?? 'Invalid name'
+          });
+        }
+      })
+    },
 
-  plugins: [
-    anonymous({
-      // When an anonymous (guest) user links a real account, move their quizzes
-      // and stats over using the existing migration helper.
-      onLinkAccount: async ({ anonymousUser, newUser }) => {
-        await migrateGuestToUser(anonymousUser.user.id, newUser.user.id);
-      }
-    }),
-    // Must stay last so it can attach Set-Cookie headers in SvelteKit actions.
-    sveltekitCookies(getRequestEvent)
-  ]
+    plugins: [
+      anonymous({
+        // When an anonymous (guest) user links a real account, move their quizzes
+        // and stats over using the existing migration helper.
+        onLinkAccount: async ({ anonymousUser, newUser }) => {
+          await migrateGuestToUser(anonymousUser.user.id, newUser.user.id);
+        }
+      }),
+      // Must stay last so it can attach Set-Cookie headers in SvelteKit actions.
+      sveltekitCookies(getRequestEvent)
+    ]
+  });
+}
+
+type AuthInstance = ReturnType<typeof createAuth>;
+
+// Initialize BetterAuth lazily on first use. betterAuth() throws in production
+// when BETTER_AUTH_SECRET is unset; deferring init keeps that out of the build
+// (e.g. prerendering the home page) while still enforcing the secret at runtime.
+let _auth: AuthInstance | undefined;
+export const auth = new Proxy({} as AuthInstance, {
+  get(_target, prop, receiver) {
+    _auth ??= createAuth();
+    return Reflect.get(_auth, prop, receiver);
+  }
 });
 
-export type Auth = typeof auth;
-export type SessionUser = typeof auth.$Infer.Session.user;
-export type Session = typeof auth.$Infer.Session.session;
+export type Auth = AuthInstance;
+export type SessionUser = AuthInstance['$Infer']['Session']['user'];
+export type Session = AuthInstance['$Infer']['Session']['session'];

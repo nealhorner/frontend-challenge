@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+# Least-privilege default for the GITHUB_TOKEN; these jobs only read the repo.
+permissions:
+  contents: read
+
 env:
   DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/appdb?schema=public'
   BETTER_AUTH_SECRET: 'ci-test-secret-not-for-production'

@@ -19,6 +19,15 @@ Sentry.init({
 export const handleError = handleErrorWithSentry();
 
 const handleAuth: Handle = async ({ event, resolve }) => {
+  // During the build/prerender there is no request context (and no
+  // BETTER_AUTH_SECRET). Skip auth so BetterAuth is never initialized at build.
+  if (building) {
+    event.locals.user = null;
+    event.locals.session = null;
+    event.locals.isAuthenticated = false;
+    return resolve(event);
+  }
+
   // Populate locals from the BetterAuth session so server load/actions can use it.
   const sessionData = await auth.api.getSession({ headers: event.request.headers });
 
