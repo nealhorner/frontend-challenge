@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 env:
   DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/appdb?schema=public'
   BETTER_AUTH_SECRET: 'ci-test-secret-not-for-production'
