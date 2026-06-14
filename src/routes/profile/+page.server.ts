@@ -2,7 +2,7 @@ import prisma from '$lib/prisma';
 import type { Actions, PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { fail, redirect } from '@sveltejs/kit';
-import * as auth from '$lib/server/auth';
+import { auth } from '$lib/auth';
 
 export const load: PageServerLoad = async ({ locals, parent }) => {
   // Check that the user is authenticated
@@ -15,49 +15,37 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 
   const userId = locals.user.id;
 
-  // Get the user from the session
+  // Get the user along with their profile detail and stats.
   const userNested = await prisma.user.findUnique({
     where: {
       id: userId
     },
     include: {
-      UserAuthenticated: {
-        include: {
-          UserDetail: true
-        },
-        omit: {
-          hashedPassword: true
-        }
-      },
+      UserDetail: true,
       UserStats: true
     }
   });
 
-  if (
-    !userNested ||
-    !userNested.UserStats ||
-    !userNested.UserAuthenticated ||
-    userNested.UserAuthenticated.UserDetail === null
-  ) {
+  if (!userNested || !userNested.UserStats || !userNested.UserDetail) {
     console.warn('User or related data not found');
     return redirect(302, '/');
   }
 
-  const { UserStats, UserAuthenticated, ...user } = userNested;
-  const { UserDetail, ...userAuthenticated } = UserAuthenticated;
+  const { UserStats, UserDetail, ...user } = userNested;
 
-  if (!UserDetail) {
-    console.warn('User or related data not found');
-    return redirect(302, '/');
-  }
+  // Preserve the previous `userAuthenticated` shape the template consumes; the
+  // email/name now live on the User record.
+  const userAuthenticated = {
+    name: user.name,
+    email: user.email,
+    emailVerified: user.emailVerified
+  };
 
   return { user, userAuthenticated, userDetail: UserDetail, userStats: UserStats };
 };
 
 export const actions: Actions = {
   deleteAccount: async (event) => {
-    console.log('deleteAccount', event.locals.user);
-
     if (!event.locals.user || !event.locals.session) {
       console.warn('Unauthorized deleteAccount');
       return fail(401, {
@@ -67,14 +55,10 @@ export const actions: Actions = {
     }
     const userId = event.locals.user.id;
 
-    // Check that email matches
+    // Check that the typed email matches the account email
     const formData = await event.request.formData();
     const email = formData.get('email');
-    const user = await prisma.userAuthenticated.findUnique({
-      where: {
-        userId: userId
-      }
-    });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
 
     if (!user) {
       console.warn('Unauthorized deleteAccount');
@@ -91,9 +75,10 @@ export const actions: Actions = {
       });
     }
 
-    // Delete the user (related records are removed via cascading deletes)
+    // Revoke the session (clears the cookie) then delete the user. Related
+    // records (sessions, accounts, stats, detail, quizzes) cascade away.
+    await auth.api.signOut({ headers: event.request.headers });
     await prisma.user.delete({ where: { id: userId } });
-    auth.deleteSessionTokenCookie(event);
 
     console.log('Successfully deleted user', userId);
 

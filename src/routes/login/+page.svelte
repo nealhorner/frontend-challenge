@@ -1,13 +1,33 @@
 <script lang="ts">
+  import { goto, invalidateAll } from '$app/navigation';
+  import { authClient } from '$lib/auth-client';
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
+  import SocialLoginButtons from '$lib/components/auth/SocialLoginButtons.svelte';
   import Button from '$lib/components/Button.svelte';
   import ErrorMessage from '$lib/components/form/ErrorMessage.svelte';
 
-  interface Props {
-    form: HTMLFormElement;
-  }
+  let errorMessage = $state('');
+  let loading = $state(false);
 
-  let { form }: Props = $props();
+  async function handleSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget as HTMLFormElement);
+    const email = String(data.get('email') ?? '');
+    const password = String(data.get('password') ?? '');
+
+    loading = true;
+    errorMessage = '';
+    const { error } = await authClient.signIn.email({ email, password });
+    loading = false;
+
+    if (error) {
+      errorMessage = error.message || 'Incorrect email or password';
+      return;
+    }
+
+    await invalidateAll();
+    await goto('/');
+  }
 </script>
 
 <svelte:head>
@@ -19,11 +39,11 @@
   <div>
     <h1>Login</h1>
 
-    {#if form?.loginError}
-      <ErrorMessage errorMessage={form.message} />
+    {#if errorMessage}
+      <ErrorMessage {errorMessage} />
     {/if}
 
-    <form method="post" action="?/login">
+    <form onsubmit={handleSubmit}>
       <AuthTextInput label="Email" id="email" name="email" autocomplete="username" error="" />
       <AuthTextInput
         label="Password"
@@ -33,9 +53,11 @@
         autocomplete="current-password"
         error=""
       />
-      <Button kind="primary" type="submit">Login</Button>
+      <Button kind="primary" type="submit" disabled={loading}>Login</Button>
       <p>Don't have an account? <a href="/register"> Register here</a></p>
     </form>
+
+    <SocialLoginButtons />
   </div>
 </main>
 

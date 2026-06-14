@@ -7,68 +7,88 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Central user entity. Auth fields (name/email/emailVerified/image) and the
+// anonymous-guest flag (isAnonymous) live here so BetterAuth can manage them
+// directly while the app's domain relations (quizzes, stats, detail) stay put.
 model User {
-  id                String             @id
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  role              String             @default("GUEST")
-  quizzes           Quiz[]
-  UserSession       UserSession?
-  UserStats         UserStats?
-  UserGuest         UserGuest?
-  UserAuthenticated UserAuthenticated?
+  id            String      @id @default(uuid())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  name          String      @default("")
+  email         String      @unique
+  emailVerified Boolean     @default(false)
+  image         String?
+  // Replaces the old role === 'GUEST' concept. Set by the BetterAuth anonymous plugin.
+  isAnonymous   Boolean     @default(false)
+  quizzes       Quiz[]
+  sessions      Session[]
+  accounts      Account[]
+  UserStats     UserStats?
+  UserDetail    UserDetail?
 }
 
-model UserGuest {
+// BetterAuth session table (replaces the custom UserSession). Multiple sessions
+// per user are allowed, so userId is intentionally not unique.
+model Session {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   expiresAt DateTime
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String   @unique
+  userId    String
 
   @@index([userId])
 }
 
-model UserAuthenticated {
-  id             String      @id @default(uuid())
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  email          String      @unique
-  name           String      @unique
-  hashedPassword String
-  emailVerified  Boolean     @default(false)
-  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String      @unique
-  UserDetail     UserDetail?
+// BetterAuth account table: one row per linked credential/social account.
+// providerId='credential' rows hold the (Argon2) password hash.
+model Account {
+  id                    String    @id @default(uuid())
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  accountId             String
+  providerId            String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
 
   @@index([userId])
 }
 
-model UserSession {
-  id        String   @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  expiresAt DateTime
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String   @unique
+// BetterAuth verification table (email-verify / password-reset tokens).
+model Verification {
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  identifier String
+  value      String
+  expiresAt  DateTime
 
-  @@index([userId])
+  @@index([identifier])
 }
 
 model UserDetail {
-  id                String            @id @default(uuid())
-  UserAuthenticated UserAuthenticated @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            String            @unique
-  company           String?
-  website           String?
-  location          String?
-  github            String?
-  linkedIn          String?
-  twitter           String?
-  bluesky           String?
-  pronouns          String?
-  updatedAt         DateTime          @updatedAt
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  company   String?
+  website   String?
+  location  String?
+  github    String?
+  linkedIn  String?
+  twitter   String?
+  bluesky   String?
+  pronouns  String?
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }

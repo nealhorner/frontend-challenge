@@ -1,11 +1,33 @@
 <script lang="ts">
+  import { goto, invalidateAll } from '$app/navigation';
+  import { authClient } from '$lib/auth-client';
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
+  import SocialLoginButtons from '$lib/components/auth/SocialLoginButtons.svelte';
   import Button from '$lib/components/Button.svelte';
-  import type { ActionData } from './$types';
 
-  let { form }: { form: ActionData } = $props();
+  let errorMessage = $state('');
+  let loading = $state(false);
 
-  let errorMessage = $derived(form?.message ?? '');
+  async function handleSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget as HTMLFormElement);
+    const name = String(data.get('name') ?? '');
+    const email = String(data.get('email') ?? '');
+    const password = String(data.get('password') ?? '');
+
+    loading = true;
+    errorMessage = '';
+    const { error } = await authClient.signUp.email({ name, email, password });
+    loading = false;
+
+    if (error) {
+      errorMessage = error.message || 'An error has occurred';
+      return;
+    }
+
+    await invalidateAll();
+    await goto('/');
+  }
 </script>
 
 <svelte:head>
@@ -20,7 +42,7 @@
     <p class="error">{errorMessage}</p>
   {/if}
 
-  <form method="post">
+  <form onsubmit={handleSubmit}>
     <AuthTextInput label="Name" id="name" name="name" autocomplete="name" />
     <AuthTextInput label="Email" id="email" type="email" name="email" autocomplete="email" />
     <AuthTextInput
@@ -30,9 +52,11 @@
       name="password"
       autocomplete="new-password"
     />
-    <Button type="submit" kind="primary">Register</Button>
+    <Button type="submit" kind="primary" disabled={loading}>Register</Button>
     <p>Already have an account? <a href="/login">Login here</a></p>
   </form>
+
+  <SocialLoginButtons />
 </main>
 
 <style>
