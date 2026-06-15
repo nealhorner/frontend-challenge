@@ -13,6 +13,14 @@ function uniqueUser() {
   };
 }
 
+// The home page is prerendered, so its header can't reflect per-user auth state.
+// We assert authentication via the dynamic, auth-gated /profile route instead.
+async function expectAuthenticated(page: import('@playwright/test').Page) {
+  await page.goto('/profile');
+  await expect(page.getByRole('button', { name: 'Delete Account' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
+}
+
 test('register, logout, then log back in', async ({ page }) => {
   const user = uniqueUser();
 
@@ -22,37 +30,42 @@ test('register, logout, then log back in', async ({ page }) => {
   await page.getByLabel('Email').fill(user.email);
   await page.getByLabel('Password').fill(user.password);
   await page.getByRole('button', { name: 'Register' }).click();
-
-  // Lands on the home page, authenticated (Logout + Profile visible in header).
   await page.waitForURL('**/');
-  await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Profile' })).toBeVisible();
 
-  // --- Logout ---
+  // Registration auto-signs in.
+  await expectAuthenticated(page);
+
+  // --- Logout (button lives in the header on the authenticated /profile page) ---
   await page.getByRole('button', { name: 'Logout' }).click();
   await page.waitForURL('**/login');
-  await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+
+  // Profile is now blocked.
+  const blocked = await page.goto('/profile');
+  expect(blocked?.status()).toBe(403);
 
   // --- Login ---
   await page.goto('/login');
   await page.getByLabel('Email').fill(user.email);
   await page.getByLabel('Password').fill(user.password);
   await page.getByRole('button', { name: 'Login' }).click();
-
   await page.waitForURL('**/');
-  await expect(page.getByRole('button', { name: 'Logout' })).toBeVisible();
+
+  await expectAuthenticated(page);
 });
 
 test('login with wrong password shows an error and stays logged out', async ({ page }) => {
   const user = uniqueUser();
 
-  // Register first so the account exists.
+  // Register first so the account exists, then log out (registration auto-signs
+  // in, and the login page redirects away while authenticated).
   await page.goto('/register');
   await page.getByLabel('Name').fill(user.name);
   await page.getByLabel('Email').fill(user.email);
   await page.getByLabel('Password').fill(user.password);
   await page.getByRole('button', { name: 'Register' }).click();
   await page.waitForURL('**/');
+
+  await page.goto('/profile');
   await page.getByRole('button', { name: 'Logout' }).click();
   await page.waitForURL('**/login');
 
