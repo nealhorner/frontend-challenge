@@ -34,7 +34,7 @@
     height: 160px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: azure;
+    background-color: var(--ocean-color-ice);
   }
   .username {
     font-size: 24px;
