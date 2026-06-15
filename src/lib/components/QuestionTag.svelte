@@ -14,7 +14,7 @@
     '#de4d1c', // tomato
     '#c4393e', // red-sun
     '#5f7081', // mist
-    '#3a3a3a'  // charcoal
+    '#3a3a3a' // charcoal
   ];
 
   function getColor(tag: string) {

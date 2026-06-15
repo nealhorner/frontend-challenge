@@ -14,7 +14,7 @@
 
   /* Neutrals with opacity baked in */
   --ocean-color-slate-22: #49536338; /* slate @ ~22% */
-  --ocean-color-mist-30: #66788b4d;  /* mist @ ~30% */
+  --ocean-color-mist-30: #66788b4d; /* mist @ ~30% */
 
   /* ─── Accent ─── */
   --ocean-color-teal: #008f98;
@@ -48,29 +48,9 @@
   );
 
   /* Directional / background-image gradients */
-  --ocean-gradient-teal-to-sky-blue: linear-gradient(
-    274deg,
-    #008f98 -2.66%,
-    #5e8fbe 55.61%
-  );
-  --ocean-gradient-teal-to-tomato-bg: linear-gradient(
-    248deg,
-    #de4d1c 14.33%,
-    #008f98 78.73%
-  );
-  --ocean-gradient-cheese-to-sun: linear-gradient(
-    0deg,
-    #fec022 -14.81%,
-    #feeb7b 164.44%
-  );
-  --ocean-gradient-cream-to-pale-yellow-bg: linear-gradient(
-    180deg,
-    #f6f2e8 0%,
-    #fff5d0 100%
-  );
-  --ocean-gradient-fit-box: linear-gradient(
-    268deg,
-    #39abb233 2.05%,
-    #8fb8d633 54.62%
-  );
+  --ocean-gradient-teal-to-sky-blue: linear-gradient(274deg, #008f98 -2.66%, #5e8fbe 55.61%);
+  --ocean-gradient-teal-to-tomato-bg: linear-gradient(248deg, #de4d1c 14.33%, #008f98 78.73%);
+  --ocean-gradient-cheese-to-sun: linear-gradient(0deg, #fec022 -14.81%, #feeb7b 164.44%);
+  --ocean-gradient-cream-to-pale-yellow-bg: linear-gradient(180deg, #f6f2e8 0%, #fff5d0 100%);
+  --ocean-gradient-fit-box: linear-gradient(268deg, #39abb233 2.05%, #8fb8d633 54.62%);
 }

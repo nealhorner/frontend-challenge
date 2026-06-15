@@ -66,11 +66,7 @@
           If you'd like to say thanks with a small donation, I'd really appreciate it. Every coffee
           helps keep the project running.
         </p>
-        <a
-          href="https://www.buymeacoffee.com/nealhorner"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://www.buymeacoffee.com/nealhorner" target="_blank" rel="noopener noreferrer">
           <img
             src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
             alt="Buy Me a Coffee"
