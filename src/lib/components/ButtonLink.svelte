@@ -27,7 +27,6 @@
     border-radius: 4px;
     font-size: 1rem;
     font-weight: bold;
-    text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
     border: none;

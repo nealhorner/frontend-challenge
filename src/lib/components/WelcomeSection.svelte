@@ -1,104 +1,83 @@
 <script lang="ts">
   import ButtonLink from './ButtonLink.svelte';
-
-  const images = Array(9)
-    .fill(0)
-    .map((_, i) => `images/welcome-icons/icon-${i + 1}.svg`);
 </script>
 
-<div class="welcome-section">
-  <div class="welcome-content">
-    <div id="welcome-animation">
-      <div class="vertical-center">
-        <div>
-          <div class="icon-grid">
-            {#each images as image, i}
-              <img
-                class="welcome-icon"
-                src={image}
-                alt={`Decorative Web Development Icon ${i + 1}`}
-              />
-            {/each}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="welcome-message">
-      <div class="vertical-center">
-        <p>Get ready to test your frontend knowledge. Track and improve your skills!</p>
-        <div id="button-tray">
-          <ButtonLink href="/quiz" kind="primary">Get Started</ButtonLink>
-          <ButtonLink href="/register" kind="secondary">I Already Have an Account</ButtonLink>
-        </div>
-      </div>
+<div class="hero">
+  <div class="hero-content">
+    <span class="hero-chip"> 34 expert-crafted challenges · no sign-up to start </span>
+    <h1>How sharp are your frontend skills?</h1>
+    <p class="hero-subhead">
+      Answer real-world JavaScript, CSS, React &amp; HTTP questions. Track your accuracy and climb
+      the global rankings.
+    </p>
+    <div class="button-tray">
+      <ButtonLink href="/quiz" kind="primary">Start a Quiz</ButtonLink>
+      <ButtonLink href="/login" kind="secondary">Sign In</ButtonLink>
     </div>
   </div>
 </div>
 
 <style>
-  .welcome-section {
+  .hero {
     box-sizing: border-box;
+    background-color: var(--color-blue);
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 40px 0px;
-    margin: 0 auto;
-    height: calc(100vh - 62px);
-    min-height: 200px;
+    padding: 64px var(--page-content-padding);
+  }
+  .hero-content {
     width: 100%;
     max-width: var(--page-content-max-width);
-  }
-  .welcome-content {
-    flex: 1;
-    width: 100%;
+    text-align: center;
     display: flex;
     flex-direction: column;
-  }
-  .welcome-content > div {
-    height: 100%;
-    width: 100%;
-    border: 1px solid rgb(249, 158, 0);
-  }
-  .vertical-center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 100%;
-    width: 100%;
-    border: 1px solid red;
   }
-  #button-tray {
-    gap: 10px;
+  .hero-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 185, 97, 0.15);
+    color: var(--color-yellow);
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+  }
+  h1 {
+    color: var(--color-yellow);
+    text-shadow: 2px 2px var(--color-orange);
+    font-size: clamp(2rem, 6vw, 3.25rem);
+    font-weight: 500;
+    line-height: 1.1;
+    margin: 0 0 1rem;
+  }
+  .hero-subhead {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    line-height: 1.6;
+    max-width: 30rem;
+    margin: 0 auto 2rem;
+  }
+  .button-tray {
     display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
     justify-content: center;
-    margin-bottom: 30px;
-  }
-  .icon-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-  .icon-grid img {
-    width: 100%;
-    height: auto;
   }
 
-  .welcome-icon {
-    transition: all 200ms ease-out;
-    opacity: 0.9;
-  }
-  .welcome-icon:hover {
-    transition: all 200ms ease-in;
-    transform: scale(1.05);
-    opacity: 1;
-  }
-
-  /* Desktop layout */
-  @media (min-width: 768px) {
-    .welcome-content {
-      flex-direction: row;
+  @media (max-width: 600px) {
+    .hero {
+      padding: 48px 20px;
+    }
+    /* Let the CTAs stretch full width and stack on small screens */
+    .button-tray {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .button-tray :global(a) {
+      text-align: center;
     }
   }
 </style>
