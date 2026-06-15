@@ -1,56 +1,40 @@
 import prisma from '$lib/prisma';
 
-export const createUserGuest = async function () {
-  // Create a new guest user in the database
+const GUEST_TTL_MS = 1000 * 60 * 60 * 24 * 30; // 30 days
 
-  const uuid = crypto.randomUUID();
-
-  // Guest accounts expire after 30 days
-  const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
-
-  return await prisma.user.create({
-    data: {
-      id: uuid,
-      role: 'GUEST',
-      UserGuest: {
-        create: {
-          expiresAt: expiresAt
-        }
-      },
-      UserStats: {
-        create: {}
-      }
-    }
-  });
-  //TODO collect stats
-};
-
-export const deleteUserGuest = async function (userId: string) {
-  const result = await prisma.user.deleteMany({ where: { id: userId, role: 'GUEST' } });
-  if (result.count !== 1) {
-    throw new Error(`Guest user not found: ${userId}`);
-  }
-};
-
+/**
+ * Delete anonymous (guest) users that have outlived the guest TTL.
+ *
+ * BetterAuth's anonymous plugin owns guest creation; guests are User rows with
+ * `isAnonymous = true`, so expiry is derived from `createdAt` rather than a
+ * dedicated UserGuest table.
+ */
 export const deleteExpiredGuests = async function () {
+  const cutoff = new Date(Date.now() - GUEST_TTL_MS);
   const result = await prisma.user.deleteMany({
     where: {
-      role: 'GUEST',
-      UserGuest: {
-        expiresAt: { lt: new Date() }
-      }
+      isAnonymous: true,
+      createdAt: { lt: cutoff }
     }
   });
   return result.count;
 };
 
+/**
+ * Move a guest's quizzes and stats onto a freshly linked real account, then
+ * remove the guest user. Invoked from the BetterAuth anonymous plugin's
+ * `onLinkAccount` callback on sign-up / social sign-in.
+ */
 export const migrateGuestToUser = async function (guestId: string, newUserId: string) {
   if (!guestId || !newUserId) throw new Error('Guest ID and new user ID are required');
   if (guestId === newUserId) throw new Error('Cannot migrate guest to itself');
 
   await prisma.$transaction(async (tx) => {
-    const guestUser = await tx.user.findUnique({ where: { id: guestId }, select: { role: true } });
-    if (!guestUser || guestUser.role !== 'GUEST') {
+    const guestUser = await tx.user.findUnique({
+      where: { id: guestId },
+      select: { isAnonymous: true }
+    });
+    if (!guestUser || !guestUser.isAnonymous) {
       throw new Error(`User ${guestId} is not a guest user`);
     }
 
@@ -61,6 +45,9 @@ export const migrateGuestToUser = async function (guestId: string, newUserId: st
 
     const guestStats = await tx.userStats.findUnique({ where: { userId: guestId } });
     if (guestStats) {
+      // The new user is freshly created during sign-up/link and has only default
+      // (zeroed) stats, so overwriting with the guest's accumulated stats is the
+      // intended behavior here, not a merge.
       const newUserStats = await tx.userStats.upsert({
         where: { userId: newUserId },
         update: {

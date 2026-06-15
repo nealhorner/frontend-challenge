@@ -16,3 +16,10 @@ vite.config.ts.timestamp-*
 
 # Vitest Files
 test-results/.last-run.json
+test-results/**/error-context.md
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

@@ -1,7 +1,6 @@
 import prisma from '$lib/prisma';
 import { defaultQuizSize } from '$lib/constants.js';
-import { createUserGuest } from '$lib/server/userGuest';
-import { createSession, generateSessionToken, setSessionTokenCookie } from '$lib/server/auth';
+import { auth } from '$lib/auth';
 
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
@@ -30,16 +29,16 @@ async function selectQuestions(numberOfQuestions = defaultQuizSize) {
 }
 
 export const load: PageServerLoad = async (event) => {
-  let userId;
+  let userId = event.locals.user?.id;
 
-  if (!event.locals.user) {
-    const guestUser = await createUserGuest();
-    const sessionToken = generateSessionToken();
-    const session = await createSession(sessionToken, guestUser.id);
-    setSessionTokenCookie(event, sessionToken, session.expiresAt);
-    userId = guestUser.id;
-  } else {
-    userId = event.locals.user.id;
+  if (!userId) {
+    // No session yet: create a BetterAuth anonymous (guest) session. The
+    // sveltekitCookies plugin attaches the session cookie to this response.
+    const guest = await auth.api.signInAnonymous({ headers: event.request.headers });
+    userId = guest?.user?.id;
+    if (!userId) {
+      throw error(500, 'Failed to create guest session');
+    }
   }
 
   try {

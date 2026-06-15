@@ -8,6 +8,7 @@
     "release": "prisma migrate deploy && npm run populateLearningResources",
     "preview": "vite preview",
     "test": "npm run test:integration && npm run test:unit",
+    "test:e2e": "playwright test",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
@@ -31,6 +32,9 @@
     "@sveltejs/adapter-vercel": "^6.3.3",
     "@sveltejs/kit": "^2.5.27",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/svelte": "^5.3.1",
+    "@testing-library/user-event": "^14.6.1",
     "@types/bcrypt": "^6.0.0",
     "@types/dompurify": "^3.0.5",
     "@types/eslint": "^8.56.0",
@@ -42,6 +46,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.45.1",
     "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
     "lint-staged": "^16.4.0",
     "prettier": "^3.1.1",
     "prettier-plugin-svelte": "^3.2.6",
@@ -52,7 +57,7 @@
     "typescript": "^5.5.0",
     "unplugin-icons": "^0.19.0",
     "vite": "^5.4.4",
-    "vitest": "^1.2.0"
+    "vitest": "^3.2.6"
   },
   "type": "module",
   "engines": {
@@ -71,6 +76,7 @@
     "@prisma/client": "^6.3.0",
     "@sentry/sveltekit": "^8.2.1",
     "bcrypt": "^6.0.0",
+    "better-auth": "^1.6.18",
     "isomorphic-dompurify": "^2.21.0",
     "tsx": "^4.10.2"
   }

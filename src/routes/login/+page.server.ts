@@ -1,50 +1,10 @@
-import { verify } from '@node-rs/argon2';
-import { fail, redirect } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
-import { createSession, generateSessionToken, setSessionTokenCookie } from '$lib/server/auth';
-import prisma from '$lib/prisma';
+import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-  // If user is already logged in, redirect to the main page
+  // If the user is already authenticated, redirect to the main page.
   if (locals.isAuthenticated) {
-    console.log('User is already logged in');
     return redirect(302, '/');
   }
   return {};
-};
-
-export const actions: Actions = {
-  login: async (event) => {
-    const formData = await event.request.formData();
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-
-    if (!email || !password) {
-      return fail(400, { message: 'Incorrect email or password', loginError: true });
-    }
-
-    const existingUser = await prisma.userAuthenticated.findUnique({
-      where: { email: email }
-    });
-
-    if (!existingUser) {
-      return fail(400, { message: 'Incorrect email or password', loginError: true });
-    }
-
-    const validPassword = await verify(existingUser.hashedPassword, password, {
-      memoryCost: 19456,
-      timeCost: 2,
-      outputLen: 32,
-      parallelism: 1
-    });
-    if (!validPassword) {
-      return fail(400, { message: 'Incorrect email or password', loginError: true });
-    }
-
-    const sessionToken = generateSessionToken();
-    const session = await createSession(sessionToken, existingUser.userId);
-    setSessionTokenCookie(event, sessionToken, session.expiresAt);
-
-    return redirect(302, '/');
-  }
 };

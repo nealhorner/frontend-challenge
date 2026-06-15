@@ -5,6 +5,27 @@ on:
     branches:
       - main
 
+# Least-privilege default for the GITHUB_TOKEN; these jobs only read the repo.
+permissions:
+  contents: read
+
+# Cancel superseded in-progress runs when a new commit is pushed to the PR.
+concurrency:
+  group: pr-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/appdb?schema=public'
+  BETTER_AUTH_SECRET: 'ci-test-secret-not-for-production'
+  BETTER_AUTH_URL: 'http://localhost:4173'
+  PUBLIC_SENTRY_DSN: ''
+  # Dummy OAuth credentials so BetterAuth can build provider authorize URLs
+  # during the e2e tests without contacting the real providers.
+  GITHUB_CLIENT_ID: 'ci-github-client-id'
+  GITHUB_CLIENT_SECRET: 'ci-github-client-secret'
+  GOOGLE_CLIENT_ID: 'ci-google-client-id'
+  GOOGLE_CLIENT_SECRET: 'ci-google-client-secret'
+
 jobs:
   lint-test:
     name: Run Prettier, ESLint, and Vitest
@@ -34,3 +55,56 @@ jobs:
 
       - name: Run Vitest
         run: npx vitest --run
+
+  e2e:
+    name: Run Playwright e2e tests
+    runs-on: ubuntu-latest
+    # Run inside the official Playwright image so the browsers + system deps are
+    # preinstalled — avoids the flaky `playwright install` download in CI. Keep
+    # the tag in sync with the @playwright/test version in package.json.
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: appdb
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      # In a container job, services are reached by their label hostname on the
+      # container's own port (not the runner's mapped localhost port).
+      DATABASE_URL: 'postgresql://postgres:postgres@postgres:5432/appdb?schema=public'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Apply database migrations
+        run: npx prisma migrate deploy
+
+      - name: Run Playwright tests
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

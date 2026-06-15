@@ -1,6 +1,8 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import type { Handle } from '@sveltejs/kit';
-import * as auth from '$lib/server/auth.js';
+import { building } from '$app/environment';
+import { auth } from '$lib/auth';
+import { svelteKitHandler } from 'better-auth/svelte-kit';
 import { handleErrorWithSentry, sentryHandle } from '@sentry/sveltekit';
 import * as Sentry from '@sentry/sveltekit';
 import { PUBLIC_SENTRY_DSN } from '$env/static/public';
@@ -17,27 +19,33 @@ Sentry.init({
 export const handleError = handleErrorWithSentry();
 
 const handleAuth: Handle = async ({ event, resolve }) => {
-  const sessionToken = event.cookies.get(auth.sessionCookieName);
-
-  if (!sessionToken) {
+  // During the build/prerender there is no request context (and no
+  // BETTER_AUTH_SECRET). Skip auth so BetterAuth is never initialized at build.
+  if (building) {
     event.locals.user = null;
     event.locals.session = null;
     event.locals.isAuthenticated = false;
     return resolve(event);
   }
 
-  const { session, user } = await auth.validateSessionToken(sessionToken);
-  if (session) {
-    auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-  } else {
-    auth.deleteSessionTokenCookie(event);
+  // Populate locals from the BetterAuth session so server load/actions can use it.
+  // Fall back to unauthenticated if session lookup fails rather than 500-ing the
+  // whole request.
+  let sessionData: Awaited<ReturnType<typeof auth.api.getSession>> | null = null;
+  try {
+    sessionData = await auth.api.getSession({ headers: event.request.headers });
+  } catch (error) {
+    console.error('Failed to resolve session:', error);
   }
 
-  event.locals.user = user;
-  event.locals.session = session;
-  event.locals.isAuthenticated = !!user && user.role === 'USER';
+  event.locals.user = sessionData?.user ?? null;
+  event.locals.session = sessionData?.session ?? null;
+  // Anonymous (guest) users have a session but are not "authenticated" for the
+  // app's purposes — preserves the previous role === 'USER' semantics.
+  event.locals.isAuthenticated = !!sessionData?.user && !sessionData.user.isAnonymous;
 
-  return resolve(event);
+  // svelteKitHandler serves the BetterAuth endpoints mounted at /api/auth/*.
+  return svelteKitHandler({ event, resolve, auth, building });
 };
 
 export const handle = sequence(sentryHandle(), handleAuth);
