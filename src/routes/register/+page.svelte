@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto, invalidateAll } from '$app/navigation';
-  import { authClient } from '$lib/auth-client';
+  import { authClient, formatAuthError } from '$lib/auth-client';
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
   import SocialLoginButtons from '$lib/components/auth/SocialLoginButtons.svelte';
   import Button from '$lib/components/Button.svelte';
@@ -21,7 +21,7 @@
     try {
       const { error } = await authClient.signUp.email({ name, email, password });
       if (error) {
-        errorMessage = error.message || 'An error has occurred';
+        errorMessage = formatAuthError(error.message, 'An error has occurred');
         return;
       }
     } catch {

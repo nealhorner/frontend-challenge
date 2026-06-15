@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto, invalidateAll } from '$app/navigation';
-  import { authClient } from '$lib/auth-client';
+  import { authClient, formatAuthError } from '$lib/auth-client';
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
   import SocialLoginButtons from '$lib/components/auth/SocialLoginButtons.svelte';
   import Button from '$lib/components/Button.svelte';
@@ -20,7 +20,7 @@
     try {
       const { error } = await authClient.signIn.email({ email, password });
       if (error) {
-        errorMessage = error.message || 'Incorrect email or password';
+        errorMessage = formatAuthError(error.message, 'Incorrect email or password');
         return;
       }
     } catch {
