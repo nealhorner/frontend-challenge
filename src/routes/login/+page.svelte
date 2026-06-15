@@ -17,12 +17,17 @@
 
     loading = true;
     errorMessage = '';
-    const { error } = await authClient.signIn.email({ email, password });
-    loading = false;
-
-    if (error) {
-      errorMessage = error.message || 'Incorrect email or password';
+    try {
+      const { error } = await authClient.signIn.email({ email, password });
+      if (error) {
+        errorMessage = error.message || 'Incorrect email or password';
+        return;
+      }
+    } catch {
+      errorMessage = 'Incorrect email or password';
       return;
+    } finally {
+      loading = false;
     }
 
     await invalidateAll();

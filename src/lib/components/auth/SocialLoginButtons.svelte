@@ -13,7 +13,8 @@
       // On success the browser is redirected to the provider and this page
       // unloads; only reset (re-enable the buttons) if it didn't redirect.
       if (error) loadingProvider = null;
-    } catch {
+    } catch (err) {
+      console.error('Social sign-in error:', err);
       loadingProvider = null;
     }
   }

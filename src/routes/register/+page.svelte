@@ -18,12 +18,17 @@
 
     loading = true;
     errorMessage = '';
-    const { error } = await authClient.signUp.email({ name, email, password });
-    loading = false;
-
-    if (error) {
-      errorMessage = error.message || 'An error has occurred';
+    try {
+      const { error } = await authClient.signUp.email({ name, email, password });
+      if (error) {
+        errorMessage = error.message || 'An error has occurred';
+        return;
+      }
+    } catch {
+      errorMessage = 'An error has occurred';
       return;
+    } finally {
+      loading = false;
     }
 
     await invalidateAll();

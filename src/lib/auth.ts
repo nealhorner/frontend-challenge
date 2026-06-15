@@ -56,18 +56,24 @@ function createAuth() {
       user: {
         create: {
           after: async (user) => {
-            await prisma.userStats.upsert({
-              where: { userId: user.id },
-              update: {},
-              create: { userId: user.id }
-            });
-
-            if (!user.isAnonymous) {
-              await prisma.userDetail.upsert({
+            // Don't let a secondary-record failure break account creation; log
+            // it instead (mirrors the onLinkAccount handling below).
+            try {
+              await prisma.userStats.upsert({
                 where: { userId: user.id },
                 update: {},
                 create: { userId: user.id }
               });
+
+              if (!user.isAnonymous) {
+                await prisma.userDetail.upsert({
+                  where: { userId: user.id },
+                  update: {},
+                  create: { userId: user.id }
+                });
+              }
+            } catch (error) {
+              console.error('Failed to create UserStats/UserDetail for user', user.id, error);
             }
           }
         }

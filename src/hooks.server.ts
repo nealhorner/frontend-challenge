@@ -29,7 +29,14 @@ const handleAuth: Handle = async ({ event, resolve }) => {
   }
 
   // Populate locals from the BetterAuth session so server load/actions can use it.
-  const sessionData = await auth.api.getSession({ headers: event.request.headers });
+  // Fall back to unauthenticated if session lookup fails rather than 500-ing the
+  // whole request.
+  let sessionData: Awaited<ReturnType<typeof auth.api.getSession>> | null = null;
+  try {
+    sessionData = await auth.api.getSession({ headers: event.request.headers });
+  } catch (error) {
+    console.error('Failed to resolve session:', error);
+  }
 
   event.locals.user = sessionData?.user ?? null;
   event.locals.session = sessionData?.session ?? null;
