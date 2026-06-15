@@ -5,7 +5,9 @@ import { expect, test } from '@playwright/test';
 const PASSWORD = 'SuperSecret!42';
 
 function uniqueUser() {
-  const id = `${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
+  // Keep the id digits-only: the app's name validation rejects special chars
+  // (including hyphens), so the generated display name must stay alphanumeric.
+  const id = `${Date.now()}${Math.floor(Math.random() * 1e6)}`;
   return {
     name: `E2E User ${id}`.slice(0, 50),
     email: `e2e-${id}@example.com`,
