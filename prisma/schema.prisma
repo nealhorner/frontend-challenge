@@ -102,6 +102,10 @@ model UserStats {
   totalCorrectAnswers    Int               @default(0)
   rank                   Int               @default(0)
   eloRating              Int               @default(1000)
+  // Consecutive days (within STREAK_WINDOW_DAYS gaps) on which the user has
+  // completed a quiz. Recomputed from UserStatsTrends after each completed quiz.
+  currentStreak          Int               @default(0)
+  longestStreak          Int               @default(0)
   updatedAt              DateTime          @updatedAt
   UserStatsTrends        UserStatsTrends[]
 

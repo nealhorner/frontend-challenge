@@ -3,6 +3,8 @@ import { json } from '@sveltejs/kit';
 import { updateEloRankings } from '$lib/eloRating';
 import type { QuizDataWithoutQuestions } from '$lib/types';
 import { getUTCDate } from '$lib/datetime/date';
+import { computeStreaks } from '$lib/streak';
+import { STREAK_WINDOW_DAYS } from '$lib/constants';
 
 export const POST = async ({ request }) => {
   const { quizId, questionId, userAnswer } = await request.json();
@@ -173,5 +175,21 @@ async function postQuizTasksNonBlocking(quizWithQuestions: QuizDataWithoutQuesti
       totalQuestionsAnswered: quizWithQuestions.quizQuestions.length,
       totalCorrectAnswers: correctAnswers
     }
+  });
+
+  // Recompute the streak from the per-day trend records (one row per active
+  // day) so the stored value is always consistent, even if a day was missed.
+  const activeDays = await prisma.userStatsTrends.findMany({
+    where: { userStatsId: userStats.id },
+    select: { date: true }
+  });
+  const { currentStreak, longestStreak } = computeStreaks(
+    activeDays.map((d) => d.date),
+    STREAK_WINDOW_DAYS,
+    dateUTC
+  );
+  await prisma.userStats.update({
+    where: { id: userStats.id },
+    data: { currentStreak, longestStreak }
   });
 }

@@ -42,6 +42,8 @@
         ? 0
         : userStats.totalCorrectAnswers / userStats.totalQuestionsAnswered}
       rank={userStats.rank}
+      currentStreak={userStats.currentStreak}
+      longestStreak={userStats.longestStreak}
     />
   </div>
 
@@ -115,7 +117,6 @@
     <h2>Achievements</h2>
     <!--TODO Number of quizzes completed -->
     <!--TODO Days of participation -->
-    <!--TODO Day streak -->
     <!--TODO Rank -->
   </section>
 
@@ -123,7 +124,6 @@
     <h2>Stats</h2>
     <!--TODO Number of quizzes completed -->
     <!--TODO Days of participation -->
-    <!--TODO Day streak -->
     <!--TODO Rank -->
     <!--TODO Time Map -->
     <!--TODO Rank, Question Difficulty, Speed over time -->
