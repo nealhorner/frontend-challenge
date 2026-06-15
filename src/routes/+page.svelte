@@ -1,75 +1,139 @@
 <script>
-  import Card from '../lib/components/Card.svelte';
-  import Question from '../lib/components/Question.svelte';
+  import ButtonLink from '$lib/components/ButtonLink.svelte';
+  import TryQuestion from '$lib/components/TryQuestion.svelte';
   import WelcomeSection from '$lib/components/WelcomeSection.svelte';
+
+  const valueProps = [
+    {
+      title: 'Track your accuracy',
+      body: 'Every answer feeds your running score so you can watch your progress over time.'
+    },
+    {
+      title: 'Climb the rankings',
+      body: 'An ELO-style rating pits your skills against the rest of the community.'
+    },
+    {
+      title: 'Learn as you go',
+      body: 'See the right answer instantly and dig into curated resources to level up.'
+    }
+  ];
+
+  const topics = ['JavaScript', 'CSS', 'React', 'HTTP', 'DOM', 'Closures', '+ more'];
 </script>
 
 <svelte:head>
-  <title>Frontend Challenge Home</title>
-  <meta name="description" content="Frontend Challenge Home" />
+  <title>Frontend Challenge — Test your frontend skills</title>
+  <meta
+    name="description"
+    content="Answer real-world JavaScript, CSS, React and HTTP questions. Track your accuracy and climb the global rankings."
+  />
 </svelte:head>
 
-<section>
-  <WelcomeSection />
-  <div id="second-section">
-    <div>
-      <Card>
-        <p>
-          Our questions are crafted by industry experts to simulate actual development scenarios,
-          helping you to not only test your knowledge but also improve your problem-solving
-          capabilities in a fun and engaging way.
-        </p>
-        <p>
-          Each challenge is designed to push your boundaries and expand your understanding of how
-          web technologies work together.
-        </p>
-        <p>
-          Select a challenge, and see if you can rise to the occasion of becoming a frontend
-          maestro!
-        </p>
-      </Card>
+<WelcomeSection />
+
+<TryQuestion />
+
+<section class="value">
+  <div class="value-inner">
+    <div class="value-grid">
+      {#each valueProps as prop (prop.title)}
+        <div class="value-card">
+          <h2>{prop.title}</h2>
+          <p>{prop.body}</p>
+        </div>
+      {/each}
     </div>
-    <div>
-      <Question questionId="" submitHandler={() => {}} />
+
+    <div class="topics">
+      <p class="topics-label">Covering the topics that matter</p>
+      <ul class="topic-tags">
+        {#each topics as topic (topic)}
+          <li>{topic}</li>
+        {/each}
+      </ul>
     </div>
-  </div>
-  <div id="third-section" class="pipe-gradient">
-    <p>Hello World</p>
   </div>
 </section>
 
+<section class="final-cta">
+  <h2>Ready to find out where you stand?</h2>
+  <ButtonLink href="/quiz" kind="primary">Start Your First Quiz</ButtonLink>
+</section>
+
 <style>
-  section {
-    height: calc(100vh - 59px);
-  }
-  #second-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    background-color: lime;
-  }
-  #second-section > div {
-    padding: 80px 40px;
-    margin-top: -100px;
-    padding-top: 140px;
-  }
-  #second-section div:first-child {
+  .value {
     background-color: var(--color-yellow);
+    padding: 56px var(--page-content-padding);
+  }
+  .value-inner {
+    max-width: var(--page-content-max-width);
+    margin: 0 auto;
+  }
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .value-card {
+    background-color: white;
+    border-radius: var(--card-border-radius);
+    padding: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+  .value-card h2 {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--color-purple);
+    margin: 0 0 8px;
+  }
+  .value-card p {
+    margin: 0;
+    color: var(--color-text);
+    line-height: 1.5;
   }
 
-  .pipe-gradient {
-    background-color: var(--color-yellow);
-    background-image: repeating-radial-gradient(
-      circle at 0 0,
-      var(--color-yellow),
-      var(--color-pink) 10px,
-      var(--color-orange) 10px,
-      var(--color-pink) 20px /* determines size */
-    );
+  .topics {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .topics-label {
+    font-size: 0.85rem;
+    color: var(--color-purple);
+    margin: 0 0 14px;
+  }
+  .topic-tags {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .topic-tags li {
+    background-color: white;
+    color: var(--color-blue);
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 999px;
+  }
+
+  .final-cta {
+    background-color: var(--color-purple);
+    text-align: center;
+    padding: 56px var(--page-content-padding);
+  }
+  .final-cta h2 {
+    color: var(--color-yellow);
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    font-weight: 500;
+    margin: 0 0 24px;
   }
 
   @media (max-width: 600px) {
-    #second-section {
-      grid-template-columns: 1fr;
+    .value,
+    .final-cta {
+      padding: 44px 20px;
     }
   }
 </style>

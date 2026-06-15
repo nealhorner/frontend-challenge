@@ -38,7 +38,6 @@
     border-radius: 4px;
     font-size: 1rem;
     font-weight: bold;
-    text-transform: uppercase;
     cursor: pointer;
     border: none;
   }

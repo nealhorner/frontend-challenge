@@ -1,1 +1,6 @@
 npx lint-staged
+
+# Playwright e2e tests run locally here instead of in CI: GitHub's runners can't
+# reliably pull the Playwright container image from mcr.microsoft.com. Playwright
+# builds + previews the app (or reuses a server already on :4173) before testing.
+npm run test:e2e
