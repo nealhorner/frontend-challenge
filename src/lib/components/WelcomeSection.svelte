@@ -4,6 +4,9 @@
 
 <div class="hero">
   <div class="hero-content">
+    <!-- Keep this count in sync with the seed data in data/questions.json. It is
+         hardcoded on purpose: the homepage is prerendered (see +page.ts), and the
+         question data carries answers we must not ship to the client. -->
     <span class="hero-chip"> 34 expert-crafted challenges · no sign-up to start </span>
     <h1>How sharp are your frontend skills?</h1>
     <p class="hero-subhead">

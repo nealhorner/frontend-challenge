@@ -51,7 +51,9 @@
         {#if correct}
           <p>Correct! That's how it feels — instant feedback on every question.</p>
         {:else}
-          <p>Not quite — <code>p</code> is the answer. Start a quiz to keep going.</p>
+          <p>
+            Not quite — <code>{question.answer}</code> is the answer. Start a quiz to keep going.
+          </p>
         {/if}
         <ButtonLink href="/quiz" kind="primary">Start a Quiz</ButtonLink>
       </div>
