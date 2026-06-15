@@ -40,7 +40,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: rgba(255, 185, 97, 0.15);
+    background-color: rgba(255, 237, 79, 0.15);
     color: var(--color-yellow);
     font-size: 0.85rem;
     padding: 6px 14px;

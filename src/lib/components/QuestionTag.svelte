@@ -5,16 +5,16 @@
 
   let { tag }: Props = $props();
   const colors = [
-    '#636EFA',
-    '#EF553B',
-    '#00CC96',
-    '#AB63FA',
-    '#FFA15A',
-    '#19D3F3',
-    '#FF6692',
-    '#B6E880',
-    '#FF97FF',
-    '#FECB52'
+    '#008f98', // teal
+    '#1c4067', // navy
+    '#5e8fbe', // sky-blue
+    '#495363', // slate
+    '#e78571', // salmon
+    '#f2973d', // tangerine
+    '#de4d1c', // tomato
+    '#c4393e', // red-sun
+    '#5f7081', // mist
+    '#3a3a3a' // charcoal
   ];
 
   function getColor(tag: string) {

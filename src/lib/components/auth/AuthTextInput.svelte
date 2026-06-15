@@ -38,7 +38,7 @@
 
   input {
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--ocean-color-mist-light);
     border-radius: 4px;
     display: block;
     width: 100%;
@@ -46,12 +46,12 @@
   }
 
   .error-input {
-    border-color: red;
-    background-color: rgba(255, 0, 0, 0.05);
+    border-color: var(--ocean-color-red-sun);
+    background-color: var(--ocean-color-pale-pink);
   }
 
   .error-message {
     margin-top: 2px;
-    color: red;
+    color: var(--ocean-color-red-sun);
   }
 </style>

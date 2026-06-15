@@ -12,6 +12,6 @@
 
 <style>
   .error {
-    color: red;
+    color: var(--ocean-color-red-sun);
   }
 </style>

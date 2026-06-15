@@ -62,7 +62,7 @@
 
 <style>
   .value {
-    background-color: var(--color-yellow);
+    background: var(--ocean-gradient-cream-to-pale-yellow);
     padding: 56px var(--page-content-padding);
   }
   .value-inner {

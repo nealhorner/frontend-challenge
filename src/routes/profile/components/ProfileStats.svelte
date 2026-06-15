@@ -65,7 +65,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    border: 1px solid rgb(249, 158, 0);
+    border: 1px solid var(--ocean-color-cheese-yellow);
     padding: 20px;
   }
 

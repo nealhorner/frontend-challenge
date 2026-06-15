@@ -76,7 +76,7 @@
   div {
     max-width: 400px;
     margin: 100px auto;
-    border: 1px solid #ccc;
+    border: 1px solid var(--ocean-color-mist-light);
     border-radius: var(--card-border-radius);
     padding: 2rem;
   }

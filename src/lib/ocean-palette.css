@@ -1,0 +1,56 @@
+/* Ocean color palette */
+
+:root {
+  /* ─── Neutrals ─── */
+  --ocean-color-white: #ffffff;
+  --ocean-color-cream: #f6f2e8;
+  --ocean-color-lightest-gray: #f8f8f8;
+  --ocean-color-cloud: #f0f1f3;
+  --ocean-color-ice: #edf1fa;
+  --ocean-color-mist-light: #d1d6dc;
+  --ocean-color-mist: #5f7081;
+  --ocean-color-slate: #495363;
+  --ocean-color-charcoal: #3a3a3a;
+
+  /* Neutrals with opacity baked in */
+  --ocean-color-slate-22: #49536338; /* slate @ ~22% */
+  --ocean-color-mist-30: #66788b4d; /* mist @ ~30% */
+
+  /* ─── Accent ─── */
+  --ocean-color-teal: #008f98;
+  --ocean-color-navy: #1c4067;
+  --ocean-color-sky-blue: #5e8fbe;
+  --ocean-color-pale-blue: #d8e9ff;
+
+  --ocean-color-pale-yellow: #fdf5d2;
+  --ocean-color-fe-yellow: #ffed4f;
+  --ocean-color-cheese-yellow: #fec022;
+  --ocean-color-sun-yellow: #feda59;
+
+  --ocean-color-pale-pink: #fde9ff;
+  --ocean-color-salmon: #e78571;
+  --ocean-color-tangerine: #f2973d;
+  --ocean-color-tomato: #de4d1c;
+  --ocean-color-red-sun: #c4393e;
+
+  /* ─── Gradients ─── */
+
+  /* Named gradient tokens (use var() references so they update if colors change) */
+  --ocean-gradient-teal-to-tomato: linear-gradient(
+    90deg,
+    var(--ocean-color-teal) 0%,
+    var(--ocean-color-tomato) 100%
+  );
+  --ocean-gradient-cream-to-pale-yellow: linear-gradient(
+    180deg,
+    var(--ocean-color-cream) 0%,
+    var(--ocean-color-pale-yellow) 100%
+  );
+
+  /* Directional / background-image gradients */
+  --ocean-gradient-teal-to-sky-blue: linear-gradient(274deg, #008f98 -2.66%, #5e8fbe 55.61%);
+  --ocean-gradient-teal-to-tomato-bg: linear-gradient(248deg, #de4d1c 14.33%, #008f98 78.73%);
+  --ocean-gradient-cheese-to-sun: linear-gradient(0deg, #fec022 -14.81%, #feeb7b 164.44%);
+  --ocean-gradient-cream-to-pale-yellow-bg: linear-gradient(180deg, #f6f2e8 0%, #fff5d0 100%);
+  --ocean-gradient-fit-box: linear-gradient(268deg, #39abb233 2.05%, #8fb8d633 54.62%);
+}

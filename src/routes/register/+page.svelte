@@ -70,7 +70,7 @@
     max-width: 400px;
     margin: 100px auto;
     padding: 2rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--ocean-color-mist-light);
     border-radius: 4px;
   }
 

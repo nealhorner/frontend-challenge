@@ -35,7 +35,7 @@
 <style>
   a {
     text-decoration: none;
-    color: #333;
+    color: var(--ocean-color-charcoal);
   }
 
   p.link-text:hover {
@@ -49,8 +49,8 @@
     box-shadow:
       0px 1px 2px -1px rgba(0, 0, 0, 0.1),
       0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-    color: #333;
-    background-color: #fff;
+    color: var(--ocean-color-charcoal);
+    background-color: var(--ocean-color-white);
     overflow: hidden;
     display: flex;
     align-items: stretch;
