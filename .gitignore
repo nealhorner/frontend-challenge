@@ -16,3 +16,4 @@ vite.config.ts.timestamp-*
 
 # Vitest Files
 test-results/.last-run.json
+test-results/**/error-context.md
