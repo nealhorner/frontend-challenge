@@ -15,6 +15,8 @@ const webServerEnv: Record<string, string> = {
   BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET ?? 'e2e-test-secret-change-me',
   BETTER_AUTH_URL: BASE_URL,
   ORIGIN: BASE_URL,
+  // Disable BetterAuth rate limiting for the suite (kept on in real production).
+  AUTH_DISABLE_RATE_LIMIT: 'true',
   PUBLIC_SENTRY_DSN: process.env.PUBLIC_SENTRY_DSN ?? '',
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID ?? 'e2e-github-client-id',
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET ?? 'e2e-github-client-secret',

@@ -22,6 +22,13 @@ function createAuth() {
   return betterAuth({
     database: prismaAdapter(prisma, { provider: 'postgresql' }),
 
+    // Rate limiting is on by default in production. It is disabled only for the
+    // e2e suite (AUTH_DISABLE_RATE_LIMIT=true), which exercises the auth flows
+    // with many rapid sign-ups/sign-ins that would otherwise be throttled.
+    rateLimit: {
+      enabled: process.env.AUTH_DISABLE_RATE_LIMIT !== 'true'
+    },
+
     emailAndPassword: {
       enabled: true,
       // Keep Argon2 hashing so pre-migration credentials still authenticate.
