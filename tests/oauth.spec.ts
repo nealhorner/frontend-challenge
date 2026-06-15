@@ -27,10 +27,14 @@ for (const { provider, authorizeHost, authorizePath } of PROVIDERS) {
   });
 }
 
-test('social login buttons render on the login and register pages', async ({ page }) => {
-  for (const path of ['/login', '/register']) {
-    await page.goto(path);
-    await expect(page.locator('[data-provider="github"]')).toBeVisible();
-    await expect(page.locator('[data-provider="google"]')).toBeVisible();
-  }
+test('social login buttons render on the login pages', async ({ page }) => {
+  await page.goto('/login');
+  await expect(page.locator('[data-provider="github"]')).toBeVisible();
+  await expect(page.locator('[data-provider="google"]')).toBeVisible();
+});
+
+test('social login buttons render on the register pages', async ({ page }) => {
+  await page.goto('/register');
+  await expect(page.locator('[data-provider="github"]')).toBeVisible();
+  await expect(page.locator('[data-provider="google"]')).toBeVisible();
 });

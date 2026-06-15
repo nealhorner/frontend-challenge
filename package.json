@@ -8,6 +8,7 @@
     "release": "prisma migrate deploy && npm run populateLearningResources",
     "preview": "vite preview",
     "test": "npm run test:integration && npm run test:unit",
+    "test:e2e": "playwright test",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",

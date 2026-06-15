@@ -12,7 +12,9 @@ const webServerEnv: Record<string, string> = {
   DATABASE_URL:
     process.env.DATABASE_URL ??
     'postgresql://postgres:postgres@localhost:55432/appdb?schema=public',
-  BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET ?? 'e2e-test-secret-change-me',
+  BETTER_AUTH_SECRET:
+    process.env.BETTER_AUTH_SECRET ??
+    'e2e-da24dd58e8cdd13c0ae0b2fff96ffd84724fb581634f7b45a56c9664f09fb88e', // Only used in e2e tests
   BETTER_AUTH_URL: BASE_URL,
   ORIGIN: BASE_URL,
   // Disable BetterAuth rate limiting for the suite (kept on in real production).
