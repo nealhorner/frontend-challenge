@@ -45,6 +45,9 @@ export const migrateGuestToUser = async function (guestId: string, newUserId: st
 
     const guestStats = await tx.userStats.findUnique({ where: { userId: guestId } });
     if (guestStats) {
+      // The new user is freshly created during sign-up/link and has only default
+      // (zeroed) stats, so overwriting with the guest's accumulated stats is the
+      // intended behavior here, not a merge.
       const newUserStats = await tx.userStats.upsert({
         where: { userId: newUserId },
         update: {

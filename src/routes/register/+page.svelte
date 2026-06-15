@@ -4,6 +4,7 @@
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
   import SocialLoginButtons from '$lib/components/auth/SocialLoginButtons.svelte';
   import Button from '$lib/components/Button.svelte';
+  import ErrorMessage from '$lib/components/form/ErrorMessage.svelte';
 
   let errorMessage = $state('');
   let loading = $state(false);
@@ -39,7 +40,7 @@
   <h1>Registration</h1>
 
   {#if errorMessage}
-    <p class="error">{errorMessage}</p>
+    <ErrorMessage {errorMessage} />
   {/if}
 
   <form onsubmit={handleSubmit}>
@@ -76,9 +77,5 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-
-  .error {
-    color: red;
   }
 </style>
