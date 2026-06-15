@@ -8,7 +8,14 @@
 
   async function signInWith(provider: Provider) {
     loadingProvider = provider;
-    await authClient.signIn.social({ provider, callbackURL: '/' });
+    try {
+      const { error } = await authClient.signIn.social({ provider, callbackURL: '/' });
+      // On success the browser is redirected to the provider and this page
+      // unloads; only reset (re-enable the buttons) if it didn't redirect.
+      if (error) loadingProvider = null;
+    } catch {
+      loadingProvider = null;
+    }
   }
 </script>
 

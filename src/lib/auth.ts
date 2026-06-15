@@ -101,9 +101,14 @@ function createAuth() {
     plugins: [
       anonymous({
         // When an anonymous (guest) user links a real account, move their quizzes
-        // and stats over using the existing migration helper.
+        // and stats over using the existing migration helper. Failure here must
+        // not break the sign-up/sign-in that triggered the link.
         onLinkAccount: async ({ anonymousUser, newUser }) => {
-          await migrateGuestToUser(anonymousUser.user.id, newUser.user.id);
+          try {
+            await migrateGuestToUser(anonymousUser.user.id, newUser.user.id);
+          } catch (error) {
+            console.error('Failed to migrate guest data on account link:', error);
+          }
         }
       }),
       // Must stay last so it can attach Set-Cookie headers in SvelteKit actions.
