@@ -5,9 +5,21 @@
     completedQuizzes: number;
     accuracy: number;
     rank: number;
+    currentStreak: number;
+    longestStreak: number;
   }
 
-  let { completedQuizzes = 0, accuracy = 0, rank = 0 }: Props = $props();
+  let {
+    completedQuizzes = 0,
+    accuracy = 0,
+    rank = 0,
+    currentStreak = 0,
+    longestStreak = 0
+  }: Props = $props();
+
+  function formatStreak(value: number) {
+    return value > 0 ? `🔥 ${formatNumber(value)}` : formatNumber(value);
+  }
 
   function formatPercentage(value: number) {
     return `${Math.round(value * 100)}%`;
@@ -43,6 +55,8 @@
     <ProfileStatKpi kpi="Quizzes Completed" value={formatNumber(completedQuizzes)} />
     <ProfileStatKpi kpi="Accuracy" value={formatPercentage(accuracy)} />
     <ProfileStatKpi kpi="Rank" value={formatRating(rank)} />
+    <ProfileStatKpi kpi="Current Streak" value={formatStreak(currentStreak)} />
+    <ProfileStatKpi kpi="Longest Streak" value={formatStreak(longestStreak)} />
   </div>
 </section>
 
@@ -57,6 +71,7 @@
 
   .kpis {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
   }
 </style>
