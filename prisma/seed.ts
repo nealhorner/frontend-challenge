@@ -1,5 +1,6 @@
 import fs from 'fs';
 import prisma from '../src/lib/prisma.ts';
+import { QuestionType } from '../src/lib/types.ts';
 
 // Define the interface for each question
 interface RawQuestion {
@@ -13,7 +14,7 @@ interface RawQuestion {
 interface GeneratedQuestion {
   title: string;
   prompt: string;
-  type: string;
+  type: QuestionType;
   multiple_choice: string[];
   answers: string[];
   tags: string[];
@@ -43,7 +44,7 @@ const generate_question_permutations = (question: RawQuestion) => {
     permutations.push({
       title: question.title,
       prompt: question.prompt,
-      type: 'multiple_choice',
+      type: QuestionType.MultipleChoice,
       multiple_choice: question.answers.concat(shuffled_false_answers.slice(0, 3)),
       answers: question.answers,
       tags: question.tags
@@ -54,7 +55,7 @@ const generate_question_permutations = (question: RawQuestion) => {
     permutations.push({
       title: question.title,
       prompt: question.prompt,
-      type: 'multiple_choice',
+      type: QuestionType.MultipleChoice,
       multiple_choice: shuffled_false_answers.slice(0, 4),
       answers: [],
       tags: question.tags
@@ -65,7 +66,7 @@ const generate_question_permutations = (question: RawQuestion) => {
   permutations.push({
     title: question.title,
     prompt: question.prompt,
-    type: 'blind_answer',
+    type: QuestionType.BlindAnswer,
     multiple_choice: [],
     answers: question.answers,
     tags: question.tags

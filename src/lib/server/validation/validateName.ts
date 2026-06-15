@@ -24,7 +24,7 @@ export const validateName = (name: string) => {
     return { isValid: false, invalidReason: 'Names cannot be more than 50 characters long' };
   }
 
-  if (name.length <= 1) {
+  if (name.length < 1) {
     return { isValid: false, invalidReason: 'Names must be at least 1 character long' };
   }
 

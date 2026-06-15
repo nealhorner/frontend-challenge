@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import Button from './Button.svelte';
   import RadioGroup from './RadioGroup.svelte';
-  import type { ParsedMultipleChoiceOptions, Question } from '$lib/types';
+  import { QuestionType, type ParsedMultipleChoiceOptions, type Question } from '$lib/types';
 
   let answer = $state('');
   let questionPromise: Promise<Question> | undefined = $state();
@@ -75,9 +75,9 @@
             <p id="question-title">{question.title}</p>
           {/if}
           <h2>{question.prompt}</h2>
-          {#if question.type === 'blind_answer'}
+          {#if question.type === QuestionType.BlindAnswer}
             <input type="text" placeholder="Enter your answer" onchange={handleAnswerChange} />
-          {:else if question.type === 'multiple_choice'}
+          {:else if question.type === QuestionType.MultipleChoice}
             <RadioGroup
               label="label"
               options={parseMultipleChoiceOptions(question.multipleChoiceOptions)}
@@ -90,7 +90,8 @@
             <Button
               onclick={() => submitHandler(answer)}
               kind="secondary"
-              disabled={question.type !== 'multiple_choice' && !haveAnswer(answer)}>Submit</Button
+              disabled={question.type !== QuestionType.MultipleChoice && !haveAnswer(answer)}
+              >Submit</Button
             >
           </div>
         </form>

@@ -1,16 +1,37 @@
 import prisma from '$lib/prisma';
 import { json } from '@sveltejs/kit';
 import { updateEloRankings } from '$lib/eloRating';
-import type { QuizDataWithoutQuestions } from '$lib/types';
+import { QuestionType, type QuizDataWithoutQuestions } from '$lib/types';
 import { getUTCDate } from '$lib/datetime/date';
 import { computeStreaks } from '$lib/streak';
 import { STREAK_WINDOW_DAYS } from '$lib/constants';
 
-export const POST = async ({ request }) => {
+export const POST = async ({ request, locals }) => {
+  // The caller must be signed in (guests included) to submit answers.
+  const userId = locals.user?.id;
+  if (!userId) {
+    return json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { quizId, questionId, userAnswer } = await request.json();
 
   if (!quizId || !questionId) {
     return json({ error: 'Missing quizId or questionId' }, { status: 400 });
+  }
+
+  // Ensure the quiz exists and belongs to the requesting user before mutating it.
+  const quiz = await prisma.quiz.findUnique({
+    select: { userId: true, isCompleted: true },
+    where: { id: quizId }
+  });
+  if (!quiz) {
+    return json({ error: 'Quiz not found' }, { status: 404 });
+  }
+  if (quiz.userId !== userId) {
+    return json({ error: 'Forbidden' }, { status: 403 });
+  }
+  if (quiz.isCompleted) {
+    return json({ error: 'Quiz already completed' }, { status: 400 });
   }
 
   // Get the question to validate the user's answer
@@ -22,19 +43,26 @@ export const POST = async ({ request }) => {
     return json({ error: 'Question not found' }, { status: 404 });
   }
 
-  // Check if the question is already answered
+  // Check that the question is part of this quiz and isn't already answered.
   const existingAnswer = await prisma.quizQuestion.findUnique({
     select: { isAnswered: true },
     where: { quizId_questionId: { quizId, questionId } }
   });
-  if (existingAnswer && existingAnswer.isAnswered) {
+  if (!existingAnswer) {
+    return json({ error: 'Question is not part of this quiz' }, { status: 404 });
+  }
+  if (existingAnswer.isAnswered) {
     return json({ error: 'Question already answered' }, { status: 400 });
   }
 
   // Validate the user's answer
   const correctAnswers = JSON.parse(question.answers);
   let isCorrect = false;
-  if (question.type === 'multiple-choice' && correctAnswers.length === 0 && userAnswer === '') {
+  if (
+    question.type === QuestionType.MultipleChoice &&
+    correctAnswers.length === 0 &&
+    userAnswer === ''
+  ) {
     isCorrect = true;
   } else {
     isCorrect = correctAnswers.includes(userAnswer);

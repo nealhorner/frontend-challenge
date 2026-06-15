@@ -1,9 +1,14 @@
+enum QuestionType {
+  MultipleChoice = 'multiple_choice',
+  BlindAnswer = 'blind_answer'
+}
+
 interface Question {
   id: string;
   family: string;
   title: string;
   prompt: string;
-  type: string;
+  type: QuestionType;
   multipleChoiceOptions: string;
   answers: string;
   tags: string;
@@ -43,6 +48,8 @@ interface ParsedMultipleChoiceOptions {
   label: string;
   value: string;
 }
+
+export { QuestionType };
 
 export type {
   Question,
