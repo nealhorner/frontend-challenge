@@ -6,6 +6,9 @@ export default defineConfig({
   schema: path.join(import.meta.dirname, 'prisma/schema.prisma'),
   migrate: {
     adapter(env) {
+      if (!env.DATABASE_URL) {
+        throw new Error('DATABASE_URL is required');
+      }
       return new PrismaPg({ connectionString: env.DATABASE_URL });
     }
   }
