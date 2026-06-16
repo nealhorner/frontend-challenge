@@ -10,19 +10,30 @@
 
   let { title = '', url = '', description = '', imageURL = '' }: Props = $props();
 
-  // Remove the protocol from the URL and the trailing slash
-  let displayURL = $derived(url.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ''));
+  let safeURL = $derived(/^https?:\/\//i.test(url) ? url : '');
+  let displayURL = $derived(safeURL.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ''));
 </script>
 
-<a href={url} target="_blank">
+<a href={safeURL || '#'} target="_blank" rel="noopener noreferrer" class="card-link">
   <div class="card">
     <div class="resource-content">
       <h3>{title}</h3>
       {#if description}
         <p class="resource-description">{@html description}</p>
       {/if}
-      <p class="link-text">{displayURL}</p>
-      <!-- TODO make this line look like a link-->
+      <p class="link-text">
+        <svg
+          class="link-icon"
+          viewBox="0 0 12 12"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M3.5 3a.5.5 0 0 0 0 1H7.29L2.15 9.15a.5.5 0 1 0 .7.7L8 4.71V8.5a.5.5 0 0 0 1 0v-5a.5.5 0 0 0-.5-.5h-5z"
+          />
+        </svg>
+        {displayURL}
+      </p>
     </div>
     {#if imageURL}
       <div class="resource-image">
@@ -33,63 +44,119 @@
 </a>
 
 <style>
-  a {
+  .card-link {
     text-decoration: none;
     color: var(--ocean-color-charcoal);
+    display: block;
+    height: 100%;
   }
 
-  p.link-text:hover {
-    text-decoration: underline;
-    color: var(--color-blue);
-  }
-
-  div.card {
-    border: 1px solid rgba(0, 0, 0, 0.1);
+  .card {
+    border: 1px solid var(--color-border);
     border-radius: var(--card-border-radius);
     box-shadow:
-      0px 1px 2px -1px rgba(0, 0, 0, 0.1),
-      0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+      0px 1px 2px -1px rgba(0, 0, 0, 0.08),
+      0px 1px 3px 0px rgba(0, 0, 0, 0.06);
     color: var(--ocean-color-charcoal);
     background-color: var(--ocean-color-white);
     overflow: hidden;
     display: flex;
     align-items: stretch;
     width: 100%;
+    height: 100%;
+    transition:
+      box-shadow 0.15s ease,
+      border-color 0.15s ease;
   }
 
-  div.card:hover {
-    border: 1px solid rgba(0, 0, 0, 0.2);
+  .card:hover {
+    border-color: rgba(0, 0, 0, 0.18);
     box-shadow:
-      0px 1px 2px -1px rgba(0, 0, 0, 0.2),
-      0px 1px 3px 0px rgba(0, 0, 0, 0.2);
+      0px 4px 8px -2px rgba(0, 0, 0, 0.1),
+      0px 2px 4px 0px rgba(0, 0, 0, 0.06);
   }
 
-  div.resource-image {
-    width: 170px;
+  .resource-content {
+    flex-grow: 1;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-blue);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  p.resource-description {
+    font-size: 0.82rem;
+    color: var(--color-text-secondary);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  p.link-text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    color: var(--color-text-tertiary);
+    margin-top: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card:hover p.link-text {
+    color: var(--color-blue);
+  }
+
+  .link-icon {
+    width: 10px;
+    height: 10px;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
+  .resource-image {
+    width: 120px;
     display: flex;
     flex-shrink: 0;
     position: relative;
   }
 
-  div.resource-image > div {
-    width: 170px;
+  .resource-image > div {
+    width: 100%;
     position: absolute;
     top: 0;
-    right: -10px;
+    right: 0;
     bottom: 0;
+    left: 0;
     background-size: cover;
-    background-position-y: center;
-    background-position-x: left;
+    background-position: center;
     background-repeat: no-repeat;
-    transition: all 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
   }
 
-  div.card:hover div.resource-image > div {
-    /* width: 150px; */
-    transform: scale(1.05) translateX(-5px);
+  .card:hover .resource-image > div {
+    transform: scale(1.05);
   }
 
-  div.resource-image > div::before {
+  .resource-image > div::before {
     content: '';
     position: absolute;
     top: 0;
@@ -98,27 +165,9 @@
     left: 0;
     background: linear-gradient(
       to right,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0.1) 80%,
-      rgba(150, 150, 150, 0.5) 92%,
-      rgba(150, 150, 150, 0.9) 100%
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(200, 200, 200, 0.4) 100%
     );
-  }
-
-  div.resource-content {
-    flex-grow: 1;
-    padding: 10px;
-  }
-
-  h3 {
-    margin: 0;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  p.resource-description {
-    font-size: smaller;
   }
 </style>
