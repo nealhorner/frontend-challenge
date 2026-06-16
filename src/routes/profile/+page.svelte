@@ -3,8 +3,7 @@
   import ProfileInfo from './components/profileInfo.svelte';
   import ProfileHeader from './components/ProfileHeader.svelte';
   import ProfileBio from './components/ProfileBio.svelte';
-  import { faBuilding, faGlobe, faLocationDot } from '@fortawesome/free-solid-svg-icons';
-  import { faGithub, faLinkedin, faBluesky, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+  import { Building, Globe, MapPin } from 'lucide-svelte';
   import Button from '$lib/components/Button.svelte';
   import { enhance } from '$app/forms';
   import ErrorMessage from '$lib/components/form/ErrorMessage.svelte';
@@ -77,36 +76,35 @@
         <button type="submit">Save</button><button type="reset">Cancel</button>
       </form>
     {:else}
-      <ProfileInfo text={userDetail?.company} faIcon={faBuilding} title="Company" optional />
-      <ProfileInfo text={userDetail?.website} faIcon={faGlobe} title="Website " optional />
-      <ProfileInfo
-        text={data.userDetail?.location}
-        faIcon={faLocationDot}
-        title="Location"
-        optional
-      />
+      <ProfileInfo text={userDetail?.company} icon={Building} title="Company" optional />
+      <ProfileInfo text={userDetail?.website} icon={Globe} title="Website" optional />
+      <ProfileInfo text={data.userDetail?.location} icon={MapPin} title="Location" optional />
       <ProfileInfo
         text={data.userDetail?.github}
-        faIcon={faGithub}
+        iconSrc="/logos/github.svg"
+        iconAlt="GitHub"
         title="GitHub Profile Link"
         optional
       />
       <ProfileInfo
         text={data.userDetail?.linkedIn}
-        faIcon={faLinkedin}
+        iconSrc="/logos/in-logo/LI-In-Bug.png"
+        iconAlt="LinkedIn"
         title="LinkedIn Profile Link"
         optional
       />
       <ProfileInfo
         text={data.userDetail?.twitter}
-        faIcon={faXTwitter}
+        iconSrc="/logos/x.svg"
+        iconAlt="X (Twitter)"
         title="X (Twitter) Profile Link"
         optional
       />
       <ProfileInfo
         text={data.userDetail?.bluesky}
-        faIcon={faBluesky}
-        title="BlueSky Profile Link"
+        iconSrc="/logos/bluesky.svg"
+        iconAlt="Bluesky"
+        title="Bluesky Profile Link"
         optional
       />
       <button onclick={() => (edit = true)}>Edit Settings</button>
