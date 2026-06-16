@@ -1,14 +1,16 @@
 <script lang="ts">
-  import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-  import { FontAwesomeIcon } from '@fortawesome/svelte-fontawesome';
+  import type { Component } from 'svelte';
+
   interface Props {
     text?: string | null;
-    faIcon: IconDefinition;
+    icon?: Component;
+    iconSrc?: string;
+    iconAlt?: string;
     title: string;
     optional?: boolean;
   }
 
-  let { text, faIcon, title, optional = false }: Props = $props();
+  let { text, icon: Icon, iconSrc, iconAlt = '', title, optional = false }: Props = $props();
 
   let display = $derived(!!text || !optional);
 </script>
@@ -16,7 +18,11 @@
 {#if display}
   <div class="profile-info" {title}>
     <div class="profile-info-icon-container">
-      <FontAwesomeIcon icon={faIcon} class="profile-info-icon" />
+      {#if Icon}
+        <Icon size={16} class="profile-info-icon" />
+      {:else if iconSrc}
+        <img src={iconSrc} alt={iconAlt} class="profile-info-icon" width="16" height="16" />
+      {/if}
     </div>
     {#if text}
       <span>{text}</span>
