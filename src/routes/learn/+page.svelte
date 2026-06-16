@@ -48,7 +48,10 @@
 
 <svelte:head>
   <title>Learning Resources — Frontend Challenge</title>
-  <meta name="description" content="Curated blogs, courses, and podcasts to level up your frontend skills." />
+  <meta
+    name="description"
+    content="Curated blogs, courses, and podcasts to level up your frontend skills."
+  />
 </svelte:head>
 
 <div class="hero">
