@@ -10,10 +10,11 @@
 
   let { title = '', url = '', description = '', imageURL = '' }: Props = $props();
 
-  let displayURL = $derived(url.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ''));
+  let safeURL = $derived(/^https?:\/\//i.test(url) ? url : '');
+  let displayURL = $derived(safeURL.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ''));
 </script>
 
-<a href={url} target="_blank" rel="noopener noreferrer" class="card-link">
+<a href={safeURL || '#'} target="_blank" rel="noopener noreferrer" class="card-link">
   <div class="card">
     <div class="resource-content">
       <h3>{title}</h3>

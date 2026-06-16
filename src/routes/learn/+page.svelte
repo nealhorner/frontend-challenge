@@ -72,11 +72,10 @@
 
 <div class="content">
   <div class="content-inner">
-    <div class="filter-bar" role="tablist" aria-label="Filter resources">
+    <div class="filter-bar" aria-label="Filter resources">
       {#each filters as f (f.value)}
         <button
-          role="tab"
-          aria-selected={activeFilter === f.value}
+          aria-pressed={activeFilter === f.value}
           class:active={activeFilter === f.value}
           onclick={() => (activeFilter = f.value)}
         >
