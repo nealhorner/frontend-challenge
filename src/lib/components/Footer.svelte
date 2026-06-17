@@ -3,6 +3,7 @@
     <p>&copy; Frontend Challenge {new Date().getFullYear()}</p>
     <nav>
       <a href="/">Home</a>
+      <a href="/feedback">Feedback</a>
       <a href="/support">Support</a>
     </nav>
   </div>
