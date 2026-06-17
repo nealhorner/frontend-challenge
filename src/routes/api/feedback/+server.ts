@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { sendEmail } from '$lib/server/email';
+import { sendEmail, escapeHtml } from '$lib/server/email';
 import type { RequestHandler } from './$types';
 
 const FEEDBACK_EMAIL = process.env.FEEDBACK_EMAIL ?? '';
@@ -13,7 +13,33 @@ const TYPE_LABELS: Record<FeedbackType, string> = {
   question: 'Question Issue'
 };
 
+// Simple per-IP rate limit: max 5 submissions per hour per server instance.
+// Per-instance on serverless, but still prevents single-session abuse.
+const _rateMap = new Map<string, { count: number; windowStart: number }>();
+const WINDOW_MS = 60 * 60_000;
+const MAX_PER_WINDOW = 5;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = _rateMap.get(ip);
+  if (!entry || now - entry.windowStart > WINDOW_MS) {
+    _rateMap.set(ip, { count: 1, windowStart: now });
+    return true;
+  }
+  if (entry.count >= MAX_PER_WINDOW) return false;
+  entry.count++;
+  return true;
+}
+
 export const POST: RequestHandler = async ({ request, locals }) => {
+  const ip =
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    request.headers.get('x-real-ip') ??
+    'unknown';
+  if (!checkRateLimit(ip)) {
+    return json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -52,12 +78,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   const emailSubject = `[Frontend Challenge] ${typeLabel}: ${subject.trim()}`;
 
   const rows = [
-    ['Type', typeLabel],
-    ['From', senderEmail],
+    ['Type', escapeHtml(typeLabel)],
+    ['From', escapeHtml(senderEmail)],
     ...(questionId && typeof questionId === 'string'
-      ? ([['Question ID', questionId]] as const)
+      ? ([['Question ID', escapeHtml(questionId)]] as const)
       : []),
-    ['Subject', subject.trim()]
+    ['Subject', escapeHtml(subject.trim())]
   ] as const;
 
   const tableRows = rows
@@ -74,7 +100,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     <table style="border-collapse:collapse;margin-bottom:24px;">
       ${tableRows}
     </table>
-    <p style="white-space:pre-wrap;">${message.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+    <p style="white-space:pre-wrap;">${escapeHtml(message.trim())}</p>
   `;
 
   try {

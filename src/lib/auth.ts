@@ -8,7 +8,7 @@ import { hash as argon2Hash, verify as argon2Verify } from '@node-rs/argon2';
 import prisma from '$lib/prisma';
 import { validateEmail, validateName, validatePassword } from '$lib/server/validation';
 import { migrateGuestToUser } from '$lib/server/userGuest';
-import { sendEmail } from '$lib/server/email';
+import { sendEmail, escapeHtml } from '$lib/server/email';
 
 // Mirror the Argon2 parameters the app used before the BetterAuth migration so
 // legacy password hashes (migrated into Account.password) keep verifying.
@@ -36,9 +36,9 @@ function createAuth() {
           to: user.email,
           subject: 'Verify your Frontend Challenge email',
           html: `
-            <p>Hi ${user.name},</p>
+            <p>Hi ${escapeHtml(user.name ?? '')},</p>
             <p>Click the link below to verify your email address. The link expires in 1 hour.</p>
-            <p><a href="${url}">Verify my email</a></p>
+            <p><a href="${escapeHtml(url)}">Verify my email</a></p>
             <p>If you didn't create an account, you can ignore this email.</p>
           `
         });
