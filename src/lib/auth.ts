@@ -8,6 +8,7 @@ import { hash as argon2Hash, verify as argon2Verify } from '@node-rs/argon2';
 import prisma from '$lib/prisma';
 import { validateEmail, validateName, validatePassword } from '$lib/server/validation';
 import { migrateGuestToUser } from '$lib/server/userGuest';
+import { sendEmail, escapeHtml } from '$lib/server/email';
 
 // Mirror the Argon2 parameters the app used before the BetterAuth migration so
 // legacy password hashes (migrated into Account.password) keep verifying.
@@ -29,8 +30,28 @@ function createAuth() {
       enabled: process.env.AUTH_DISABLE_RATE_LIMIT !== 'true'
     },
 
+    emailVerification: {
+      sendVerificationEmail: async ({ user, url }) => {
+        await sendEmail({
+          to: user.email,
+          subject: 'Verify your Frontend Challenge email',
+          html: `
+            <p>Hi ${escapeHtml(user.name ?? '')},</p>
+            <p>Click the link below to verify your email address. The link expires in 1 hour.</p>
+            <p><a href="${escapeHtml(url)}">Verify my email</a></p>
+            <p>If you didn't create an account, you can ignore this email.</p>
+          `
+        });
+      },
+      // Skipped in e2e tests via REQUIRE_EMAIL_VERIFICATION=false so the suite
+      // can register + sign in without a real email provider.
+      sendOnSignUp: process.env.REQUIRE_EMAIL_VERIFICATION !== 'false',
+      autoSignInAfterVerification: true
+    },
+
     emailAndPassword: {
       enabled: true,
+      requireEmailVerification: process.env.REQUIRE_EMAIL_VERIFICATION !== 'false',
       // Keep Argon2 hashing so pre-migration credentials still authenticate.
       password: {
         hash: (password) => argon2Hash(password, ARGON2_OPTIONS),
