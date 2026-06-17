@@ -1,5 +1,8 @@
 import { Resend } from 'resend';
-import { RESEND_API_KEY, EMAIL_FROM } from '$env/static/private';
+
+// Optional at build time — runtime errors are handled by the callers.
+const RESEND_API_KEY = process.env.RESEND_API_KEY ?? '';
+const EMAIL_FROM = process.env.EMAIL_FROM ?? '';
 
 // Lazy singleton — defers instantiation to first call so the module is safe
 // to import during build analysis when RESEND_API_KEY may be empty.

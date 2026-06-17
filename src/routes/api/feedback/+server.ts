@@ -1,7 +1,8 @@
 import { json } from '@sveltejs/kit';
 import { sendEmail } from '$lib/server/email';
-import { FEEDBACK_EMAIL } from '$env/static/private';
 import type { RequestHandler } from './$types';
+
+const FEEDBACK_EMAIL = process.env.FEEDBACK_EMAIL ?? '';
 
 const FEEDBACK_TYPES = ['general', 'bug', 'question'] as const;
 type FeedbackType = (typeof FEEDBACK_TYPES)[number];
