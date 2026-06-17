@@ -20,6 +20,10 @@
     try {
       const { error } = await authClient.signIn.email({ email, password });
       if (error) {
+        if (error.code === 'EMAIL_NOT_VERIFIED') {
+          await goto(`/verify-email?email=${encodeURIComponent(email)}`);
+          return;
+        }
         errorMessage = formatAuthError(error.message, 'Incorrect email or password');
         return;
       }

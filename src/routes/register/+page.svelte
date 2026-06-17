@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { goto, invalidateAll } from '$app/navigation';
+  import { goto } from '$app/navigation';
   import { authClient, formatAuthError } from '$lib/auth-client';
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
   import SocialLoginButtons from '$lib/components/auth/SocialLoginButtons.svelte';
@@ -19,20 +19,20 @@
     loading = true;
     errorMessage = '';
     try {
-      const { error } = await authClient.signUp.email({ name, email, password });
+      const { data, error } = await authClient.signUp.email({ name, email, password });
       if (error) {
         errorMessage = formatAuthError(error.message, 'An error has occurred');
         return;
       }
+      // token is null when email verification is required (no session yet);
+      // non-null when the server auto-signed in (e.g. verification disabled).
+      await goto(data?.token ? '/' : `/verify-email?email=${encodeURIComponent(email)}`);
     } catch {
       errorMessage = 'An error has occurred';
       return;
     } finally {
       loading = false;
     }
-
-    await invalidateAll();
-    await goto('/');
   }
 </script>
 

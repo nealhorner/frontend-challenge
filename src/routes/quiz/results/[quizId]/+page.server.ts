@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ params, locals }) => {
   if (!locals.user) {
-    redirect(302, '/');
+    throw redirect(302, '/');
   }
 
   const quizResult = await prisma.quiz.findUnique({

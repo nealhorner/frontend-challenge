@@ -4,8 +4,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
   if (!locals.user) {
-    console.error('No user found in locals for results page');
-    redirect(302, '/');
+    throw redirect(302, '/');
   }
 
   const userId = locals.user.id;

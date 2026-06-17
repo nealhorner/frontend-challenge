@@ -19,6 +19,12 @@ const webServerEnv: Record<string, string> = {
   ORIGIN: BASE_URL,
   // Disable BetterAuth rate limiting for the suite (kept on in real production).
   AUTH_DISABLE_RATE_LIMIT: 'true',
+  // Skip email verification in the suite — no real email provider is wired up.
+  REQUIRE_EMAIL_VERIFICATION: 'false',
+  // Provide empty values so $env/static/private exports exist in the build.
+  RESEND_API_KEY: process.env.RESEND_API_KEY ?? '',
+  EMAIL_FROM: process.env.EMAIL_FROM ?? '',
+  FEEDBACK_EMAIL: process.env.FEEDBACK_EMAIL ?? '',
   PUBLIC_SENTRY_DSN: process.env.PUBLIC_SENTRY_DSN ?? '',
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID ?? 'e2e-github-client-id',
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET ?? 'e2e-github-client-secret',
