@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import Button from './Button.svelte';
   import RadioGroup from './RadioGroup.svelte';
   import { QuestionType, type ParsedMultipleChoiceOptions, type Question } from '$lib/types';
 
   let answer = $state('');
   let questionPromise: Promise<Question> | undefined = $state();
+  let containerEl: HTMLElement | undefined;
 
   interface Props {
     questionId: string;
@@ -53,7 +54,10 @@
 
   $effect(() => {
     if (questionId) {
-      questionPromise = getQuestion(questionId);
+      questionPromise = getQuestion(questionId).then((q) => {
+        tick().then(() => containerEl?.querySelector<HTMLElement>('input')?.focus());
+        return q;
+      });
       answer = '';
     }
   });
@@ -64,7 +68,7 @@
   }
 </script>
 
-<main>
+<main bind:this={containerEl}>
   {#await questionPromise}
     <p>...waiting</p>
   {:then question}
