@@ -9,6 +9,8 @@ import { PUBLIC_SENTRY_DSN } from '$env/static/public';
 
 Sentry.init({
   dsn: PUBLIC_SENTRY_DSN,
+  enabled: import.meta.env.PROD,
+  environment: import.meta.env.MODE,
   tracesSampleRate: 0.1
 
   // uncomment the line below to enable Spotlight (https://spotlightjs.com)
