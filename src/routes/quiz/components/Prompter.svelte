@@ -3,6 +3,7 @@
   import Card from '$lib/components/Card.svelte';
   import Question from '$lib/components/Question.svelte';
   import Progress from './Progress.svelte';
+  import ErrorMessage from '$lib/components/form/ErrorMessage.svelte';
   import type { QuizData } from '$lib/types';
   import { defaultQuizSize } from '$lib/constants';
   import DebugInfo from '$lib/components/DebugInfo.svelte';
@@ -32,18 +33,31 @@
   // Compute the number of completed questions from data.questions.length
   let completedQuestions = $state(getCompletedQuestionsCount());
   let totalQuestions = quizData.quizQuestions.length ?? defaultQuizSize;
+  let submitError: string | undefined = $state();
 
   async function handleQuestionSubmit(answer: string) {
-    // Update database record
-    await fetch('/api/quiz/questions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        quizId: quizData.id,
-        questionId: currentQuestionId,
-        userAnswer: answer
-      })
-    });
+    submitError = undefined;
+
+    let response: Response;
+    try {
+      response = await fetch('/api/quiz/questions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          quizId: quizData.id,
+          questionId: currentQuestionId,
+          userAnswer: answer
+        })
+      });
+    } catch {
+      submitError = 'Failed to submit your answer. Check your connection and try again.';
+      return;
+    }
+
+    if (!response.ok) {
+      submitError = 'Failed to submit your answer. Please try again.';
+      return;
+    }
 
     // Update local object
     quizData.quizQuestions = quizData.quizQuestions.map((question) => {
@@ -69,6 +83,9 @@
   {:else if currentQuestionId}
     <DebugInfo>Question ID: {currentQuestionId}</DebugInfo>
     <Question questionId={currentQuestionId} submitHandler={handleQuestionSubmit} />
+    {#if submitError}
+      <ErrorMessage errorMessage={submitError} />
+    {/if}
   {/if}
   <Progress {completedQuestions} {totalQuestions} />
 </Card>
