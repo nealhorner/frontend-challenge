@@ -96,9 +96,13 @@ export const POST = async ({ request, locals }) => {
   });
   const isCompleted = quizQuestions.length === 0;
 
-  console.log('isCompleted', isCompleted);
-
-  // Update the Quiz
+  // Update the Quiz. Guard the update with `isCompleted: false` so that two
+  // concurrent submissions which both observe "no questions remaining" can't
+  // both win the not-completed -> completed transition: Postgres serializes
+  // the two UPDATEs on this row, and whichever runs second re-checks the
+  // predicate against the now-committed row and matches zero rows. Without
+  // this guard both requests would run postQuizTasksNonBlocking, double
+  // counting stats and Elo for a single quiz.
   if (isCompleted) {
     const quizWithQuestions = await prisma.quiz.findUniqueOrThrow({
       where: {
@@ -111,15 +115,17 @@ export const POST = async ({ request, locals }) => {
 
     // Calculate the score
     const score = quizWithQuestions.quizQuestions.filter((q) => q.isCorrect).length * 10;
-    await prisma.quiz.update({
-      where: { id: quizId },
+    const { count } = await prisma.quiz.updateMany({
+      where: { id: quizId, isCompleted: false },
       data: { isCompleted, score }
     });
 
-    // Perform post-quiz tasks
-    void postQuizTasksNonBlocking(quizWithQuestions).catch((error) => {
-      console.error('postQuizTasksNonBlocking failed', { quizId: quizWithQuestions.id, error });
-    });
+    // Only the request that actually flipped isCompleted runs post-quiz tasks.
+    if (count > 0) {
+      void postQuizTasksNonBlocking(quizWithQuestions).catch((error) => {
+        console.error('postQuizTasksNonBlocking failed', { quizId: quizWithQuestions.id, error });
+      });
+    }
   }
 
   return json(savedAnswer);
