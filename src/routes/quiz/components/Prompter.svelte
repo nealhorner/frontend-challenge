@@ -34,45 +34,56 @@
   let completedQuestions = $state(getCompletedQuestionsCount());
   let totalQuestions = quizData.quizQuestions.length ?? defaultQuizSize;
   let submitError: string | undefined = $state();
+  // Guards against double-clicks/retries firing a second submit while one is
+  // still in flight — without this, a late-arriving response (e.g. a 400 for
+  // the now-already-answered question) could set submitError after an
+  // earlier, successful request already advanced the quiz.
+  let isSubmitting = false;
 
   async function handleQuestionSubmit(answer: string) {
+    if (isSubmitting) return;
+    isSubmitting = true;
     submitError = undefined;
 
-    let response: Response;
     try {
-      response = await fetch('/api/quiz/questions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          quizId: quizData.id,
-          questionId: currentQuestionId,
-          userAnswer: answer
-        })
-      });
-    } catch {
-      submitError = 'Failed to submit your answer. Check your connection and try again.';
-      return;
-    }
-
-    if (!response.ok) {
-      submitError = 'Failed to submit your answer. Please try again.';
-      return;
-    }
-
-    // Update local object
-    quizData.quizQuestions = quizData.quizQuestions.map((question) => {
-      if (question.questionId === currentQuestionId) {
-        question.isAnswered = true;
+      let response: Response;
+      try {
+        response = await fetch('/api/quiz/questions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            quizId: quizData.id,
+            questionId: currentQuestionId,
+            userAnswer: answer
+          })
+        });
+      } catch {
+        submitError = 'Failed to submit your answer. Check your connection and try again.';
+        return;
       }
-      return question;
-    });
 
-    currentQuestionId = getNextQuestionId();
-    completedQuestions = getCompletedQuestionsCount();
+      if (!response.ok) {
+        submitError = 'Failed to submit your answer. Please try again.';
+        return;
+      }
 
-    if (completedQuestions === totalQuestions) {
-      quizData.isCompleted = true;
-      goto(`/quiz/results/${quizData.id}`);
+      // Update local object
+      quizData.quizQuestions = quizData.quizQuestions.map((question) => {
+        if (question.questionId === currentQuestionId) {
+          question.isAnswered = true;
+        }
+        return question;
+      });
+
+      currentQuestionId = getNextQuestionId();
+      completedQuestions = getCompletedQuestionsCount();
+
+      if (completedQuestions === totalQuestions) {
+        quizData.isCompleted = true;
+        goto(`/quiz/results/${quizData.id}`);
+      }
+    } finally {
+      isSubmitting = false;
     }
   }
 </script>
@@ -84,7 +95,9 @@
     <DebugInfo>Question ID: {currentQuestionId}</DebugInfo>
     <Question questionId={currentQuestionId} submitHandler={handleQuestionSubmit} />
     {#if submitError}
-      <ErrorMessage errorMessage={submitError} />
+      <div role="alert">
+        <ErrorMessage errorMessage={submitError} />
+      </div>
     {/if}
   {/if}
   <Progress {completedQuestions} {totalQuestions} />
