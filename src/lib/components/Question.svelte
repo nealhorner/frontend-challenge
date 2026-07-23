@@ -5,7 +5,7 @@
   import { QuestionType, type ParsedMultipleChoiceOptions, type Question } from '$lib/types';
 
   let answer = $state('');
-  let questionPromise: Promise<Question> | undefined = $state();
+  let questionPromise: Promise<Omit<Question, 'answers'>> | undefined = $state();
   let containerEl: HTMLElement | undefined;
   let flagOpen = $state(false);
   let flagMessage = $state('');
@@ -66,7 +66,7 @@
     }
   }
 
-  async function getQuestion(questionId: string) {
+  async function getQuestion(questionId: string): Promise<Omit<Question, 'answers'>> {
     const response = await fetch(`/api/question/${questionId}`);
     const data = await response.json();
     if (response.ok) {
