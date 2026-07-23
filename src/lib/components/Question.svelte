@@ -41,10 +41,14 @@
 
   interface Props {
     questionId: string;
+    // Preloaded question data (e.g. from a parent that already fetched the
+    // whole quiz). When it matches questionId, skip the network round trip
+    // in getQuestion below.
+    question?: Omit<Question, 'answers'>;
     submitHandler: (answer: string) => void;
   }
 
-  let { questionId = $bindable(), submitHandler }: Props = $props();
+  let { questionId = $bindable(), question: preloadedQuestion, submitHandler }: Props = $props();
 
   onMount(async () => {
     if (!questionId) {
@@ -84,13 +88,18 @@
   };
 
   $effect(() => {
-    if (questionId) {
-      questionPromise = getQuestion(questionId).then((q) => {
-        tick().then(() => containerEl?.querySelector<HTMLElement>('input')?.focus());
-        return q;
-      });
-      answer = '';
-    }
+    if (!questionId) return;
+
+    const source =
+      preloadedQuestion?.id === questionId
+        ? Promise.resolve(preloadedQuestion)
+        : getQuestion(questionId);
+
+    questionPromise = source.then((q) => {
+      tick().then(() => containerEl?.querySelector<HTMLElement>('input')?.focus());
+      return q;
+    });
+    answer = '';
   });
 
   function handleAnswerChange(event: Event) {
