@@ -30,3 +30,9 @@ npx tsx prisma/seed.ts
 ```bash
 npm run build
 ```
+
+## Deploying
+
+Production runs on Railway with `@sveltejs/adapter-node`. See
+[docs/deploy-railway.md](docs/deploy-railway.md) for the services, environment
+variables and cutover checklist.

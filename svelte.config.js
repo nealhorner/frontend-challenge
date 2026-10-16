@@ -1,5 +1,4 @@
-import adapterNode from '@sveltejs/adapter-node';
-import adapterVercel from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -18,7 +17,9 @@ const config = {
   },
 
   kit: {
-    adapter: process.env.VERCEL ? adapterVercel() : adapterNode()
+    // Hosted on Railway: `npm run build` emits a Node server in build/, started
+    // with `node build` (see railway.json).
+    adapter: adapter()
   }
 };
 

@@ -21,7 +21,7 @@ const webServerEnv: Record<string, string> = {
   AUTH_DISABLE_RATE_LIMIT: 'true',
   // Skip email verification in the suite — no real email provider is wired up.
   REQUIRE_EMAIL_VERIFICATION: 'false',
-  // Provide empty values so $env/static/private exports exist in the build.
+  // Explicit empty defaults so the email/feedback code paths see defined values.
   RESEND_API_KEY: process.env.RESEND_API_KEY ?? '',
   EMAIL_FROM: process.env.EMAIL_FROM ?? '',
   FEEDBACK_EMAIL: process.env.FEEDBACK_EMAIL ?? '',
