@@ -46,9 +46,16 @@
     // in getQuestion below.
     question?: PublicQuestion;
     submitHandler: (answer: string) => void;
+    // True while the parent is saving the answer, to block repeat submits.
+    isSubmitting?: boolean;
   }
 
-  let { questionId = $bindable(), question: preloadedQuestion, submitHandler }: Props = $props();
+  let {
+    questionId = $bindable(),
+    question: preloadedQuestion,
+    submitHandler,
+    isSubmitting = false
+  }: Props = $props();
 
   onMount(async () => {
     if (!questionId) {
@@ -136,8 +143,9 @@
             <Button
               onclick={() => submitHandler(answer)}
               kind="secondary"
-              disabled={question.type !== QuestionType.MultipleChoice && !haveAnswer(answer)}
-              >Submit</Button
+              disabled={isSubmitting ||
+                (question.type !== QuestionType.MultipleChoice && !haveAnswer(answer))}
+              >{isSubmitting ? 'Submitting…' : 'Submit'}</Button
             >
           </div>
         </form>

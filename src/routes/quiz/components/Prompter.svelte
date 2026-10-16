@@ -40,10 +40,10 @@
   let totalQuestions = quizData.quizQuestions.length ?? defaultQuizSize;
   let submitError: string | undefined = $state();
   // Guards against double-clicks/retries firing a second submit while one is
-  // still in flight — without this, a late-arriving response (e.g. a 400 for
-  // the now-already-answered question) could set submitError after an
-  // earlier, successful request already advanced the quiz.
-  let isSubmitting = false;
+  // still in flight — without this, a late-arriving response could set
+  // submitError after an earlier, successful request already advanced the
+  // quiz. It also disables <Question>'s submit button while saving.
+  let isSubmitting = $state(false);
 
   async function handleQuestionSubmit(answer: string) {
     if (isSubmitting) return;
@@ -67,6 +67,11 @@
         return;
       }
 
+      if (response.status === 401) {
+        // Retrying can't succeed without a session, so don't suggest it.
+        submitError = 'Your session has expired. Reload the page or log in to continue.';
+        return;
+      }
       if (!response.ok) {
         submitError = 'Failed to submit your answer. Please try again.';
         return;
@@ -102,6 +107,7 @@
       questionId={currentQuestionId}
       question={currentQuestion}
       submitHandler={handleQuestionSubmit}
+      {isSubmitting}
     />
     {#if submitError}
       <div role="alert">

@@ -31,6 +31,20 @@ export const POST = async ({ request, locals }) => {
   if (quiz.userId !== userId) {
     return json({ error: 'Forbidden' }, { status: 403 });
   }
+
+  const existingAnswer = await prisma.quizQuestion.findUnique({
+    where: { quizId_questionId: { quizId, questionId } }
+  });
+  if (!existingAnswer) {
+    return json({ error: 'Question is not part of this quiz' }, { status: 404 });
+  }
+  // A repeat submit of an answered question is a retry whose response was lost
+  // (the answer was saved but the client never heard back). Return the saved
+  // record so the client can move on; the first answer stands. This runs
+  // before the completed check so a retry of the final question succeeds too.
+  if (existingAnswer.isAnswered) {
+    return json(existingAnswer);
+  }
   if (quiz.isCompleted) {
     return json({ error: 'Quiz already completed' }, { status: 400 });
   }
@@ -40,18 +54,6 @@ export const POST = async ({ request, locals }) => {
 
   if (!question) {
     return json({ error: 'Question not found' }, { status: 404 });
-  }
-
-  // Check that the question is part of this quiz and isn't already answered.
-  const existingAnswer = await prisma.quizQuestion.findUnique({
-    select: { isAnswered: true },
-    where: { quizId_questionId: { quizId, questionId } }
-  });
-  if (!existingAnswer) {
-    return json({ error: 'Question is not part of this quiz' }, { status: 404 });
-  }
-  if (existingAnswer.isAnswered) {
-    return json({ error: 'Question already answered' }, { status: 400 });
   }
 
   // Validate the user's answer
