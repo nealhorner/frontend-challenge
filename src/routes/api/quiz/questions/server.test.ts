@@ -2,9 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Hoisted so the mock factory below can reference it before the handler imports
 const prisma = vi.hoisted(() => ({
-  quiz: { findUnique: vi.fn(), findUniqueOrThrow: vi.fn(), update: vi.fn() },
-  quizQuestion: { findUnique: vi.fn(), findMany: vi.fn(), update: vi.fn() },
-  question: { findUnique: vi.fn() }
+  quiz: { findUnique: vi.fn(), findUniqueOrThrow: vi.fn(), updateMany: vi.fn() },
+  quizQuestion: { findUnique: vi.fn(), count: vi.fn(), update: vi.fn() },
+  question: { findUnique: vi.fn() },
+  // Post-quiz tasks; only checked for whether they ran
+  userStats: { upsert: vi.fn(() => new Promise(() => {})) }
 }));
 
 vi.mock('$lib/prisma', () => ({ default: prisma }));
@@ -45,6 +47,7 @@ describe('POST /api/quiz/questions', () => {
   it('returns the saved record when an answered question is submitted again', async () => {
     prisma.quiz.findUnique.mockResolvedValue({ userId: 'user_1', isCompleted: false });
     prisma.quizQuestion.findUnique.mockResolvedValue(savedRecord);
+    prisma.quizQuestion.count.mockResolvedValue(3);
 
     const response = await submit({ quizId: 'quiz_1', questionId: 'q_1', userAnswer: 'other' });
 
@@ -62,7 +65,50 @@ describe('POST /api/quiz/questions', () => {
 
     expect(response.status).toBe(200);
     expect(prisma.quizQuestion.update).not.toHaveBeenCalled();
-    expect(prisma.quiz.update).not.toHaveBeenCalled();
+    expect(prisma.quiz.updateMany).not.toHaveBeenCalled();
+  });
+
+  describe('retry of the final answer on a quiz that was never marked complete', () => {
+    beforeEach(() => {
+      prisma.quiz.findUnique.mockResolvedValue({ userId: 'user_1', isCompleted: false });
+      prisma.quizQuestion.findUnique.mockResolvedValue(savedRecord);
+      prisma.quizQuestion.count.mockResolvedValue(0);
+      prisma.quiz.findUniqueOrThrow.mockResolvedValue({
+        id: 'quiz_1',
+        userId: 'user_1',
+        quizQuestions: [{ ...savedRecord }, { ...savedRecord, questionId: 'q_2', isCorrect: false }]
+      });
+    });
+
+    it('completes and scores the quiz before returning success', async () => {
+      prisma.quiz.updateMany.mockResolvedValue({ count: 1 });
+
+      const response = await submit({ quizId: 'quiz_1', questionId: 'q_1', userAnswer: 'p' });
+
+      expect(response.status).toBe(200);
+      expect(prisma.quiz.updateMany).toHaveBeenCalledWith({
+        where: { id: 'quiz_1', isCompleted: false },
+        data: { isCompleted: true, score: 10 }
+      });
+      expect(prisma.userStats.upsert).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not report success when completing the quiz fails', async () => {
+      prisma.quiz.updateMany.mockRejectedValue(new Error('db down'));
+
+      await expect(
+        submit({ quizId: 'quiz_1', questionId: 'q_1', userAnswer: 'p' })
+      ).rejects.toThrow('db down');
+    });
+
+    it('skips post-quiz tasks when another request already completed it', async () => {
+      prisma.quiz.updateMany.mockResolvedValue({ count: 0 });
+
+      const response = await submit({ quizId: 'quiz_1', questionId: 'q_1', userAnswer: 'p' });
+
+      expect(response.status).toBe(200);
+      expect(prisma.userStats.upsert).not.toHaveBeenCalled();
+    });
   });
 
   it('still rejects an unanswered question on a completed quiz', async () => {

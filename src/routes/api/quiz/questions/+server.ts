@@ -43,6 +43,13 @@ export const POST = async ({ request, locals }) => {
   // record so the client can move on; the first answer stands. This runs
   // before the completed check so a retry of the final question succeeds too.
   if (existingAnswer.isAnswered) {
+    // The first request may have saved the final answer and then failed before
+    // marking the quiz complete. Finish that now, so the client isn't sent to
+    // results for a quiz that isn't complete. If it fails again, the error
+    // surfaces and the client can retry once more.
+    if (!quiz.isCompleted) {
+      await completeQuizIfFinished(quizId);
+    }
     return json(existingAnswer);
   }
   if (quiz.isCompleted) {
@@ -91,40 +98,43 @@ export const POST = async ({ request, locals }) => {
     }
   });
 
-  // Check if this is the last question in the quiz
-  const quizQuestions = await prisma.quizQuestion.findMany({
+  await completeQuizIfFinished(quizId);
+
+  return json(savedAnswer);
+};
+
+// Marks the quiz complete and scores it once every question is answered. Safe
+// to call more than once: the update only matches a quiz that isn't complete
+// yet, so only the call that actually completes it runs the post-quiz tasks.
+async function completeQuizIfFinished(quizId: string) {
+  const unanswered = await prisma.quizQuestion.count({
     where: { quizId, isAnswered: false }
   });
-  const isCompleted = quizQuestions.length === 0;
+  if (unanswered > 0) return;
 
-  console.log('isCompleted', isCompleted);
+  const quizWithQuestions = await prisma.quiz.findUniqueOrThrow({
+    where: {
+      id: quizId
+    },
+    include: {
+      quizQuestions: true
+    }
+  });
 
-  // Update the Quiz
-  if (isCompleted) {
-    const quizWithQuestions = await prisma.quiz.findUniqueOrThrow({
-      where: {
-        id: quizId
-      },
-      include: {
-        quizQuestions: true
-      }
-    });
+  // Calculate the score
+  const score = quizWithQuestions.quizQuestions.filter((q) => q.isCorrect).length * 10;
+  const { count } = await prisma.quiz.updateMany({
+    where: { id: quizId, isCompleted: false },
+    data: { isCompleted: true, score }
+  });
 
-    // Calculate the score
-    const score = quizWithQuestions.quizQuestions.filter((q) => q.isCorrect).length * 10;
-    await prisma.quiz.update({
-      where: { id: quizId },
-      data: { isCompleted, score }
-    });
-
-    // Perform post-quiz tasks
+  // Perform post-quiz tasks
+  if (count > 0) {
     void postQuizTasksNonBlocking(quizWithQuestions).catch((error) => {
       console.error('postQuizTasksNonBlocking failed', { quizId: quizWithQuestions.id, error });
     });
   }
-
-  return json(savedAnswer);
-};
+}
 
 async function postQuizTasksNonBlocking(quizWithQuestions: QuizDataWithoutQuestions) {
   const correctAnswers = quizWithQuestions.quizQuestions.filter((q) => q.isCorrect).length;
