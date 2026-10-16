@@ -1,5 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import prisma from '$lib/prisma';
+import { revealedQuestionSelect } from '$lib/server/questions';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ params, locals }) => {
@@ -16,7 +17,8 @@ export const load = (async ({ params, locals }) => {
     include: {
       quizQuestions: {
         include: {
-          question: true
+          // Only completed quizzes owned by the viewer match, so answers can be revealed.
+          question: { select: revealedQuestionSelect }
         }
       }
     }

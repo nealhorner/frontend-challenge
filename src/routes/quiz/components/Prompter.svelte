@@ -14,6 +14,11 @@
   let { quizData = $bindable() }: Props = $props();
 
   let currentQuestionId: string | undefined = $state(getNextQuestionId());
+  // The quiz load already fetched every question in full, so hand the current
+  // one straight to <Question> instead of making it re-fetch over the network.
+  let currentQuestion = $derived(
+    quizData.quizQuestions.find((q) => q.questionId === currentQuestionId)?.question
+  );
 
   function getNextQuestionId() {
     return (
@@ -68,7 +73,11 @@
     <p>Finished Quiz</p>
   {:else if currentQuestionId}
     <DebugInfo>Question ID: {currentQuestionId}</DebugInfo>
-    <Question questionId={currentQuestionId} submitHandler={handleQuestionSubmit} />
+    <Question
+      questionId={currentQuestionId}
+      question={currentQuestion}
+      submitHandler={handleQuestionSubmit}
+    />
   {/if}
   <Progress {completedQuestions} {totalQuestions} />
 </Card>

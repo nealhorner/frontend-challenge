@@ -110,4 +110,19 @@ describe('question queries', () => {
       where: { id: 'q1' }
     });
   });
+
+  it('getPrivateQuestion looks up by id with every field', async () => {
+    const { getPrivateQuestion } = await loadModule();
+    question.findUnique.mockResolvedValue({ id: 'q1', answers: '["p"]' });
+
+    await getPrivateQuestion('q1');
+
+    expect(question.findUnique).toHaveBeenCalledWith({ where: { id: 'q1' } });
+  });
+
+  it('revealedQuestionSelect is the public fields plus answers', async () => {
+    const { publicQuestionSelect, revealedQuestionSelect } = await loadModule();
+
+    expect(revealedQuestionSelect).toEqual({ ...publicQuestionSelect, answers: true });
+  });
 });
