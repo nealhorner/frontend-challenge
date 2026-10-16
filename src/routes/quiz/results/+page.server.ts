@@ -13,13 +13,7 @@ export const load = (async ({ locals }) => {
       isCompleted: true,
       userId: userId
     },
-    include: {
-      quizQuestions: {
-        include: {
-          question: true
-        }
-      }
-    }
+    select: { id: true, title: true, score: true }
   });
 
   if (!quizResult) {
