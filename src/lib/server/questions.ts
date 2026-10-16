@@ -13,7 +13,17 @@ export const publicQuestionSelect = {
   tags: true
 } satisfies Prisma.QuestionSelect;
 
+// Public fields plus the answers. Send this to the client only once the answers
+// are meant to be seen — a completed quiz's results, viewed by its owner.
+export const revealedQuestionSelect = {
+  ...publicQuestionSelect,
+  answers: true
+} satisfies Prisma.QuestionSelect;
+
 export type PublicQuestion = Prisma.QuestionGetPayload<{ select: typeof publicQuestionSelect }>;
+export type RevealedQuestion = Prisma.QuestionGetPayload<{
+  select: typeof revealedQuestionSelect;
+}>;
 export type PrivateQuestion = Prisma.QuestionGetPayload<object>;
 
 const COUNT_TTL_MS = 60_000;
@@ -80,4 +90,9 @@ export function getRandomPrivateQuestion(): Promise<PrivateQuestion | null> {
 /** A question by id with only client-safe fields. */
 export function getPublicQuestion(id: string): Promise<PublicQuestion | null> {
   return prisma.question.findUnique({ select: publicQuestionSelect, where: { id } });
+}
+
+/** A question by id including its answers. Server-side use only — never send to the client. */
+export function getPrivateQuestion(id: string): Promise<PrivateQuestion | null> {
+  return prisma.question.findUnique({ where: { id } });
 }

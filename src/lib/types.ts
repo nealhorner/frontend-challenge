@@ -1,18 +1,12 @@
+// Type-only re-exports so client code can name the question shapes without
+// importing the server module itself.
+import type { PublicQuestion, RevealedQuestion } from '$lib/server/questions';
+
 enum QuestionType {
   MultipleChoice = 'multiple_choice',
   BlindAnswer = 'blind_answer'
 }
 
-interface Question {
-  id: string;
-  family: string;
-  title: string;
-  prompt: string;
-  type: QuestionType;
-  multipleChoiceOptions: string;
-  answers: string;
-  tags: string;
-}
 interface QuizQuestion {
   quizId: string;
   questionId: string;
@@ -21,7 +15,7 @@ interface QuizQuestion {
   isCorrect: boolean | null;
   askedTimestamp: Date | null;
   answeredTimestamp: Date | null;
-  question: Question;
+  question: PublicQuestion;
 }
 
 type QuizQuestionWithoutQuestion = Omit<QuizQuestion, 'question'>;
@@ -52,7 +46,8 @@ interface ParsedMultipleChoiceOptions {
 export { QuestionType };
 
 export type {
-  Question,
+  PublicQuestion,
+  RevealedQuestion,
   QuizQuestion,
   QuizData,
   QuizDataWithoutQuestions,

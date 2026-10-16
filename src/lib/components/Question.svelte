@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { onMount, tick } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
   import Button from './Button.svelte';
   import RadioGroup from './RadioGroup.svelte';
-  import { QuestionType, type ParsedMultipleChoiceOptions, type Question } from '$lib/types';
+  import { QuestionType, type ParsedMultipleChoiceOptions, type PublicQuestion } from '$lib/types';
 
   let answer = $state('');
-  let questionPromise: Promise<Omit<Question, 'answers'>> | undefined = $state();
+  let questionPromise: Promise<PublicQuestion> | undefined = $state();
   let containerEl: HTMLElement | undefined;
   let flagOpen = $state(false);
   let flagMessage = $state('');
@@ -44,7 +44,7 @@
     // Preloaded question data (e.g. from a parent that already fetched the
     // whole quiz). When it matches questionId, skip the network round trip
     // in getQuestion below.
-    question?: Omit<Question, 'answers'>;
+    question?: PublicQuestion;
     submitHandler: (answer: string) => void;
   }
 
@@ -66,7 +66,7 @@
     }
   }
 
-  async function getQuestion(questionId: string): Promise<Omit<Question, 'answers'>> {
+  async function getQuestion(questionId: string): Promise<PublicQuestion> {
     const response = await fetch(`/api/question/${questionId}`);
     const data = await response.json();
     if (response.ok) {
@@ -90,10 +90,12 @@
   $effect(() => {
     if (!questionId) return;
 
+    // Only questionId drives this effect. Reading the preload untracked means a
+    // fresh copy of the same question (e.g. page data reloading) doesn't clear
+    // the answer in progress.
+    const preloaded = untrack(() => preloadedQuestion);
     const source =
-      preloadedQuestion?.id === questionId
-        ? Promise.resolve(preloadedQuestion)
-        : getQuestion(questionId);
+      preloaded?.id === questionId ? Promise.resolve(preloaded) : getQuestion(questionId);
 
     questionPromise = source.then((q) => {
       tick().then(() => containerEl?.querySelector<HTMLElement>('input')?.focus());

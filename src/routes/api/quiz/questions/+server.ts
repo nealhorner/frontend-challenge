@@ -5,6 +5,7 @@ import { QuestionType, type QuizDataWithoutQuestions } from '$lib/types';
 import { getUTCDate } from '$lib/datetime/date';
 import { computeStreaks } from '$lib/streak';
 import { STREAK_WINDOW_DAYS } from '$lib/constants';
+import { getPrivateQuestion } from '$lib/server/questions';
 
 export const POST = async ({ request, locals }) => {
   // The caller must be signed in (guests included) to submit answers.
@@ -34,10 +35,8 @@ export const POST = async ({ request, locals }) => {
     return json({ error: 'Quiz already completed' }, { status: 400 });
   }
 
-  // Get the question to validate the user's answer
-  const question = await prisma.question.findUnique({
-    where: { id: questionId }
-  });
+  // Get the question, including its answers, to validate the user's answer
+  const question = await getPrivateQuestion(questionId);
 
   if (!question) {
     return json({ error: 'Question not found' }, { status: 404 });
