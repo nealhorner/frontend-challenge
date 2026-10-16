@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { onMount, tick } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
   import Button from './Button.svelte';
   import RadioGroup from './RadioGroup.svelte';
-  import { QuestionType, type ParsedMultipleChoiceOptions, type Question } from '$lib/types';
+  import { QuestionType, type ParsedMultipleChoiceOptions, type PublicQuestion } from '$lib/types';
 
   let answer = $state('');
-  let questionPromise: Promise<Question> | undefined = $state();
+  let questionPromise: Promise<PublicQuestion> | undefined = $state();
   let containerEl: HTMLElement | undefined;
   let flagOpen = $state(false);
   let flagMessage = $state('');
@@ -41,10 +41,21 @@
 
   interface Props {
     questionId: string;
+    // Preloaded question data (e.g. from a parent that already fetched the
+    // whole quiz). When it matches questionId, skip the network round trip
+    // in getQuestion below.
+    question?: PublicQuestion;
     submitHandler: (answer: string) => void;
+    // True while the parent is saving the answer, to block repeat submits.
+    isSubmitting?: boolean;
   }
 
-  let { questionId = $bindable(), submitHandler }: Props = $props();
+  let {
+    questionId = $bindable(),
+    question: preloadedQuestion,
+    submitHandler,
+    isSubmitting = false
+  }: Props = $props();
 
   onMount(async () => {
     if (!questionId) {
@@ -62,7 +73,7 @@
     }
   }
 
-  async function getQuestion(questionId: string) {
+  async function getQuestion(questionId: string): Promise<PublicQuestion> {
     const response = await fetch(`/api/question/${questionId}`);
     const data = await response.json();
     if (response.ok) {
@@ -84,13 +95,20 @@
   };
 
   $effect(() => {
-    if (questionId) {
-      questionPromise = getQuestion(questionId).then((q) => {
-        tick().then(() => containerEl?.querySelector<HTMLElement>('input')?.focus());
-        return q;
-      });
-      answer = '';
-    }
+    if (!questionId) return;
+
+    // Only questionId drives this effect. Reading the preload untracked means a
+    // fresh copy of the same question (e.g. page data reloading) doesn't clear
+    // the answer in progress.
+    const preloaded = untrack(() => preloadedQuestion);
+    const source =
+      preloaded?.id === questionId ? Promise.resolve(preloaded) : getQuestion(questionId);
+
+    questionPromise = source.then((q) => {
+      tick().then(() => containerEl?.querySelector<HTMLElement>('input')?.focus());
+      return q;
+    });
+    answer = '';
   });
 
   function handleAnswerChange(event: Event) {
@@ -125,8 +143,9 @@
             <Button
               onclick={() => submitHandler(answer)}
               kind="secondary"
-              disabled={question.type !== QuestionType.MultipleChoice && !haveAnswer(answer)}
-              >Submit</Button
+              disabled={isSubmitting ||
+                (question.type !== QuestionType.MultipleChoice && !haveAnswer(answer))}
+              >{isSubmitting ? 'Submitting…' : 'Submit'}</Button
             >
           </div>
         </form>

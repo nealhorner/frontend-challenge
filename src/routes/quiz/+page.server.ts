@@ -1,13 +1,14 @@
 import prisma from '$lib/prisma';
 import { defaultQuizSize } from '$lib/constants.js';
 import { auth } from '$lib/auth';
+import { publicQuestionSelect } from '$lib/server/questions';
 
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 async function selectQuestions(numberOfQuestions = defaultQuizSize) {
   const questions = [];
-  const candidateQuestions = await prisma.question.findMany();
+  const candidateQuestions = await prisma.question.findMany({ select: { id: true, family: true } });
   for (let i = candidateQuestions.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [candidateQuestions[i], candidateQuestions[j]] = [candidateQuestions[j], candidateQuestions[i]];
@@ -50,7 +51,8 @@ export const load: PageServerLoad = async (event) => {
       include: {
         quizQuestions: {
           include: {
-            question: true
+            // The quiz is still in progress, so the answers must not reach the client.
+            question: { select: publicQuestionSelect }
           }
         }
       }
