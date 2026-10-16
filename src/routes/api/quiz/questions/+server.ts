@@ -76,15 +76,6 @@ export const POST = async ({ request, locals }) => {
     isCorrect = correctAnswers.includes(userAnswer);
   }
 
-  console.log('isCorrect', {
-    isCorrect: isCorrect,
-    correctAnswers: correctAnswers,
-    userAnswer: userAnswer,
-    prompt: question.prompt,
-    type: question.type,
-    correctAnswersLength: correctAnswers.length
-  });
-
   // Save the user's answer, update QuizQuestion
   const savedAnswer = await prisma.quizQuestion.update({
     where: {
