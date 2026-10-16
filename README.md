@@ -33,6 +33,5 @@ npm run build
 
 ## Deploying
 
-Production runs on Railway with `@sveltejs/adapter-node`. See
-[docs/deploy-railway.md](docs/deploy-railway.md) for the services, environment
-variables and cutover checklist.
+Production runs on Railway with `@sveltejs/adapter-node`, configured in
+`railway.json`. See `.env.example` for the environment variables.
