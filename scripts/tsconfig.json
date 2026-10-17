@@ -1,8 +1,9 @@
 {
   // Used by the tsx-run scripts (`npm run populateLearningResources`,
   // `npm run cleanupGuests`), which run outside Vite. SvelteKit's virtual
-  // `$env/*` modules don't exist there, so map the one `$lib/prisma` needs to a
-  // process.env shim. Railway injects the service's variables into process.env.
+  // `$env/*` and `$app/*` modules don't exist there, so map the ones
+  // `$lib/prisma` needs to a shim. Railway injects the service's variables
+  // into process.env.
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -12,7 +13,8 @@
     "paths": {
       "$lib": ["../src/lib"],
       "$lib/*": ["../src/lib/*"],
-      "$env/dynamic/private": ["./env-shim.ts"]
+      "$env/dynamic/private": ["./env-shim.ts"],
+      "$app/environment": ["./env-shim.ts"]
     }
   }
 }

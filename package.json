@@ -18,7 +18,7 @@
     "populateLearningResources": "tsx --tsconfig scripts/tsconfig.json scripts/populate-open-graph.ts",
     "cleanupGuests": "tsx --tsconfig scripts/tsconfig.json scripts/cleanup-guests.ts",
     "db:migrate": "npx prisma migrate dev",
-    "db:seed": "npx tsx prisma/seed.ts",
+    "db:seed": "tsx --tsconfig scripts/tsconfig.json prisma/seed.ts",
     "db:ui": "npx prisma studio",
     "postinstall": "prisma generate",
     "prepare": "husky"
@@ -62,7 +62,7 @@
     "node": ">=24"
   },
   "prisma": {
-    "seed": "npx tsx prisma/seed.ts"
+    "seed": "tsx --tsconfig scripts/tsconfig.json prisma/seed.ts"
   },
   "overrides": {
     "cookie": "^0.7.0",
