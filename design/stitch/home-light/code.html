@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Frontend Challenge - Test &amp; Level Up Your Frontend Skills</title>
+<!-- Google Fonts: Geist & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Geist', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    body {
+      font-family: 'Geist', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, pre, .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+  </style>
+</head>
+<body class="bg-[#f8fafc] text-[#0f172a] min-h-screen selection:bg-sky-100 selection:text-sky-900 flex flex-col">
+<!-- Fixed Top Navigation -->
+<header class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+<div class="h-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+<!-- Brand Logo & Main Nav -->
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2.5 group" href="#">
+<div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/30 text-sky-600 flex items-center justify-center font-mono font-bold text-sm tracking-tighter group-hover:bg-sky-500 group-hover:text-white transition-colors">
+            &lt;/&gt;
+          </div>
+<span class="text-xl font-bold tracking-tight text-slate-900">
+            Frontend<span class="text-[#0284c7]">Challenge</span>
+</span>
+</a>
+<!-- Desktop Navigation Links -->
+<nav class="hidden md:flex items-center gap-1">
+<a class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-900 bg-slate-100/80" href="#">Home</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors" href="#">Learn</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors" href="#">Quizzes</a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors" href="#">Leaderboard</a>
+</nav>
+</div>
+<!-- Quick Search & Action Buttons -->
+<div class="flex items-center gap-3 sm:gap-4">
+<!-- Search Pill -->
+<div class="hidden lg:flex items-center gap-2 bg-slate-100 border border-slate-200 text-slate-500 rounded-lg px-3 py-1.5 text-sm cursor-pointer hover:border-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[18px]">search</span>
+<span>Quick search...</span>
+<kbd class="ml-2 px-1.5 py-0.5 rounded bg-white text-[11px] font-mono border border-slate-200 text-slate-500 shadow-xs">⌘K</kbd>
+</div>
+<a class="text-sm font-medium text-slate-700 hover:text-slate-900 px-3 py-2 transition-colors" href="#">Sign In</a>
+<a class="bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-lg px-4 py-2 text-sm shadow-sm transition-all flex items-center gap-1.5" href="#">
+<span>Start a Quiz</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</header>
+<main class="flex-1 pt-16">
+<!-- HERO SECTION -->
+<section class="relative pt-16 sm:pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
+<!-- Glow ambient background effects -->
+<div class="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 w-[720px] h-[340px] bg-gradient-to-b from-sky-200/50 via-sky-100/20 to-transparent blur-[90px] -z-10 rounded-full"></div>
+<!-- Announcement Badge -->
+<div class="inline-flex items-center gap-2 bg-sky-50 border border-sky-200 text-sky-700 rounded-full px-3.5 py-1 text-xs font-semibold tracking-wide uppercase shadow-2xs">
+<span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
+<span>34 EXPERT-CRAFTED CHALLENGES · NO SIGN-UP TO START</span>
+</div>
+<!-- Main Headline -->
+<h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight max-w-4xl leading-[1.12]">
+        How sharp are your <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600">frontend skills?</span>
+</h1>
+<!-- Subhead -->
+<p class="mt-5 text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+        Answer real-world JavaScript, CSS, React &amp; HTTP questions. Track your accuracy and climb the global rankings.
+      </p>
+<!-- CTA Buttons -->
+<div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+<a class="bg-sky-500 text-white font-semibold px-6 py-3 rounded-lg shadow-sm hover:bg-sky-600 transition-all flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+<span>Start a Quiz</span>
+</a>
+<a class="bg-white border border-slate-300 text-slate-700 font-semibold px-6 py-3 rounded-lg hover:bg-slate-50 transition-all flex items-center gap-1.5 shadow-2xs" href="#">
+<span>Sign In</span>
+<span class="material-symbols-outlined text-[18px] text-slate-400">chevron_right</span>
+</a>
+</div>
+<!-- Trust signals / features row -->
+<div class="mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-sm font-medium text-slate-500">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-emerald-600 text-[18px]">check_circle</span>
+          No credit card
+        </span>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sky-600 text-[18px]">bolt</span>
+          Instant feedback
+        </span>
+<span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-indigo-600 text-[18px]">code</span>
+          Real-world code
+        </span>
+</div>
+<!-- INTERACTIVE CODE CHALLENGE CARD -->
+<div class="w-full max-w-3xl mx-auto mt-12 text-left">
+<!-- Card Container -->
+<div class="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+<!-- Terminal Header -->
+<div class="bg-slate-100 border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-red-400 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+<span class="ml-2 font-mono text-xs text-slate-600 font-medium">challenge_01.css</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-mono text-xs text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+                00:45
+              </span>
+<span class="bg-pink-100 text-pink-700 font-mono text-xs px-2.5 py-0.5 rounded font-bold uppercase tracking-wider">
+                CSS
+              </span>
+</div>
+</div>
+<!-- Question Content -->
+<div class="p-6 sm:p-8">
+<div class="flex items-start justify-between gap-4">
+<h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                Which CSS selector targets all paragraph tags?
+              </h2>
+<span class="shrink-0 px-2.5 py-1 rounded bg-slate-100 border border-slate-200 text-slate-700 font-mono text-xs font-semibold">
+                100 pts
+              </span>
+</div>
+<!-- Options Grid (2x2) -->
+<div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3" id="interactive-options">
+<!-- Option 1: Selected / Correct State -->
+<button class="border-2 border-emerald-500 bg-emerald-50/60 text-slate-900 font-mono font-semibold p-4 rounded-xl flex items-center justify-between text-left transition-all group" onclick="selectAnswer(this, true)" type="button">
+<div class="flex items-center gap-3">
+<span class="w-7 h-7 rounded bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center justify-center text-xs font-bold">1</span>
+<code class="text-base text-emerald-900 font-bold">p</code>
+</div>
+<span class="material-symbols-outlined text-emerald-600 text-[22px]">check_circle</span>
+</button>
+<!-- Option 2 -->
+<button class="border border-slate-200 bg-slate-50 hover:bg-slate-100/80 text-slate-700 font-mono p-4 rounded-xl flex items-center justify-between text-left transition-all group" onclick="selectAnswer(this, false)" type="button">
+<div class="flex items-center gap-3">
+<span class="w-7 h-7 rounded bg-white text-slate-600 border border-slate-200 flex items-center justify-center text-xs font-medium">2</span>
+<code class="text-base text-slate-800">.p</code>
+</div>
+<span class="material-symbols-outlined text-slate-400 opacity-0 group-hover:opacity-40 text-[20px]">circle</span>
+</button>
+<!-- Option 3 -->
+<button class="border border-slate-200 bg-slate-50 hover:bg-slate-100/80 text-slate-700 font-mono p-4 rounded-xl flex items-center justify-between text-left transition-all group" onclick="selectAnswer(this, false)" type="button">
+<div class="flex items-center gap-3">
+<span class="w-7 h-7 rounded bg-white text-slate-600 border border-slate-200 flex items-center justify-center text-xs font-medium">3</span>
+<code class="text-base text-slate-800">#p</code>
+</div>
+<span class="material-symbols-outlined text-slate-400 opacity-0 group-hover:opacity-40 text-[20px]">circle</span>
+</button>
+<!-- Option 4 -->
+<button class="border border-slate-200 bg-slate-50 hover:bg-slate-100/80 text-slate-700 font-mono p-4 rounded-xl flex items-center justify-between text-left transition-all group" onclick="selectAnswer(this, false)" type="button">
+<div class="flex items-center gap-3">
+<span class="w-7 h-7 rounded bg-white text-slate-600 border border-slate-200 flex items-center justify-center text-xs font-medium">4</span>
+<code class="text-base text-slate-800">*p</code>
+</div>
+<span class="material-symbols-outlined text-slate-400 opacity-0 group-hover:opacity-40 text-[20px]">circle</span>
+</button>
+</div>
+<!-- Correct Answer Explanation Box -->
+<div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mt-5 text-emerald-950 flex items-start gap-3" id="explanation-box">
+<span class="material-symbols-outlined text-emerald-600 text-[22px] shrink-0 mt-0.5">verified</span>
+<div class="text-sm">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-mono text-xs font-bold text-emerald-800 uppercase tracking-wide">CORRECT ANSWER</span>
+<span class="text-emerald-400">·</span>
+<span class="font-medium text-emerald-800">Type Selector</span>
+</div>
+<p class="text-slate-700 leading-relaxed">
+                  Targets all <code class="px-1.5 py-0.5 rounded bg-white border border-emerald-200 text-emerald-900 font-mono text-xs font-semibold">&lt;p&gt;</code> elements on the page. In CSS, tag selectors do not require prefixes like dot (<code class="font-mono font-bold text-slate-900">.</code>) for classes or hash (<code class="font-mono font-bold text-slate-900">#</code>) for IDs.
+                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CORE VALUE PROPOSITIONS (FEATURE SECTION) -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+<div class="text-center max-w-2xl mx-auto mb-12">
+<span class="text-xs font-bold font-mono tracking-widest uppercase text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">
+          METHODICAL MASTERY
+        </span>
+<h2 class="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          Built for frontend depth, not trivia memorization
+        </h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1: Track your accuracy -->
+<div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<!-- Visual Widget: Radial accuracy ring -->
+<div class="h-44 rounded-xl bg-slate-50 border border-slate-100 p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between text-xs">
+<span class="font-mono text-slate-500 font-medium">RUNNING_ACCURACY</span>
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-mono font-semibold">+6.4% this week</span>
+</div>
+<div class="flex items-center justify-around my-auto">
+<!-- SVG Radial Ring (explicit width & height) -->
+<div class="relative w-[110px] h-[110px] flex items-center justify-center shrink-0">
+<svg class="w-[110px] h-[110px] -rotate-90" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#e2e8f0" stroke-width="8"></circle>
+<circle cx="50" cy="50" fill="transparent" r="40" stroke="#10b981" stroke-dasharray="251.3" stroke-dashoffset="40.2" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-extrabold text-slate-900 tracking-tight leading-none">84%</span>
+<span class="text-[11px] font-mono font-bold text-slate-400 mt-0.5">ACC</span>
+</div>
+</div>
+<!-- Mini Stats Pill -->
+<div class="flex flex-col gap-2">
+<div class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 shadow-2xs flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500 text-[18px]">local_fire_department</span>
+<span class="font-mono text-xs font-bold text-slate-800">12 streak</span>
+</div>
+<div class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 shadow-2xs flex items-center gap-2">
+<span class="material-symbols-outlined text-sky-600 text-[18px]">done_all</span>
+<span class="font-mono text-xs font-medium text-slate-600">324 solved</span>
+</div>
+</div>
+</div>
+</div>
+<h3 class="mt-5 text-xl font-bold text-slate-900">Track your accuracy</h3>
+<p class="mt-2 text-sm text-slate-600 leading-relaxed">
+              Every answer feeds your running score so you can watch your progress over time.
+            </p>
+</div>
+<div class="mt-5 pt-3 border-t border-slate-100">
+<a class="inline-flex items-center text-sm font-semibold text-sky-600 hover:text-sky-700 gap-1 group" href="#">
+<span>Detailed analytics dashboard</span>
+<span class="transition-transform group-hover:translate-x-1">→</span>
+</a>
+</div>
+</div>
+<!-- Card 2: Climb the rankings -->
+<div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<!-- Visual Widget: Leaderboard table preview -->
+<div class="h-44 rounded-xl bg-slate-50 border border-slate-100 p-3.5 flex flex-col justify-between">
+<div class="flex items-center justify-between text-xs pb-1 border-b border-slate-200/60">
+<span class="font-mono font-bold text-slate-800 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-amber-500 text-[16px]">military_tech</span>
+                  1,842 ELO
+                </span>
+<span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-mono text-[11px] font-semibold">
+                  Senior rank #14
+                </span>
+</div>
+<!-- Leaderboard rows -->
+<div class="space-y-1.5 my-auto">
+<div class="flex items-center justify-between px-2.5 py-1 rounded bg-white border border-slate-200 text-xs font-mono">
+<span class="text-slate-700"><span class="font-bold text-amber-600">#1</span> alex.dev</span>
+<span class="font-bold text-emerald-700">2,190 ELO</span>
+</div>
+<div class="flex items-center justify-between px-2.5 py-1 rounded bg-sky-50 border border-sky-200 text-xs font-mono text-sky-700 font-bold">
+<span>#14 You (active)</span>
+<span>1,842 ELO</span>
+</div>
+<div class="flex items-center justify-between px-2.5 py-1 rounded bg-white border border-slate-200 text-xs font-mono text-slate-500">
+<span>#15 k_nakamura</span>
+<span class="font-medium text-slate-600">1,838 ELO</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-[11px] font-mono text-slate-500 pt-1 border-t border-slate-200/60">
+<span>Matchmaking: Tier 4</span>
+<span class="text-emerald-600 font-medium flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  Active Season 6
+                </span>
+</div>
+</div>
+<h3 class="mt-5 text-xl font-bold text-slate-900">Climb the rankings</h3>
+<p class="mt-2 text-sm text-slate-600 leading-relaxed">
+              An ELO-style rating pits your skills against the rest of the community.
+            </p>
+</div>
+<div class="mt-5 pt-3 border-t border-slate-100">
+<a class="inline-flex items-center text-sm font-semibold text-sky-600 hover:text-sky-700 gap-1 group" href="#">
+<span>Global developer ladder</span>
+<span class="transition-transform group-hover:translate-x-1">→</span>
+</a>
+</div>
+</div>
+<!-- Card 3: Learn as you go -->
+<div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<!-- Visual Widget: Code card preview -->
+<div class="h-44 rounded-xl bg-slate-50 border border-slate-200 p-3.5 flex flex-col justify-between font-mono text-xs text-slate-800">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-sky-100 text-sky-800 font-semibold text-[11px]">
+                  spec: MDN / W3C
+                </span>
+<span class="material-symbols-outlined text-slate-400 text-[16px]">bookmark</span>
+</div>
+<div class="bg-white p-2.5 rounded-lg border border-slate-200 text-[11px] leading-snug my-auto shadow-2xs">
+<div><span class="text-pink-600 font-semibold">const</span> memoizedVal = <span class="text-sky-600 font-semibold">useMemo</span>(() =&gt; {</div>
+<div class="pl-3 text-slate-400">// recalculate only on update</div>
+<div class="pl-3"><span class="text-pink-600 font-semibold">return</span> computeExpensive(data);</div>
+<div>}, [data]);</div>
+</div>
+<div class="flex items-center gap-1.5 text-slate-500 text-[11px]">
+<span class="material-symbols-outlined text-sky-600 text-[14px]">auto_stories</span>
+<span>Curated deep-dives with each quiz</span>
+</div>
+</div>
+<h3 class="mt-5 text-xl font-bold text-slate-900">Learn as you go</h3>
+<p class="mt-2 text-sm text-slate-600 leading-relaxed">
+              See the right answer instantly and dig into curated resources to level up.
+            </p>
+</div>
+<div class="mt-5 pt-3 border-t border-slate-100">
+<a class="inline-flex items-center text-sm font-semibold text-sky-600 hover:text-sky-700 gap-1 group" href="#">
+<span>Browse documentation references</span>
+<span class="transition-transform group-hover:translate-x-1">→</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- CURRICULA SECTION (TOPIC EXPLORATION GRID) -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<span class="text-xs font-mono font-bold tracking-widest uppercase text-sky-700">TARGETED CURRICULA</span>
+<h2 class="mt-1 text-3xl font-extrabold text-slate-900 tracking-tight">Covering the topics that matter</h2>
+</div>
+<p class="text-sm text-slate-600 max-w-md">
+          From runtime subtleties and DOM performance to CSS layout algorithms and HTTP protocols.
+        </p>
+</div>
+<!-- 7 Topic Cards in responsive grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+<!-- JavaScript -->
+<a class="group bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 flex flex-col justify-between hover:shadow-md transition-all shadow-2xs" href="#">
+<div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-800 font-mono font-bold flex items-center justify-center text-sm group-hover:scale-105 transition-transform mb-4">
+            JS
+          </div>
+<div>
+<h4 class="font-bold text-slate-900 text-sm">JavaScript</h4>
+<p class="text-xs font-mono text-slate-500 mt-1">14 Challenges</p>
+</div>
+</a>
+<!-- CSS -->
+<a class="group bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 flex flex-col justify-between hover:shadow-md transition-all shadow-2xs" href="#">
+<div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-800 font-mono font-bold flex items-center justify-center text-base group-hover:scale-105 transition-transform mb-4">
+            #
+          </div>
+<div>
+<h4 class="font-bold text-slate-900 text-sm">CSS</h4>
+<p class="text-xs font-mono text-slate-500 mt-1">8 Challenges</p>
+</div>
+</a>
+<!-- React -->
+<a class="group bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 flex flex-col justify-between hover:shadow-md transition-all shadow-2xs" href="#">
+<div class="w-10 h-10 rounded-lg bg-cyan-100 text-cyan-800 flex items-center justify-center group-hover:scale-105 transition-transform mb-4">
+<span class="material-symbols-outlined text-[20px]">all_inclusive</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 text-sm">React</h4>
+<p class="text-xs font-mono text-slate-500 mt-1">6 Challenges</p>
+</div>
+</a>
+<!-- HTTP -->
+<a class="group bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 flex flex-col justify-between hover:shadow-md transition-all shadow-2xs" href="#">
+<div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center group-hover:scale-105 transition-transform mb-4">
+<span class="material-symbols-outlined text-[20px]">swap_horiz</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 text-sm">HTTP</h4>
+<p class="text-xs font-mono text-slate-500 mt-1">3 Challenges</p>
+</div>
+</a>
+<!-- DOM -->
+<a class="group bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 flex flex-col justify-between hover:shadow-md transition-all shadow-2xs" href="#">
+<div class="w-10 h-10 rounded-lg bg-violet-100 text-violet-800 flex items-center justify-center group-hover:scale-105 transition-transform mb-4">
+<span class="material-symbols-outlined text-[20px]">account_tree</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 text-sm">DOM</h4>
+<p class="text-xs font-mono text-slate-500 mt-1">3 Challenges</p>
+</div>
+</a>
+<!-- Closures -->
+<a class="group bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 flex flex-col justify-between hover:shadow-md transition-all shadow-2xs" href="#">
+<div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-800 font-mono font-bold flex items-center justify-center text-sm group-hover:scale-105 transition-transform mb-4">
+            ()
+          </div>
+<div>
+<h4 class="font-bold text-slate-900 text-sm">Closures</h4>
+<p class="text-xs font-mono text-slate-500 mt-1">Advanced Scope</p>
+</div>
+</a>
+<!-- + more -->
+<a class="group bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:shadow-md transition-all shadow-2xs" href="#">
+<div class="w-10 h-10 rounded-lg bg-slate-200 text-slate-800 font-mono font-bold flex items-center justify-center text-base group-hover:scale-105 transition-transform mb-4">
+            +
+          </div>
+<div>
+<h4 class="font-bold text-slate-900 text-sm">+ more</h4>
+<p class="text-xs font-mono text-sky-600 font-medium mt-1">Explore all topics</p>
+</div>
+</a>
+</div>
+</section>
+<!-- BENCHMARK CALL TO ACTION BANNER -->
+<section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 my-16">
+<div class="relative bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-3xl p-8 sm:p-14 text-center shadow-2xl overflow-hidden">
+<!-- Ambient radial glow behind CTA -->
+<div class="pointer-events-none absolute -bottom-24 left-1/2 -translate-x-1/2 w-[550px] h-[300px] bg-sky-500/20 blur-[100px] rounded-full"></div>
+<span class="font-mono text-xs font-bold text-sky-400 tracking-widest uppercase">
+          BENCHMARK YOUR ENGINEERING LEVEL
+        </span>
+<h2 class="mt-4 text-3xl sm:text-5xl font-extrabold text-white tracking-tight max-w-2xl mx-auto">
+          Ready to find out where you stand?
+        </h2>
+<p class="mt-4 text-slate-300 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+          Take a 5-minute diagnostic test, calibrate your frontend baseline, and earn your place on the global engineering board.
+        </p>
+<div class="mt-8 flex justify-center">
+<a class="bg-sky-400 hover:bg-sky-300 text-slate-950 font-bold px-8 py-4 rounded-xl shadow-lg transition-all flex items-center gap-2 group text-base" href="#">
+<span>Start Your First Quiz</span>
+<span class="transition-transform group-hover:translate-x-1">→</span>
+</a>
+</div>
+<div class="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-slate-400">
+<span>No signup required</span>
+<span>·</span>
+<span>Free community tier</span>
+<span>·</span>
+<span>Instant calibration</span>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="w-full bg-white border-t border-slate-200 mt-auto">
+<div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-500">
+<!-- Brand & Copyright -->
+<div class="flex items-center gap-3">
+<div class="w-6 h-6 rounded bg-sky-500/10 text-sky-600 font-mono font-bold text-xs flex items-center justify-center">
+          &lt;/&gt;
+        </div>
+<span class="font-bold text-slate-900">Frontend Challenge</span>
+<span class="text-slate-300">·</span>
+<span>© Frontend Challenge 2026. Built for frontend mastery.</span>
+</div>
+<!-- Links -->
+<nav class="flex flex-wrap items-center justify-center gap-6 font-medium text-slate-600">
+<a class="hover:text-slate-900 transition-colors" href="#">Home</a>
+<a class="hover:text-slate-900 transition-colors" href="#">Feedback</a>
+<a class="hover:text-slate-900 transition-colors" href="#">Support</a>
+<a class="hover:text-slate-900 transition-colors" href="#">Terms</a>
+<a class="hover:text-slate-900 transition-colors" href="#">Privacy</a>
+</nav>
+<!-- System status pill -->
+<div class="flex items-center gap-4 font-mono text-xs text-slate-600">
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 border border-slate-200">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span>v2.4.0 Online</span>
+</div>
+<div class="flex items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span>cli: ready</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- Script for Quiz Option Toggle Interaction -->
+<script>
+    function selectAnswer(buttonElement, isCorrect) {
+      const container = document.getElementById('interactive-options');
+      const allButtons = container.querySelectorAll('button');
+      const explanation = document.getElementById('explanation-box');
+
+      allButtons.forEach(btn => {
+        btn.className = 'border border-slate-200 bg-slate-50 hover:bg-slate-100/80 text-slate-700 font-mono p-4 rounded-xl flex items-center justify-between text-left transition-all group';
+        const numPill = btn.querySelector('span:first-child');
+        if (numPill) {
+          numPill.className = 'w-7 h-7 rounded bg-white text-slate-600 border border-slate-200 flex items-center justify-center text-xs font-medium';
+        }
+        const rightIcon = btn.querySelector('.material-symbols-outlined');
+        if (rightIcon) {
+          rightIcon.textContent = 'circle';
+          rightIcon.className = 'material-symbols-outlined text-slate-400 opacity-0 group-hover:opacity-40 text-[20px]';
+        }
+      });
+
+      const icon = buttonElement.querySelector('.material-symbols-outlined');
+      const numBadge = buttonElement.querySelector('span:first-child');
+
+      if (isCorrect) {
+        buttonElement.className = 'border-2 border-emerald-500 bg-emerald-50/60 text-slate-900 font-mono font-semibold p-4 rounded-xl flex items-center justify-between text-left transition-all group';
+        if (numBadge) {
+          numBadge.className = 'w-7 h-7 rounded bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center justify-center text-xs font-bold';
+        }
+        if (icon) {
+          icon.textContent = 'check_circle';
+          icon.className = 'material-symbols-outlined text-emerald-600 text-[22px]';
+        }
+      } else {
+        buttonElement.className = 'border-2 border-rose-400 bg-rose-50/60 text-slate-900 font-mono font-semibold p-4 rounded-xl flex items-center justify-between text-left transition-all group';
+        if (numBadge) {
+          numBadge.className = 'w-7 h-7 rounded bg-rose-100 text-rose-800 border border-rose-200 flex items-center justify-center text-xs font-bold';
+        }
+        if (icon) {
+          icon.textContent = 'cancel';
+          icon.className = 'material-symbols-outlined text-rose-500 text-[22px]';
+        }
+      }
+
+      if (explanation) {
+        explanation.style.display = 'flex';
+      }
+    }
+  </script>
+</body></html>

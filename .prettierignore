@@ -2,3 +2,6 @@
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# Stitch design exports, kept verbatim as reference
+design/stitch/
