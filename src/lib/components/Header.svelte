@@ -1,224 +1,276 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import LoginButton from '$lib/components/auth/LoginButton.svelte';
+  import { page } from '$app/state';
+  import ButtonLink from '$lib/components/ButtonLink.svelte';
+  import Logo from '$lib/components/Logo.svelte';
+  import ThemeToggle from '$lib/components/ThemeToggle.svelte';
   import LogoutButton from '$lib/components/auth/LogoutButton.svelte';
+  import { DARK_MODE_ENABLED } from '$lib/theme';
+  import IconAccount from '~icons/mdi/account';
+  import IconClose from '~icons/mdi/close';
+  import IconMenu from '~icons/mdi/menu';
 
   let { isAuthenticated } = $props();
 
-  let showVerticalMenu = $state(false);
-  let innerWidth = $state(0);
-  let clickContainer: HTMLElement;
+  let menuOpen = $state(false);
+  let menuContainer: HTMLElement;
 
-  onMount(() => {
-    innerWidth = window.innerWidth;
-  });
+  let links = $derived([
+    { href: '/', label: 'Home' },
+    { href: '/learn', label: 'Learn' },
+    ...(isAuthenticated ? [{ href: '/profile', label: 'Profile' }] : [])
+  ]);
+
+  function isCurrent(href: string) {
+    const path = page.url.pathname;
+    return href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+  }
 
   function onWindowClick(event: MouseEvent) {
-    // Hide the vertical menu when clicking outside of it
-    const target = event.target as Node;
-    if (!clickContainer.contains(target)) {
-      showVerticalMenu = false;
+    // Close the mobile menu when clicking outside of it. Check the event path,
+    // not event.target: toggling swaps the button icon, so the clicked <svg>
+    // is already detached by the time this handler runs.
+    if (menuOpen && !event.composedPath().includes(menuContainer)) {
+      menuOpen = false;
     }
   }
 
-  function handleClick() {
-    // Show vertical nav menu when the menu button is clicked
-    showVerticalMenu = !showVerticalMenu;
+  function onKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape') menuOpen = false;
   }
 
+  // Close the mobile menu after navigating
   $effect(() => {
-    showVerticalMenu = innerWidth <= 768 ? showVerticalMenu : false;
+    void page.url.pathname;
+    menuOpen = false;
   });
 </script>
 
-<svelte:window onclick={onWindowClick} bind:innerWidth />
+<svelte:window onclick={onWindowClick} onkeydown={onKeydown} />
 
 <header>
-  <div id="nav-wrapper">
-    <a href="/"><h2>Frontend Challenge</h2></a>
-    <div style="height: 45px">
-      <nav>
-        <div class="horizontal-nav">
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/learn">Learn</a></li>
-            {#if isAuthenticated}
-              <li><a href="/profile">Profile</a></li>
-            {/if}
-          </ul>
-          <div>
-            {#if !isAuthenticated}
-              <LoginButton />
-            {:else}
-              <LogoutButton />
-            {/if}
-          </div>
-        </div>
-        <div class="click-container" bind:this={clickContainer}>
-          <div class="toggle-btn-wrapper">
-            <button class="toggle-btn" aria-label="Menu" onclick={handleClick}></button>
-          </div>
-          <div style="display: {showVerticalMenu ? 'flex' : 'none'};">
-            <div class="vertical-nav">
-              <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/learn">Learn</a></li>
-                {#if isAuthenticated}
-                  <li><a href="/profile">Profile</a></li>
-                {/if}
-              </ul>
-              <div>
-                {#if isAuthenticated}
-                  <LogoutButton />
-                {:else}
-                  <LoginButton />
-                {/if}
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="bar">
+    <div class="start">
+      <Logo />
+      <nav class="nav-pill" aria-label="Main">
+        {#each links as link (link.href)}
+          <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+            {link.label}
+          </a>
+        {/each}
       </nav>
     </div>
+
+    <div class="end">
+      {#if DARK_MODE_ENABLED}
+        <ThemeToggle />
+      {/if}
+      <div class="desktop-actions">
+        {#if isAuthenticated}
+          <LogoutButton />
+          <a href="/profile" class="avatar" aria-label="Your profile"><IconAccount /></a>
+        {:else}
+          <ButtonLink href="/login" kind="ghost">Sign In</ButtonLink>
+          <ButtonLink href="/quiz" kind="primary">Start a Quiz</ButtonLink>
+        {/if}
+      </div>
+
+      <div class="menu" bind:this={menuContainer}>
+        <button
+          type="button"
+          class="menu-button"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
+          onclick={() => (menuOpen = !menuOpen)}
+        >
+          {#if menuOpen}<IconClose />{:else}<IconMenu />{/if}
+        </button>
+        {#if menuOpen}
+          <div id="mobile-menu" class="menu-panel">
+            <nav aria-label="Main">
+              {#each links as link (link.href)}
+                <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                  {link.label}
+                </a>
+              {/each}
+            </nav>
+            <div class="menu-actions">
+              {#if isAuthenticated}
+                <LogoutButton />
+              {:else}
+                <ButtonLink href="/login" kind="secondary">Sign In</ButtonLink>
+                <ButtonLink href="/quiz" kind="primary">Start a Quiz</ButtonLink>
+              {/if}
+            </div>
+          </div>
+        {/if}
+      </div>
+    </div>
   </div>
-  <div class="border pink"></div>
-  <div class="border orange"></div>
-  <div class="border yellow"></div>
 </header>
 
 <style>
   header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     width: 100%;
-    background-color: var(--color-blue);
+    background-color: var(--color-header-bg);
+    border-bottom: 1px solid var(--color-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
-  #nav-wrapper {
+
+  .bar {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    padding: 5px var(--page-content-padding);
-    width: 100%;
-    margin: 0 auto;
+    gap: var(--space-md);
+    height: 4rem;
     max-width: var(--page-content-max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-content-padding);
   }
 
-  h2 {
-    color: var(--color-yellow);
-    text-shadow: 1px 1px var(--color-orange);
-    font-size: 2.5rem;
-    margin: auto 0;
-    white-space: nowrap;
-  }
-
-  #nav-wrapper > div {
-    height: 45px;
+  .start,
+  .end,
+  .desktop-actions {
     display: flex;
     align-items: center;
   }
 
-  .horizontal-nav {
+  .start {
+    gap: var(--space-lg);
+  }
+
+  .end,
+  .desktop-actions {
+    gap: var(--space-sm);
+  }
+
+  /* ─── Desktop nav pill ─── */
+
+  .nav-pill {
     display: flex;
-    justify-content: flex-end;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface-sunken);
+  }
+
+  .nav-pill a {
+    padding: 0.3125rem 0.875rem;
+    border-radius: var(--radius-button);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast);
+  }
+
+  .nav-pill a:hover {
+    color: var(--color-text);
+  }
+
+  .nav-pill a[aria-current='page'] {
+    background-color: var(--color-surface);
+    color: var(--color-link);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .avatar {
+    display: inline-flex;
     align-items: center;
-    height: 100%;
-    gap: 0px 20px;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border-strong);
+    background-color: var(--color-surface-sunken);
+    color: var(--color-text-secondary);
+    font-size: 1.125rem;
   }
 
-  .horizontal-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 0px 20px;
-  }
-
-  .horizontal-nav ul li a {
-    color: var(--color-yellow);
+  .avatar:hover {
+    color: var(--color-text);
     text-decoration: none;
   }
 
-  nav ul {
-    list-style: none;
-    display: flex;
-    padding: 0;
-    margin: 0;
-  }
+  /* ─── Mobile menu ─── */
 
-  .toggle-btn-wrapper {
+  .menu {
     display: none;
-    align-items: center;
-    height: 45px;
+    position: relative;
   }
 
-  .toggle-btn {
-    display: block; /* Hide by default */
-    background: url('/hamburger-button.png') no-repeat center center;
-    background-size: contain;
-    border: none;
-    margin-left: 10px;
-    height: 30px;
-    width: 30px;
+  .menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-size: 1.25rem;
     cursor: pointer;
   }
 
-  .vertical-nav {
-    display: none; /* Hide by default */
-    flex-direction: column;
+  .menu-panel {
     position: absolute;
-    gap: 10px 0px;
-    top: 10;
+    top: calc(100% + 0.5rem);
     right: 0;
-    padding: 10px;
-    background-color: white;
-    z-index: 1;
-  }
-
-  .vertical-nav ul {
-    list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 10px 0px;
-    padding: 0;
-    margin: 0;
+    gap: var(--space-md);
+    width: min(18rem, calc(100vw - 2rem));
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface-raised);
+    box-shadow: var(--shadow-overlay);
   }
 
-  .vertical-nav ul li a {
-    color: black;
+  .menu-panel nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-panel nav a {
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--radius-button);
+    color: var(--color-text);
+    font-weight: 500;
     text-decoration: none;
   }
 
-  .border {
-    height: 2px;
-    width: 100%;
-    background-color: aqua;
+  .menu-panel nav a:hover {
+    background-color: var(--color-surface-sunken);
   }
 
-  .border.yellow {
-    background-color: var(--color-yellow);
+  .menu-panel nav a[aria-current='page'] {
+    background-color: var(--color-primary-soft);
+    color: var(--color-link);
   }
 
-  .border.orange {
-    background-color: var(--color-orange);
+  .menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
   }
 
-  .border.pink {
-    background-color: var(--color-pink);
-  }
-
-  @media (max-width: 768px) {
-    #nav-wrapper {
-      padding: 5px;
+  @media (max-width: 767px) {
+    .nav-pill,
+    .desktop-actions {
+      display: none;
     }
 
-    h2 {
-      font-size: 2rem;
-    }
-    .toggle-btn-wrapper {
-      display: flex; /* Show button on narrow screens */
-    }
-
-    .horizontal-nav {
-      display: none; /* Hide the menu when toggled */
-    }
-
-    .vertical-nav {
-      display: flex;
+    .menu {
+      display: block;
     }
   }
 </style>

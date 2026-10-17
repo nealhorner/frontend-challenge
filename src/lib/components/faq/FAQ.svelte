@@ -51,18 +51,18 @@
   }
 
   .faq-container {
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--color-border);
     border-radius: var(--card-border-radius);
     box-shadow:
       0px 1px 2px -1px rgba(0, 0, 0, 0.1),
       0px 1px 3px 0px rgba(0, 0, 0, 0.1);
   }
   .faq-item {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--color-border);
     overflow: hidden;
   }
   .faq-question:hover {
-    background-color: #f9f9f9;
+    background-color: var(--color-hover);
     cursor: pointer;
   }
 

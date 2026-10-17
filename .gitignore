@@ -24,3 +24,5 @@ test-results/**/error-context.md
 
 # Claude Code agent worktrees
 .claude/worktrees/
+
+design/

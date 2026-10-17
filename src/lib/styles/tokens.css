@@ -1,0 +1,316 @@
+/*
+ * Design tokens for the redesign.
+ *
+ * Light values come from the Stitch "Light theme 2" mockup, dark values from
+ * the "Terminal Pulse" mockup. Components use
+ * only these semantic names, so the theme swaps by setting
+ * `data-theme="dark"` on <html> (see src/lib/theme.ts).
+ *
+ * Some colors are nudged from the mockups to meet WCAG AA:
+ * - button fill #0277b6 instead of #0284c7, since white on #0284c7 is 4.1:1;
+ * - muted text #64748b (light) and #7c8a9e (dark) instead of #94a3b8 and #64748b.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* ─── Surfaces ─── */
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+
+  /* ─── Text ─── */
+  --color-text: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+
+  /* ─── Primary ─── */
+  --color-primary: #0277b6;
+  --color-primary-hover: #0369a1;
+  --color-on-primary: #ffffff;
+  --color-primary-soft: #f0f9ff;
+  --color-primary-border: #bae6fd;
+  --color-link: #0369a1;
+
+  /* ─── States: base (borders, icons), text, soft (backgrounds) ─── */
+  --color-success: #10b981;
+  --color-success-text: #047857;
+  --color-success-soft: #ecfdf5;
+  --color-error: #f43f5e;
+  --color-error-text: #be123c;
+  --color-error-soft: #fff1f2;
+  --color-warning: #f59e0b;
+  --color-warning-text: #b45309;
+  --color-warning-soft: #fffbeb;
+
+  /* ─── Topic tags: text, background, border per hue ─── */
+  --topic-sky-text: #0369a1;
+  --topic-sky-bg: #f0f9ff;
+  --topic-sky-border: #bae6fd;
+  --topic-emerald-text: #047857;
+  --topic-emerald-bg: #ecfdf5;
+  --topic-emerald-border: #a7f3d0;
+  --topic-violet-text: #6d28d9;
+  --topic-violet-bg: #f5f3ff;
+  --topic-violet-border: #ddd6fe;
+  --topic-amber-text: #b45309;
+  --topic-amber-bg: #fffbeb;
+  --topic-amber-border: #fde68a;
+  --topic-rose-text: #be123c;
+  --topic-rose-bg: #fff1f2;
+  --topic-rose-border: #fecdd3;
+  --topic-slate-text: #334155;
+  --topic-slate-bg: #f1f5f9;
+  --topic-slate-border: #cbd5e1;
+
+  /* ─── Elevation ─── */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-raised: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-overlay: 0 12px 32px rgba(15, 23, 42, 0.1);
+  --shadow-primary-glow: none;
+  --focus-ring: 0 0 0 3px rgba(2, 132, 199, 0.25);
+
+  /* ─── Typography ─── */
+  --font-sans:
+    'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-xs: 0.75rem; /* 12px: badges, meta */
+  --text-sm: 0.875rem; /* 14px: secondary copy, labels */
+  --text-md: 1rem; /* 16px: body */
+  --text-lg: 1.125rem; /* 18px: lead paragraphs */
+  --text-xl: 1.25rem; /* 20px: headline-sm */
+  --text-2xl: 1.5rem; /* 24px: headline-md */
+  --text-3xl: clamp(1.625rem, 1.2rem + 1.6vw, 2.25rem); /* 26→36px: headline-lg */
+  --text-4xl: clamp(2rem, 1.3rem + 2.8vw, 3rem); /* 32→48px: headline-xl */
+
+  --tracking-tight: -0.025em;
+  --tracking-snug: -0.015em;
+  --tracking-wide: 0.04em;
+
+  /* ─── Shape and space ─── */
+  --radius-sm: 4px; /* buttons, inputs, tags */
+  --radius-md: 6px;
+  --radius-lg: 8px; /* cards, panels */
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+
+  --page-content-max-width: 1216px;
+  --page-content-padding: 32px;
+
+  --transition-fast: 120ms ease;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-bg: #070a0f;
+  --color-surface: #0e1522;
+  --color-surface-raised: #151f32;
+  --color-surface-sunken: #0a101a;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+
+  --color-text: #e8ecf4;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #7c8a9e;
+
+  --color-primary: #00f0ff;
+  --color-primary-hover: #7df4ff;
+  --color-on-primary: #070a0f;
+  --color-primary-soft: rgba(0, 240, 255, 0.08);
+  --color-primary-border: rgba(0, 240, 255, 0.35);
+  --color-link: #00f0ff;
+
+  --color-success: #10b981;
+  --color-success-text: #34d399;
+  --color-success-soft: rgba(16, 185, 129, 0.1);
+  --color-error: #ef4444;
+  --color-error-text: #f87171;
+  --color-error-soft: rgba(239, 68, 68, 0.1);
+  --color-warning: #ffb800;
+  --color-warning-text: #ffb800;
+  --color-warning-soft: rgba(255, 184, 0, 0.1);
+
+  --topic-sky-text: #00f0ff;
+  --topic-sky-bg: rgba(0, 240, 255, 0.1);
+  --topic-sky-border: rgba(0, 240, 255, 0.25);
+  --topic-emerald-text: #34d399;
+  --topic-emerald-bg: rgba(16, 185, 129, 0.1);
+  --topic-emerald-border: rgba(16, 185, 129, 0.3);
+  --topic-violet-text: #c4b5fd;
+  --topic-violet-bg: rgba(139, 92, 246, 0.12);
+  --topic-violet-border: rgba(139, 92, 246, 0.3);
+  --topic-amber-text: #ffb800;
+  --topic-amber-bg: rgba(255, 184, 0, 0.1);
+  --topic-amber-border: rgba(255, 184, 0, 0.3);
+  --topic-rose-text: #fb7185;
+  --topic-rose-bg: rgba(244, 63, 94, 0.1);
+  --topic-rose-border: rgba(244, 63, 94, 0.3);
+  --topic-slate-text: #cbd5e1;
+  --topic-slate-bg: rgba(255, 255, 255, 0.06);
+  --topic-slate-border: rgba(255, 255, 255, 0.14);
+
+  --shadow-sm: none;
+  --shadow-raised: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-overlay: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-primary-glow: 0 0 20px rgba(0, 240, 255, 0.35);
+  --focus-ring: 0 0 0 1px #00f0ff, 0 0 16px rgba(0, 240, 255, 0.3);
+}
+
+/*
+ * Theme-specific shape, glow and accent tokens. The two mockups differ in more
+ * than color: Terminal Pulse uses rounder corners, near-invisible card borders
+ * and cyan glows; light theme 2 is flatter with crisp borders.
+ */
+:root {
+  --radius-button: 6px;
+  --radius-button-lg: 6px;
+  --radius-card: 8px;
+  --radius-panel: 16px;
+  --color-border-card: var(--color-border);
+  --color-header-bg: rgba(255, 255, 255, 0.85);
+  --color-info: #0284c7;
+  /* Subtle tint for hovered rows and list items */
+  --color-hover: rgba(15, 23, 42, 0.04);
+
+  --shadow-primary-rest: none;
+  --shadow-card: var(--shadow-raised);
+  --gradient-accent-text: linear-gradient(90deg, #0284c7 0%, #2563eb 50%, #4f46e5 100%);
+  --glow-hero: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(2, 132, 199, 0.07), transparent 70%);
+  --glow-hero-accent: radial-gradient(
+    circle at 100% 70%,
+    rgba(245, 158, 11, 0.06),
+    transparent 40%
+  );
+
+  /* Code samples: light IDE colors */
+  --color-syntax-keyword: #be123c;
+  --color-syntax-string: #047857;
+  --color-syntax-function: #0369a1;
+  --color-syntax-comment: #64748b;
+
+  /* The closing call-to-action is a dark panel in both themes. */
+  --cta-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 55%, #020617 100%);
+  --cta-text: #f8fafc;
+  --cta-text-secondary: #cbd5e1;
+  --cta-text-muted: #94a3b8;
+  --cta-accent: #38bdf8;
+  --cta-accent-hover: #7dd3fc;
+  --cta-on-accent: #0f172a;
+  --cta-glow: radial-gradient(
+    ellipse 50% 60% at 50% 110%,
+    rgba(56, 189, 248, 0.18),
+    transparent 70%
+  );
+}
+
+[data-theme='dark'] {
+  --radius-button: 8px;
+  --radius-button-lg: 12px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
+  --color-border-card: rgba(255, 255, 255, 0.05);
+  --color-header-bg: rgba(7, 10, 15, 0.85);
+  --color-info: #38bdf8;
+  --color-hover: rgba(255, 255, 255, 0.05);
+
+  --shadow-primary-rest: 0 0 20px rgba(0, 240, 255, 0.35);
+  --shadow-primary-glow: 0 0 30px rgba(0, 240, 255, 0.55);
+  --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.35);
+  --gradient-accent-text: linear-gradient(90deg, #00f0ff 0%, #7df4ff 45%, #ffdb9d 100%);
+  --glow-hero: radial-gradient(ellipse 55% 45% at 50% 0%, rgba(0, 240, 255, 0.13), transparent 70%);
+  --glow-hero-accent: radial-gradient(circle at 100% 75%, rgba(254, 183, 0, 0.09), transparent 35%);
+
+  --color-syntax-keyword: #f43f5e;
+  --color-syntax-string: #34d399;
+  --color-syntax-function: #38bdf8;
+  --color-syntax-comment: #7c8a9e;
+
+  --cta-bg: linear-gradient(135deg, #151f32 0%, #0e1522 50%, #070a0f 100%);
+  --cta-text: #e8ecf4;
+  --cta-text-secondary: #b9cacb;
+  --cta-text-muted: #7c8a9e;
+  --cta-accent: #00f0ff;
+  --cta-accent-hover: #7df4ff;
+  --cta-on-accent: #070a0f;
+  --cta-glow: radial-gradient(
+    ellipse 50% 60% at 50% 115%,
+    rgba(0, 240, 255, 0.14),
+    transparent 70%
+  );
+}
+
+/*
+ * Legacy names, kept so pages that haven't been restyled yet still work.
+ * In light mode they keep their old ocean-palette values, so unmigrated pages
+ * look unchanged; in dark mode they point at the new tokens. Remove in
+ * redesign phase 5 along with src/lib/ocean-palette.css.
+ */
+:root {
+  --color-text-tertiary: #d1d6dc;
+  --color-purple: #008f98;
+  --color-blue: #1c4067;
+  /* --color-blue as a text color; it maps to a dark surface in dark mode */
+  --color-blue-text: #1c4067;
+  --color-yellow: #ffed4f;
+  --color-orange: #f2973d;
+  --color-pink: #e78571;
+  --color-red: #c4393e;
+  --color-affirmative-light: #d8e9ff;
+  --color-affirmative-dark: #008f98;
+  --color-negative-light: #fde9ff;
+  --color-negative-dark: #c4393e;
+  --border-radius-md: var(--radius-md);
+  --border-radius-lg: var(--radius-lg);
+  --card-border-radius: var(--radius-lg);
+
+  --ocean-color-white: #ffffff;
+  --ocean-color-charcoal: #3a3a3a;
+  --ocean-color-ice: #edf1fa;
+  --ocean-color-mist-light: #d1d6dc;
+  --ocean-color-pale-pink: #fde9ff;
+  --ocean-color-red-sun: #c4393e;
+  --ocean-color-cheese-yellow: #fec022;
+  --ocean-gradient-cream-to-pale-yellow: linear-gradient(180deg, #f6f2e8 0%, #fff5d0 100%);
+}
+
+[data-theme='dark'] {
+  --color-text-tertiary: var(--color-text-muted);
+  --color-purple: var(--color-primary);
+  --color-blue: var(--color-surface-raised);
+  --color-blue-text: var(--color-text);
+  --color-yellow: var(--color-warning);
+  --color-orange: var(--color-warning);
+  --color-pink: var(--color-error);
+  --color-red: var(--color-error-text);
+  --color-affirmative-light: var(--color-success-soft);
+  --color-affirmative-dark: var(--color-success-text);
+  --color-negative-light: var(--color-error-soft);
+  --color-negative-dark: var(--color-error-text);
+
+  --ocean-color-white: var(--color-surface);
+  --ocean-color-charcoal: var(--color-text);
+  --ocean-color-ice: var(--color-surface-sunken);
+  --ocean-color-mist-dark: var(--color-text-secondary);
+  --ocean-color-mist-light: var(--color-border-strong);
+  --ocean-color-pale-pink: var(--color-error-soft);
+  --ocean-color-red-sun: var(--color-error-text);
+  --ocean-color-cheese-yellow: var(--color-warning);
+  --ocean-gradient-cream-to-pale-yellow: linear-gradient(
+    180deg,
+    var(--color-surface) 0%,
+    var(--color-bg) 100%
+  );
+}
