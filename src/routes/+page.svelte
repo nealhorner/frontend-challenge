@@ -13,8 +13,8 @@
   import IconTrophy from '~icons/mdi/trophy-outline';
 
   // Question counts per topic, from the seed data in data/questions.json.
-  // Hardcoded for the same reason as the total in WelcomeSection: the
-  // homepage is prerendered and must not load the question data.
+  // Hardcoded on purpose: the homepage is prerendered (see +page.ts), and the
+  // question data carries answers we must not ship to the client.
   const topics: {
     name: string;
     count: string;

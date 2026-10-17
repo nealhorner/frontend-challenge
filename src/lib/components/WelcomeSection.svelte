@@ -8,13 +8,6 @@
 </script>
 
 <section class="hero">
-  <!-- Keep this count in sync with the seed data in data/questions.json. It is
-       hardcoded on purpose: the homepage is prerendered (see +page.ts), and the
-       question data carries answers we must not ship to the client. -->
-  <span class="hero-chip">
-    <span class="pulse" aria-hidden="true"></span>
-    34 expert-crafted challenges · no sign-up to start
-  </span>
   <h1>How sharp are your <span class="accent">frontend skills?</span></h1>
   <p class="hero-subhead">
     Answer real-world JavaScript, CSS, React &amp; HTTP questions. Track your accuracy and climb the
@@ -42,48 +35,6 @@
     margin: 0 auto;
     padding: var(--space-xl) var(--page-content-padding) var(--space-lg);
     text-align: center;
-  }
-
-  .hero-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-sm);
-    padding: 0.375rem var(--space-md);
-    border: 1px solid var(--color-border-card);
-    border-radius: var(--radius-full);
-    background-color: var(--color-surface);
-    box-shadow: var(--shadow-sm);
-    color: var(--color-text);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-  }
-
-  .pulse {
-    position: relative;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: var(--radius-full);
-    background-color: var(--color-primary);
-  }
-
-  .pulse::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background-color: var(--color-primary);
-    animation: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-
-  @keyframes ping {
-    75%,
-    100% {
-      transform: scale(2.2);
-      opacity: 0;
-    }
   }
 
   h1 {

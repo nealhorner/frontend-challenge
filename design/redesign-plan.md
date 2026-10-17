@@ -128,8 +128,10 @@ These were settled while matching the home page to the target screenshot in
 
 1. **Copy:** the mockup wording is used, except where it promises something the site doesn't do. The closing panel says "Take a short quiz…" instead of "Take a 5-minute diagnostic test…", and "Free to play" replaces "Free community tier".
 2. **Feature card visuals:** kept as static illustrations. They're marked `aria-hidden`, and a comment says they show example numbers. The card links go to pages that exist ("View your stats" → `/profile`, "See your rating" → `/profile`, "Browse learning resources" → `/learn`) instead of the mockup's analytics dashboard and leaderboard.
-3. **Topic counts:** the real counts from `data/questions.json` (JavaScript 9, CSS 5, React 3, HTTP 15, DOM 2), hardcoded like the hero's "34" because the homepage is prerendered. The mockup's numbers were made up.
+3. **Topic counts:** the real counts from `data/questions.json` (JavaScript 9, CSS 5, React 3, HTTP 15, DOM 2), hardcoded because the homepage is prerendered. The mockup's numbers were made up.
 4. **Logo:** the mockup's `</>` mark, built as `Logo.svelte` (the Stitch logo image is hosted on Google and can't be reused).
 5. **Radii:** each theme has its own. `--radius-button`, `--radius-card` and `--radius-panel` are 6/8/16px in light and 8/12/16px in dark.
+
+Also removed: the hero badge ("34 expert-crafted challenges · no sign-up to start"), which felt too pushy.
 
 Left out because they're out of scope: the Quizzes and Leaderboard nav links, ⌘K search, Terms and Privacy, the version badge, and the "00:45" timer and "100 pts" badge on the sample question.
