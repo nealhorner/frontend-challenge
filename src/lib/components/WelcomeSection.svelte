@@ -1,86 +1,181 @@
 <script lang="ts">
   import ButtonLink from './ButtonLink.svelte';
+  import IconBolt from '~icons/mdi/lightning-bolt';
+  import IconCheckCircle from '~icons/mdi/check-circle-outline';
+  import IconChevronRight from '~icons/mdi/chevron-right';
+  import IconCode from '~icons/mdi/code-tags';
+  import IconPlay from '~icons/mdi/play';
 </script>
 
-<div class="hero">
-  <div class="hero-content">
-    <!-- Keep this count in sync with the seed data in data/questions.json. It is
-         hardcoded on purpose: the homepage is prerendered (see +page.ts), and the
-         question data carries answers we must not ship to the client. -->
-    <span class="hero-chip"> 34 expert-crafted challenges · no sign-up to start </span>
-    <h1>How sharp are your frontend skills?</h1>
-    <p class="hero-subhead">
-      Answer real-world JavaScript, CSS, React &amp; HTTP questions. Track your accuracy and climb
-      the global rankings.
-    </p>
-    <div class="button-tray">
-      <ButtonLink href="/quiz" kind="primary">Start a Quiz</ButtonLink>
-      <ButtonLink href="/login" kind="secondary">Sign In</ButtonLink>
-    </div>
+<section class="hero">
+  <!-- Keep this count in sync with the seed data in data/questions.json. It is
+       hardcoded on purpose: the homepage is prerendered (see +page.ts), and the
+       question data carries answers we must not ship to the client. -->
+  <span class="hero-chip">
+    <span class="pulse" aria-hidden="true"></span>
+    34 expert-crafted challenges · no sign-up to start
+  </span>
+  <h1>How sharp are your <span class="accent">frontend skills?</span></h1>
+  <p class="hero-subhead">
+    Answer real-world JavaScript, CSS, React &amp; HTTP questions. Track your accuracy and climb the
+    global rankings.
+  </p>
+  <div class="button-tray">
+    <ButtonLink href="/quiz" kind="primary" size="lg"><IconPlay />Start a Quiz</ButtonLink>
+    <ButtonLink href="/login" kind="secondary" size="lg">
+      Sign In<IconChevronRight class="chevron" />
+    </ButtonLink>
   </div>
-</div>
+  <ul class="trust">
+    <li><IconCheckCircle class="success" />No credit card</li>
+    <li><IconBolt class="info" />Instant feedback</li>
+    <li><IconCode class="keyword" />Real-world code</li>
+  </ul>
+</section>
 
 <style>
   .hero {
-    box-sizing: border-box;
-    background-color: var(--color-blue);
-    display: flex;
-    justify-content: center;
-    padding: 64px var(--page-content-padding);
-  }
-  .hero-content {
-    width: 100%;
-    max-width: var(--page-content-max-width);
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: var(--page-content-max-width);
+    margin: 0 auto;
+    padding: var(--space-xl) var(--page-content-padding) var(--space-lg);
+    text-align: center;
   }
+
   .hero-chip {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background-color: rgba(255, 237, 79, 0.15);
-    color: var(--color-yellow);
-    font-size: 0.85rem;
-    padding: 6px 14px;
-    border-radius: 999px;
-    margin-bottom: 1.5rem;
+    gap: var(--space-sm);
+    padding: 0.375rem var(--space-md);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
   }
+
+  .pulse {
+    position: relative;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary);
+  }
+
+  .pulse::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: var(--color-primary);
+    animation: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes ping {
+    75%,
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
   h1 {
-    color: var(--color-yellow);
-    text-shadow: 2px 2px var(--color-orange);
-    font-size: clamp(2rem, 6vw, 3.25rem);
-    font-weight: 500;
-    line-height: 1.1;
-    margin: 0 0 1rem;
+    max-width: 56rem;
+    margin: var(--space-lg) 0 0;
+    font-size: var(--text-4xl);
+    line-height: 1.15;
+    text-wrap: balance;
   }
+
+  .accent {
+    background: var(--gradient-accent-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .hero-subhead {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    max-width: 42rem;
+    margin: var(--space-md) 0 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-lg);
     line-height: 1.6;
-    max-width: 30rem;
-    margin: 0 auto 2rem;
   }
+
   .button-tray {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
     justify-content: center;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+
+  .button-tray :global(.chevron) {
+    margin-right: -0.25rem;
+    color: var(--color-text-muted);
+  }
+
+  .trust {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-sm) var(--space-lg);
+    margin: var(--space-lg) 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .trust li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .trust li + li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    margin-right: calc(var(--space-lg) - 0.375rem);
+    border-radius: var(--radius-full);
+    background-color: var(--color-border-strong);
+  }
+
+  .trust :global(svg) {
+    font-size: 1rem;
+  }
+
+  .trust :global(.success) {
+    color: var(--color-success);
+  }
+
+  .trust :global(.info) {
+    color: var(--color-info);
+  }
+
+  .trust :global(.keyword) {
+    color: var(--color-syntax-keyword);
   }
 
   @media (max-width: 600px) {
-    .hero {
-      padding: 48px 20px;
-    }
     /* Let the CTAs stretch full width and stack on small screens */
     .button-tray {
       width: 100%;
       flex-direction: column;
       align-items: stretch;
     }
-    .button-tray :global(a) {
-      text-align: center;
+
+    .trust li + li::before {
+      display: none;
     }
   }
 </style>

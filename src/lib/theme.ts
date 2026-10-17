@@ -6,6 +6,11 @@ export type Theme = 'light' | 'dark';
 
 export const THEME_STORAGE_KEY = 'theme';
 
+// Shows the theme toggle in the header. Off until every page is restyled for
+// dark mode (redesign phase 5); flip it together with `followSystem` in
+// src/app.html. Until then, preview with localStorage.theme = 'dark'.
+export const DARK_MODE_ENABLED = false;
+
 export function getTheme(): Theme {
   return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
 }

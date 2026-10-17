@@ -11,7 +11,7 @@
   gap: var(--space-sm);
   padding: 0.5625rem 1.125rem;
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-button);
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: 600;
@@ -47,6 +47,7 @@
 
 .c-button-lg {
   padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-button-lg);
   font-size: var(--text-md);
   line-height: 1.5rem;
 }
@@ -56,6 +57,7 @@
   background-color: var(--color-primary);
   border-color: var(--color-primary);
   color: var(--color-on-primary);
+  box-shadow: var(--shadow-primary-rest);
 }
 
 .c-button-primary:hover:not(:disabled) {

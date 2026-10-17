@@ -121,10 +121,15 @@ haven't been migrated yet will look partly old and partly new, which is expected
 - Keyboard: a visible focus ring on every interactive element, and quiz answers are selectable with keys.
 - Screenshots attached to each PR (light and dark).
 
-## Open questions
+## Open questions (resolved in Phases 2–3)
 
-1. **Copy:** the mockup rewrites some text, for example "Built for frontend depth, not trivia memorization", "Take a 5-minute diagnostic test", and "No credit card". Should we use the mockup wording or keep the current text?
-2. **Feature card visuals:** the mockup's accuracy ring, leaderboard snippet, and code sample show made-up data. Options are to show them as static illustrations or to drop them.
-3. **Topic grid counts:** the mockup shows counts like "JS · 14 Challenges". Should these come from the database, or should we show topic names only?
-4. **Logo:** should we keep the current logo image or use the mockup's `</>` mark?
-5. **Dark theme radii:** Terminal Pulse uses larger corners (12–16px) than Light 2 (4–8px). This plan uses one shared scale. Should dark mode get its own?
+These were settled while matching the home page to the target screenshot in
+`design/stitch/home-dark/screen-target.png`. Change any of them in review.
+
+1. **Copy:** the mockup wording is used, except where it promises something the site doesn't do. The closing panel says "Take a short quiz…" instead of "Take a 5-minute diagnostic test…", and "Free to play" replaces "Free community tier".
+2. **Feature card visuals:** kept as static illustrations. They're marked `aria-hidden`, and a comment says they show example numbers. The card links go to pages that exist ("View your stats" → `/profile`, "See your rating" → `/profile`, "Browse learning resources" → `/learn`) instead of the mockup's analytics dashboard and leaderboard.
+3. **Topic counts:** the real counts from `data/questions.json` (JavaScript 9, CSS 5, React 3, HTTP 15, DOM 2), hardcoded like the hero's "34" because the homepage is prerendered. The mockup's numbers were made up.
+4. **Logo:** the mockup's `</>` mark, built as `Logo.svelte` (the Stitch logo image is hosted on Google and can't be reused).
+5. **Radii:** each theme has its own. `--radius-button`, `--radius-card` and `--radius-panel` are 6/8/16px in light and 8/12/16px in dark.
+
+Left out because they're out of scope: the Quizzes and Leaderboard nav links, ⌘K search, Terms and Privacy, the version badge, and the "00:45" timer and "100 pts" badge on the sample question.

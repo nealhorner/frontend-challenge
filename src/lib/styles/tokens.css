@@ -170,6 +170,86 @@
 }
 
 /*
+ * Theme-specific shape, glow and accent tokens. The two mockups differ in more
+ * than color: Terminal Pulse uses rounder corners, near-invisible card borders
+ * and cyan glows; light theme 2 is flatter with crisp borders.
+ */
+:root {
+  --radius-button: 6px;
+  --radius-button-lg: 6px;
+  --radius-card: 8px;
+  --radius-panel: 16px;
+  --color-border-card: var(--color-border);
+  --color-header-bg: rgba(255, 255, 255, 0.85);
+  --color-info: #0284c7;
+
+  --shadow-primary-rest: none;
+  --shadow-card: var(--shadow-raised);
+  --gradient-accent-text: linear-gradient(90deg, #0284c7 0%, #2563eb 50%, #4f46e5 100%);
+  --glow-hero: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(2, 132, 199, 0.07), transparent 70%);
+  --glow-hero-accent: radial-gradient(
+    circle at 100% 70%,
+    rgba(245, 158, 11, 0.06),
+    transparent 40%
+  );
+
+  /* Code samples: light IDE colors */
+  --color-syntax-keyword: #be123c;
+  --color-syntax-string: #047857;
+  --color-syntax-function: #0369a1;
+  --color-syntax-comment: #64748b;
+
+  /* The closing call-to-action is a dark panel in both themes. */
+  --cta-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 55%, #020617 100%);
+  --cta-text: #f8fafc;
+  --cta-text-secondary: #cbd5e1;
+  --cta-text-muted: #94a3b8;
+  --cta-accent: #38bdf8;
+  --cta-accent-hover: #7dd3fc;
+  --cta-on-accent: #0f172a;
+  --cta-glow: radial-gradient(
+    ellipse 50% 60% at 50% 110%,
+    rgba(56, 189, 248, 0.18),
+    transparent 70%
+  );
+}
+
+[data-theme='dark'] {
+  --radius-button: 8px;
+  --radius-button-lg: 12px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
+  --color-border-card: rgba(255, 255, 255, 0.05);
+  --color-header-bg: rgba(7, 10, 15, 0.85);
+  --color-info: #38bdf8;
+
+  --shadow-primary-rest: 0 0 20px rgba(0, 240, 255, 0.35);
+  --shadow-primary-glow: 0 0 30px rgba(0, 240, 255, 0.55);
+  --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.35);
+  --gradient-accent-text: linear-gradient(90deg, #00f0ff 0%, #7df4ff 45%, #ffdb9d 100%);
+  --glow-hero: radial-gradient(ellipse 55% 45% at 50% 0%, rgba(0, 240, 255, 0.13), transparent 70%);
+  --glow-hero-accent: radial-gradient(circle at 100% 75%, rgba(254, 183, 0, 0.09), transparent 35%);
+
+  --color-syntax-keyword: #f43f5e;
+  --color-syntax-string: #34d399;
+  --color-syntax-function: #38bdf8;
+  --color-syntax-comment: #7c8a9e;
+
+  --cta-bg: linear-gradient(135deg, #151f32 0%, #0e1522 50%, #070a0f 100%);
+  --cta-text: #e8ecf4;
+  --cta-text-secondary: #b9cacb;
+  --cta-text-muted: #7c8a9e;
+  --cta-accent: #00f0ff;
+  --cta-accent-hover: #7df4ff;
+  --cta-on-accent: #070a0f;
+  --cta-glow: radial-gradient(
+    ellipse 50% 60% at 50% 115%,
+    rgba(0, 240, 255, 0.14),
+    transparent 70%
+  );
+}
+
+/*
  * Legacy names, kept so pages that haven't been restyled yet still work.
  * In light mode they keep their old ocean-palette values, so unmigrated pages
  * look unchanged; in dark mode they point at the new tokens. Remove in
