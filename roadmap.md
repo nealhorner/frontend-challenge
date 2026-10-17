@@ -9,7 +9,7 @@ a community ranking.
 **Stack:** SvelteKit 2 + Svelte 5 (runes), TypeScript, Prisma 7 + PostgreSQL,
 BetterAuth (email/password, GitHub + Google OAuth, anonymous guest sessions),
 Argon2 password hashing, Sentry, Playwright (e2e) + Vitest (unit). Deployed via
-`adapter-node` on Railway (a Vercel adapter is also wired up).
+`adapter-node` on Railway.
 
 **What works:**
 

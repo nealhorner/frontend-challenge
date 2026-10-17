@@ -3,7 +3,7 @@
  * the data is rich on first load.
  *
  * Invoked two ways:
- *  - `npm run populateLearningResources`, which the Railway `releaseCommand`
+ *  - `npm run populateLearningResources`, which the Railway `preDeployCommand`
  *    runs after migrations on every deploy (seed step).
  *  - the scheduled Railway cron service that runs the same script daily.
  *

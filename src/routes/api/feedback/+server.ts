@@ -14,7 +14,7 @@ const TYPE_LABELS: Record<FeedbackType, string> = {
 };
 
 // Simple per-IP rate limit: max 5 submissions per hour per server instance.
-// Per-instance on serverless, but still prevents single-session abuse.
+// In-memory, so it resets on restart and is per instance if Railway scales out.
 const _rateMap = new Map<string, { count: number; windowStart: number }>();
 const WINDOW_MS = 60 * 60_000;
 const MAX_PER_WINDOW = 5;
