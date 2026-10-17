@@ -89,7 +89,7 @@
     margin: 0;
     font-size: 1rem;
     font-weight: 500;
-    color: var(--color-blue);
+    color: var(--color-blue-text);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -123,7 +123,7 @@
   }
 
   .card:hover p.link-text {
-    color: var(--color-blue);
+    color: var(--color-blue-text);
   }
 
   .link-icon {

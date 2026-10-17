@@ -93,7 +93,7 @@
   h1 {
     font-size: clamp(1.8rem, 5vw, 2.4rem);
     font-weight: 500;
-    color: var(--color-blue);
+    color: var(--color-blue-text);
     margin: 0 0 16px;
   }
 

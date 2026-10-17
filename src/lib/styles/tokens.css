@@ -259,6 +259,8 @@
   --color-text-tertiary: #d1d6dc;
   --color-purple: #008f98;
   --color-blue: #1c4067;
+  /* --color-blue as a text color; it maps to a dark surface in dark mode */
+  --color-blue-text: #1c4067;
   --color-yellow: #ffed4f;
   --color-orange: #f2973d;
   --color-pink: #e78571;
@@ -285,6 +287,7 @@
   --color-text-tertiary: var(--color-text-muted);
   --color-purple: var(--color-primary);
   --color-blue: var(--color-surface-raised);
+  --color-blue-text: var(--color-text);
   --color-yellow: var(--color-warning);
   --color-orange: var(--color-warning);
   --color-pink: var(--color-error);

@@ -193,7 +193,7 @@
   }
   .filter-bar button:hover {
     border-color: var(--color-blue);
-    color: var(--color-blue);
+    color: var(--color-blue-text);
   }
   .filter-bar button.active {
     background-color: var(--color-blue);
