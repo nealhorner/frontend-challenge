@@ -548,18 +548,25 @@
 
   /* ─── Topics ─── */
 
+  /* Columns are sized so the name and count beside the icon stay on one line
+     (the text column needs about 150px). */
   .topic-grid {
     display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-sm);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
+  /* Two columns: the icon on the left (only as wide as itself), the name
+     and count stacked on the right. */
   .topic {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-content: start;
+    column-gap: 0.75rem;
     height: 100%;
     padding: var(--space-md);
     border: 1px solid var(--color-border-card);
@@ -587,9 +594,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    grid-row: 1 / span 2;
+    align-self: start;
     width: 2.5rem;
     height: 2.5rem;
-    margin-bottom: var(--space-md);
     border-radius: var(--radius-button);
     background-color: var(--hue-bg, var(--color-surface));
     color: var(--hue-text, var(--color-text));
@@ -608,8 +616,9 @@
   }
 
   .topic-name {
-    margin-top: auto;
-    font-size: var(--text-lg);
+    align-self: end;
+    font-size: var(--text-md);
+    line-height: 1.3;
     font-weight: 600;
     letter-spacing: var(--tracking-snug);
   }
@@ -699,11 +708,19 @@
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 767px) {
     .topic-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
 
+  @media (max-width: 479px) {
+    .topic-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
     .cta {
       padding: var(--space-xl) var(--space-lg);
     }
