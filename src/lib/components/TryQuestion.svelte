@@ -47,7 +47,7 @@
 <section class="try" aria-labelledby="try-heading">
   <div class="eyebrow">
     <IconConsole />
-    <span>Try one right now — no account needed</span>
+    <span>Try one right now</span>
   </div>
 
   <div class="window">
