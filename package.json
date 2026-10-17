@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
+    "audit:contrast": "playwright test -c playwright.audit.config.ts",
     "populateLearningResources": "tsx --tsconfig scripts/tsconfig.json scripts/populate-open-graph.ts",
     "cleanupGuests": "tsx --tsconfig scripts/tsconfig.json scripts/cleanup-guests.ts",
     "db:migrate": "npx prisma migrate dev",
