@@ -165,16 +165,18 @@
     <span class="eyebrow">Benchmark your engineering level</span>
     <h2>Ready to find out where you stand?</h2>
     <p>
-      Take a short quiz, calibrate your frontend baseline, and earn your place in the global
-      rankings.
+      Take a short quiz to see where your skills are today, then keep going and watch your rating
+      grow as you pick up something new each time.
     </p>
     <ButtonLink href="/quiz" kind="primary" size="lg">
       Start Your First Quiz <IconArrowRight />
     </ButtonLink>
+    <!-- True today: guests can take quizzes, results show every correct answer,
+         and each quiz draws one question per family, so the topics vary. -->
     <ul class="cta-notes">
-      <li>No sign-up required</li>
-      <li>Free to play</li>
-      <li>Instant feedback</li>
+      <li>No account needed</li>
+      <li>See the answer to every question</li>
+      <li>A new mix of topics each time</li>
     </ul>
   </div>
 </section>
@@ -723,6 +725,15 @@
   @media (max-width: 600px) {
     .cta {
       padding: var(--space-xl) var(--space-lg);
+    }
+
+    .cta-notes {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cta-notes li + li::before {
+      display: none;
     }
   }
 </style>
