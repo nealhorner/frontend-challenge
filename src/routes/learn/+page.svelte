@@ -182,7 +182,7 @@
     padding: 7px 18px;
     border-radius: 999px;
     border: 1.5px solid var(--color-border);
-    background: white;
+    background: var(--color-surface);
     color: var(--color-text-secondary);
     font-size: 0.9rem;
     cursor: pointer;
@@ -192,13 +192,20 @@
       color 0.15s;
   }
   .filter-bar button:hover {
-    border-color: var(--color-blue);
+    border-color: var(--color-blue-text);
     color: var(--color-blue-text);
   }
   .filter-bar button.active {
     background-color: var(--color-blue);
     border-color: var(--color-blue);
     color: white;
+  }
+  /* In dark mode the unselected pills sit on a dark surface too, so mark the
+     selected one in cyan, like the active item in the header nav. */
+  :global([data-theme='dark']) .filter-bar button.active {
+    background-color: var(--color-primary-soft);
+    border-color: var(--color-primary-border);
+    color: var(--color-link);
   }
 
   section {
