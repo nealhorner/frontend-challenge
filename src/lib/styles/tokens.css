@@ -1,8 +1,8 @@
 /*
- * Design tokens for the redesign (see design/redesign-plan.md).
+ * Design tokens for the redesign.
  *
- * Light values come from Stitch "Light theme 2" (design/stitch/home-light),
- * dark values from "Terminal Pulse" (design/stitch/home-dark). Components use
+ * Light values come from the Stitch "Light theme 2" mockup, dark values from
+ * the "Terminal Pulse" mockup. Components use
  * only these semantic names, so the theme swaps by setting
  * `data-theme="dark"` on <html> (see src/lib/theme.ts).
  *

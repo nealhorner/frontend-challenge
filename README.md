@@ -27,7 +27,7 @@ npx tsx prisma/seed.ts
 
 ### Checking color contrast
 
-The redesign (see `design/redesign-plan.md`) has a contrast audit that loads
+The redesign has a contrast audit that loads
 every page in light and dark mode. It checks each piece of text against its
 background (WCAG AA) and, in dark mode, looks for leftover hard-coded light
 backgrounds. Run it after restyling pages:

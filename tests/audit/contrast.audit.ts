@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-// Contrast audit for the redesign (design/redesign-plan.md). Visits every page
+// Contrast audit for the redesign. Visits every page
 // in each theme, measures each visible piece of text against its effective
 // background (WCAG AA: 4.5:1, or 3:1 for large text), and in dark mode flags
 // bright patches left over from hard-coded light colors.
