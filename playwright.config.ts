@@ -41,7 +41,10 @@ const config: PlaywrightTestConfig = {
     timeout: 180_000
   },
   use: {
-    baseURL: BASE_URL
+    baseURL: BASE_URL,
+    // CI sets this to 'chrome' to use the runner's preinstalled Google Chrome
+    // instead of downloading Playwright's browser build.
+    ...(process.env.PLAYWRIGHT_CHANNEL && { channel: process.env.PLAYWRIGHT_CHANNEL })
   },
   testDir: 'tests',
   testMatch: /(.+\.)?(test|spec)\.[jt]s/
