@@ -1,10 +1,10 @@
 <script lang="ts">
   import ButtonLink from './ButtonLink.svelte';
-  import IconBolt from '~icons/mdi/lightning-bolt';
-  import IconCheckCircle from '~icons/mdi/check-circle-outline';
   import IconChevronRight from '~icons/mdi/chevron-right';
-  import IconCode from '~icons/mdi/code-tags';
+  import IconCompass from '~icons/mdi/compass-outline';
   import IconPlay from '~icons/mdi/play';
+  import IconSchool from '~icons/mdi/school-outline';
+  import IconTrendingUp from '~icons/mdi/trending-up';
 </script>
 
 <section class="hero">
@@ -20,9 +20,12 @@
     </ButtonLink>
   </div>
   <ul class="trust">
-    <li><IconCheckCircle class="success" />No credit card</li>
-    <li><IconBolt class="info" />Instant feedback</li>
-    <li><IconCode class="keyword" />Real-world code</li>
+    <!-- Keep these true to what the app does today. Questions are picked at
+         random (one per question family) and ELO tracks skill; switch the
+         rating line to adaptive wording once adaptive selection ships. -->
+    <li><IconSchool class="success" />Free to learn</li>
+    <li><IconTrendingUp class="info" />A rating that grows with you</li>
+    <li><IconCompass class="keyword" />Broaden your frontend knowledge</li>
   </ul>
 </section>
 
