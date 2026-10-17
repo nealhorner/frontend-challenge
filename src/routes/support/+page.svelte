@@ -112,7 +112,7 @@
   }
 
   .way-card {
-    background: white;
+    background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--card-border-radius);
     padding: 32px 28px;
@@ -120,7 +120,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-raised);
   }
 
   .way-icon {
@@ -166,7 +166,7 @@
 
   .link-btn.secondary {
     background-color: var(--color-purple);
-    color: white;
+    color: var(--color-on-primary);
   }
 
   @media (max-width: 600px) {
