@@ -220,7 +220,7 @@
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
     gap: 14px;
   }
 
@@ -238,7 +238,8 @@
       padding: 28px 16px 48px;
     }
     .resource-grid {
-      grid-template-columns: 1fr;
+      /* minmax(0, …) lets cards shrink below long unbreakable URLs. */
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>
