@@ -16,7 +16,7 @@ Restyle every page and shared component to match the Stitch mockups in
 
 ### Decided during Phase 1
 
-- **Dark mode is gated until Phase 5.** Pages that haven't been restyled hard-code white backgrounds, so dark mode would look broken on them. Until then, `followSystem` in the inline script in `src/app.html` is `false`, and `ThemeToggle` isn't mounted. To preview dark mode, run `localStorage.theme = 'dark'` in the browser console. In Phase 5, set `followSystem` to `true` and mount the toggle in the header.
+- **Dark mode is gated until Phase 5.** Pages that haven't been restyled hard-code white backgrounds, so dark mode would look broken on them. Until then, `followSystem` in the inline script in `src/app.html` is `false`, and `ThemeToggle` isn't mounted. To preview dark mode, run `localStorage.theme = 'dark'` in the browser console and reload the page (the theme is applied only at page load). Remove the key to go back to light. In Phase 5, set `followSystem` to `true` and mount the toggle in the header.
 - **Contrast adjustments.** A few mockup colors fail WCAG AA, so they were nudged. The button fill is `#0277b6` instead of `#0284c7` (white text was 4.1:1, now 4.86:1). Muted text is `#64748b` in light mode and `#7c8a9e` in dark mode.
 - **Legacy colors keep their old values in light mode.** Old names such as `--color-blue` and `--ocean-*` still resolve to the old palette in light mode, so pages that haven't been restyled look the same. In dark mode they point at the new tokens.
 - **Base heading sizes stay as they were.** `h1` is 2–2.4rem and `h2` is 1rem, because unmigrated components depend on those sizes. Restyled components set their own sizes from the `--text-*` scale. Move the base headings onto the scale in Phase 5.
