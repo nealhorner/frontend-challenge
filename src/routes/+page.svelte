@@ -162,7 +162,7 @@
 
 <section class="section">
   <div class="cta">
-    <span class="eyebrow">Benchmark your engineering level</span>
+    <span class="eyebrow">Learn at your own pace</span>
     <h2>Ready to find out where you stand?</h2>
     <p>
       Take a short quiz to see where your skills are today, then keep going and watch your rating
