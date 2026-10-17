@@ -148,7 +148,7 @@
 
   .toggle-btn {
     display: block; /* Hide by default */
-    background: url('hamburger-button.png') no-repeat center center;
+    background: url('/hamburger-button.png') no-repeat center center;
     background-size: contain;
     border: none;
     margin-left: 10px;
