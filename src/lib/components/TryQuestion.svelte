@@ -169,7 +169,7 @@
 
   .file {
     margin-left: var(--space-xs);
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
   }
