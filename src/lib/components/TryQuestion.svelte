@@ -32,11 +32,16 @@
     return 'idle';
   }
 
+  let optionsGroup: HTMLElement | undefined = $state();
+
   // Number keys 1–4 pick an answer, matching the [1]–[4] hints.
   function onKeydown(event: KeyboardEvent) {
     if (answered || event.metaKey || event.ctrlKey || event.altKey) return;
     const target = event.target as HTMLElement;
     if (target.closest('input, textarea, select, [contenteditable]')) return;
+    // Don't answer while focus is on another link or button on the page
+    const control = target.closest('a, button, summary, [role="button"], [tabindex]');
+    if (control && !optionsGroup?.contains(control)) return;
     const option = question.options[Number(event.key) - 1];
     if (option) choose(option);
   }
@@ -60,7 +65,7 @@
     <div class="body">
       <h2 id="try-heading" class="prompt">{question.prompt}</h2>
 
-      <div class="options" role="group" aria-label="Answer options">
+      <div class="options" role="group" aria-label="Answer options" bind:this={optionsGroup}>
         {#each question.options as option, i (option)}
           {@const state = stateFor(option)}
           <button
@@ -68,7 +73,7 @@
             class="option {state}"
             aria-pressed={selected === option}
             aria-keyshortcuts={String(i + 1)}
-            disabled={answered && state === 'idle'}
+            disabled={answered}
             onclick={() => choose(option)}
           >
             <span class="key" aria-hidden="true">
