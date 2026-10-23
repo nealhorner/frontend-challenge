@@ -13,6 +13,7 @@
 
   let menuOpen = $state(false);
   let menuContainer: HTMLElement;
+  let menuButton: HTMLButtonElement;
 
   let links = $derived([
     { href: '/', label: 'Home' },
@@ -35,7 +36,12 @@
   }
 
   function onKeydown(event: KeyboardEvent) {
-    if (event.key === 'Escape') menuOpen = false;
+    // Close on Escape and return focus to the button, since the focused menu
+    // link is removed along with the menu.
+    if (event.key === 'Escape' && menuOpen) {
+      menuOpen = false;
+      menuButton?.focus();
+    }
   }
 
   // Close the mobile menu after navigating
@@ -77,6 +83,7 @@
       <div class="menu" bind:this={menuContainer}>
         <button
           type="button"
+          bind:this={menuButton}
           class="menu-button"
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
