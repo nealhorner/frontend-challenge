@@ -12,7 +12,6 @@
     size?: Size;
   }
 
-  /* eslint-disable svelte/valid-compile */
   let {
     children,
     kind = 'primary',
@@ -22,7 +21,6 @@
     class: className = '',
     ...restProps
   }: ComponentProps = $props();
-  /* eslint-enable svelte/valid-compile */
 
   let classList = $derived(
     ['c-button', `c-button-${kind}`, size === 'lg' && 'c-button-lg', 'no-select', className]

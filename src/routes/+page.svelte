@@ -107,10 +107,10 @@
           <IconBookmark class="muted" />
         </div>
         <pre class="snippet"><span class="kw">const</span> <span class="fn">memoizedVal</span
-          > = <span class="fn">useMemo</span>(() =&gt; {'{'}
+          > = <span class="fn">useMemo</span>(() =&gt; &#123;
   <span class="cm">// recalculate only when deps change</span>
   <span class="kw">return</span> computeExpensive(<span class="var">data</span>);
-{'}'}, [<span class="var">data</span>]);</pre>
+&#125;, [<span class="var">data</span>]);</pre>
         <div class="visual-row mono muted small">
           <span class="with-icon"
             ><IconBookOpen class="info" />Curated deep-dives with each quiz</span
