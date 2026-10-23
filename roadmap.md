@@ -338,9 +338,9 @@ change what lint enforces. About 30 places in the code currently break them.
 **Outcome:** A written, file-referenced plan for moving to SvelteKit 3, done
 before Dependabot starts pushing major-version bumps.
 
-SvelteKit 3.1 is out. It requires Vite 8, `@sveltejs/vite-plugin-svelte` 7,
-TypeScript 6, Svelte ≥ 5.48, and Node 22+. Today the app is on SvelteKit 2.70,
-Vite 6, plugin 5, and TypeScript 5.
+SvelteKit 3.1 is out. It requires Vite ≥ 8.0.12, `@sveltejs/vite-plugin-svelte`
+7, TypeScript 6, Svelte ≥ 5.57.1, and Node ≥ 22.17. Today the app is on
+SvelteKit 2.70, Vite 6, plugin 5, and TypeScript 5.
 
 **Scope (investigate, don't upgrade yet):**
 
