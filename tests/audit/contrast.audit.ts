@@ -163,6 +163,9 @@ for (const theme of THEMES) {
       if (url) await page.goto(url, { waitUntil: 'networkidle' });
       if (prepare) await prepare();
       await page.waitForTimeout(150);
+      // Guard against auditing the wrong colors if the theme stops applying
+      const applied = await page.evaluate(() => document.documentElement.dataset.theme);
+      expect(applied, `${theme} theme was not applied on ${name}`).toBe(theme);
       results[name] = await page.evaluate(auditPage);
       await page.screenshot({ path: testInfo.outputPath(`${theme}-${name}.png`), fullPage: true });
     }

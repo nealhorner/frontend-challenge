@@ -136,9 +136,9 @@
   <ul class="topic-grid">
     {#each topics as topic (topic.name)}
       <li>
-        <a
+        <!-- Not links: quizzes can't be filtered by topic yet (roadmap item 2) -->
+        <div
           class="topic"
-          href="/quiz"
           style:--hue-text="var(--topic-{topic.hue}-text)"
           style:--hue-bg="var(--topic-{topic.hue}-bg)"
         >
@@ -147,14 +147,14 @@
           </span>
           <span class="topic-name">{topic.name}</span>
           <span class="topic-count">{topic.count}</span>
-        </a>
+        </div>
       </li>
     {/each}
     <li>
       <a class="topic more" href="/learn">
         <span class="topic-icon" aria-hidden="true">+</span>
-        <span class="topic-name">+ more</span>
-        <span class="topic-count link">Explore all topics</span>
+        <span class="topic-name">Learn more</span>
+        <span class="topic-count link">Browse learning resources</span>
       </a>
     </li>
   </ul>
@@ -582,7 +582,7 @@
       border-color var(--transition-fast);
   }
 
-  .topic:hover {
+  a.topic:hover {
     border-color: var(--color-primary-border);
     background-color: var(--color-surface-raised);
     text-decoration: none;
@@ -613,7 +613,7 @@
     font-size: 1.25rem;
   }
 
-  .topic:hover .topic-icon {
+  a.topic:hover .topic-icon {
     transform: scale(1.05);
   }
 
