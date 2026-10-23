@@ -43,22 +43,24 @@ Argon2 password hashing, Sentry, Playwright (e2e) + Vitest (unit). Deployed via
 
 ## Milestones at a glance
 
-| #   | Milestone                           | Theme              | Size | Depends on      |
-| --- | ----------------------------------- | ------------------ | ---- | --------------- |
-| 1   | Leaderboard & ranking surface       | Close the loop     | M    | —               |
-| 2   | Topic & difficulty selection        | Core UX            | M    | —               |
-| 3   | Adaptive question selection         | Personalization    | M    | 2               |
-| 4   | Content pipeline & admin            | Scale content      | L    | —               |
-| 5   | Richer interactive question types   | Differentiation    | L    | 4               |
-| 6   | Gamification & daily challenge      | Engagement         | M    | 1               |
-| 7   | Shareable results & social growth   | Acquisition        | M    | 1               |
-| 8   | Learning loop & resource analytics  | Retention          | M    | 2               |
-| 9   | Accessibility, PWA & i18n           | Reach & quality    | L    | —               |
-| 10  | Production hardening                | Reliability        | M    | —               |
-| 11  | Admin dashboard & anomaly detection | Operations & trust | L    | pairs with 4, 8 |
+| #   | Milestone                               | Theme              | Size | Depends on      |
+| --- | --------------------------------------- | ------------------ | ---- | --------------- |
+| 1   | Leaderboard & ranking surface           | Close the loop     | M    | —               |
+| 2   | Topic & difficulty selection            | Core UX            | M    | —               |
+| 3   | Adaptive question selection             | Personalization    | M    | 2               |
+| 4   | Content pipeline & admin                | Scale content      | L    | —               |
+| 5   | Richer interactive question types       | Differentiation    | L    | 4               |
+| 6   | Gamification & daily challenge          | Engagement         | M    | 1               |
+| 7   | Shareable results & social growth       | Acquisition        | M    | 1               |
+| 8   | Learning loop & resource analytics      | Retention          | M    | 2               |
+| 9   | Accessibility, PWA & i18n               | Reach & quality    | L    | —               |
+| 10  | Production hardening                    | Reliability        | M    | —               |
+| 11  | Admin dashboard & anomaly detection     | Operations & trust | L    | pairs with 4, 8 |
+| 12  | Adopt eslint-plugin-svelte 3 lint rules | Code quality       | S    | —               |
+| 13  | Plan the SvelteKit 3 / Vite 8 upgrade   | Platform           | S    | —               |
 
-_Ordering is a suggested sequence, not a hard dependency chain — 1, 2, 4, 9, and
-10 can start in parallel._
+_Ordering is a suggested sequence, not a hard dependency chain — 1, 2, 4, 9, 10,
+12, and 13 can start in parallel._
 
 ---
 
@@ -306,6 +308,55 @@ needs for question CRUD.
 that shows current activity, ranks questions by incorrect-rate and feedback
 volume, and lists users flagged by timing/accuracy anomalies — while non-admins
 cannot tell the page exists.
+
+## Milestone 12 — Adopt eslint-plugin-svelte 3 lint rules
+
+**Outcome:** Lint enforces the current recommended Svelte and TypeScript rules.
+
+The move to ESLint 9 (flat config, typescript-eslint 8, eslint-plugin-svelte 3)
+cleared the Dependabot alerts, but the rules newly added to the recommended sets
+were turned off in [eslint.config.js](eslint.config.js) so the upgrade didn't
+change what lint enforces. About 30 places in the code currently break them.
+
+**Scope:**
+
+- `svelte/no-navigation-without-resolve` (~20 hits): wrap internal `href`s and
+  `goto()` calls in `resolve()` from `$app/paths` (login, register, feedback,
+  verify-email, quiz results, `Prompter.svelte`, `ResourceListing.svelte`).
+- `svelte/require-each-key` (5 hits): add keys to `{#each}` blocks.
+- `svelte/valid-prop-names-in-kit-pages`: `profile/[userName]/+page.svelte` takes
+  custom props instead of reading `data`.
+- `svelte/prefer-writable-derived` (`Header.svelte`) and
+  `@typescript-eslint/no-unused-expressions` (the bare `questionId;` dependency
+  in `Question.svelte`'s `$effect`).
+
+**Done when:** every rule is on, the disabled-rules block is gone from
+`eslint.config.js`, and lint, type check, unit, and e2e tests pass.
+
+## Milestone 13 — Plan the SvelteKit 3 / Vite 8 upgrade
+
+**Outcome:** A written, file-referenced plan for moving to SvelteKit 3, done
+before Dependabot starts pushing major-version bumps.
+
+SvelteKit 3.1 is out. It requires Vite ≥ 8.0.12, `@sveltejs/vite-plugin-svelte`
+7, TypeScript 6, Svelte ≥ 5.57.1, and Node ≥ 22.17. Today the app is on
+SvelteKit 2.70, Vite 6, plugin 5, and TypeScript 5.
+
+**Scope (investigate, don't upgrade yet):**
+
+- `adapter-node` drops the `ORIGIN` env var for `kit.paths.origin`, which affects
+  `.env.example` and the Railway config.
+- Svelte options must go through the Vite plugin (`svelte.config.js` sets
+  `vitePlugin.dynamicCompileOptions` to force runes mode).
+- External redirects are forbidden by default (check the better-auth
+  GitHub/Google OAuth flow), and `goto` rejects URLs outside the app.
+- Form actions return the `fail()` status code (`quiz` and `profile`
+  `+page.server.ts`); 204 responses return no body; `handleError` can change
+  status codes.
+- Confirm `@sentry/sveltekit`, `unplugin-icons`, and Vitest 4 support Vite 8.
+
+**Done when:** each breaking change that affects this codebase is listed with
+file references and an upgrade order, ready to execute as its own milestone.
 
 ---
 
