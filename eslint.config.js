@@ -1,11 +1,12 @@
 import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import prettier from 'eslint-config-prettier';
 import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
 import ts from 'typescript-eslint';
+import svelteConfig from './svelte.config.js';
 
-/** @type {import('eslint').Linter.Config[]} */
-export default ts.config(
+export default defineConfig(
   {
     ignores: ['build/', '.svelte-kit/', 'package/', 'design/', 'test-results/', '*.timestamp-*.mjs']
   },
@@ -35,7 +36,9 @@ export default ts.config(
     languageOptions: {
       parserOptions: {
         parser: ts.parser,
-        extraFileExtensions: ['.svelte']
+        extraFileExtensions: ['.svelte'],
+        // Lets the SvelteKit-aware rules read the project's Svelte/Kit settings.
+        svelteConfig
       }
     }
   }
