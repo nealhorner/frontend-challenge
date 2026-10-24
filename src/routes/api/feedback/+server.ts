@@ -1,8 +1,7 @@
+import { env } from '$env/dynamic/private';
 import { json } from '@sveltejs/kit';
 import { sendEmail, escapeHtml } from '$lib/server/email';
 import type { RequestHandler } from './$types';
-
-const FEEDBACK_EMAIL = process.env.FEEDBACK_EMAIL ?? '';
 
 const FEEDBACK_TYPES = ['general', 'bug', 'question'] as const;
 type FeedbackType = (typeof FEEDBACK_TYPES)[number];
@@ -104,7 +103,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   `;
 
   try {
-    await sendEmail({ to: FEEDBACK_EMAIL, subject: emailSubject, html });
+    await sendEmail({ to: env.FEEDBACK_EMAIL ?? '', subject: emailSubject, html });
   } catch (err) {
     console.error('Failed to send feedback email:', err);
     return json({ error: 'Failed to send feedback' }, { status: 500 });

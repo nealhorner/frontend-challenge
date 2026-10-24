@@ -1,3 +1,4 @@
+import { env } from '$env/dynamic/private';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
@@ -8,6 +9,7 @@ import { hash as argon2Hash, verify as argon2Verify } from '@node-rs/argon2';
 import prisma from '$lib/prisma';
 import { validateEmail, validateName, validatePassword } from '$lib/server/validation';
 import { migrateGuestToUser } from '$lib/server/userGuest';
+import { getSocialProviderCredentials } from '$lib/server/socialProviders';
 import { sendEmail, escapeHtml } from '$lib/server/email';
 
 // Mirror the Argon2 parameters the app used before the BetterAuth migration so
@@ -21,13 +23,17 @@ const ARGON2_OPTIONS = {
 
 function createAuth() {
   return betterAuth({
+    // Read from $env so local dev picks these up from .env too; `vite dev`
+    // doesn't load .env into process.env.
+    baseURL: env.BETTER_AUTH_URL,
+    secret: env.BETTER_AUTH_SECRET,
     database: prismaAdapter(prisma, { provider: 'postgresql' }),
 
     // Rate limiting is on by default in production. It is disabled only for the
     // e2e suite (AUTH_DISABLE_RATE_LIMIT=true), which exercises the auth flows
     // with many rapid sign-ups/sign-ins that would otherwise be throttled.
     rateLimit: {
-      enabled: process.env.AUTH_DISABLE_RATE_LIMIT !== 'true'
+      enabled: env.AUTH_DISABLE_RATE_LIMIT !== 'true'
     },
 
     emailVerification: {
@@ -45,13 +51,13 @@ function createAuth() {
       },
       // Skipped in e2e tests via REQUIRE_EMAIL_VERIFICATION=false so the suite
       // can register + sign in without a real email provider.
-      sendOnSignUp: process.env.REQUIRE_EMAIL_VERIFICATION !== 'false',
+      sendOnSignUp: env.REQUIRE_EMAIL_VERIFICATION !== 'false',
       autoSignInAfterVerification: true
     },
 
     emailAndPassword: {
       enabled: true,
-      requireEmailVerification: process.env.REQUIRE_EMAIL_VERIFICATION !== 'false',
+      requireEmailVerification: env.REQUIRE_EMAIL_VERIFICATION !== 'false',
       // Keep Argon2 hashing so pre-migration credentials still authenticate.
       password: {
         hash: (password) => argon2Hash(password, ARGON2_OPTIONS),
@@ -59,16 +65,7 @@ function createAuth() {
       }
     },
 
-    socialProviders: {
-      github: {
-        clientId: process.env.GITHUB_CLIENT_ID ?? '',
-        clientSecret: process.env.GITHUB_CLIENT_SECRET ?? ''
-      },
-      google: {
-        clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ''
-      }
-    },
+    socialProviders: getSocialProviderCredentials(),
 
     // Every user (guest or real) needs a UserStats row for quiz tracking; real
     // users also get a UserDetail row (the profile page expects one). This

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/state';
   import PageHeader from '$lib/components/PageHeader.svelte';
   import PageContent from '$lib/components/PageContent.svelte';
   import { goto } from '$app/navigation';
@@ -67,8 +68,10 @@
     </form>
     <p class="form-footnote">Already have an account? <a href="/login">Login here</a></p>
 
-    <div class="form-divider">or</div>
-    <SocialLoginButtons />
+    {#if page.data.socialProviders?.length}
+      <div class="form-divider">or</div>
+      <SocialLoginButtons />
+    {/if}
   </div>
 </PageContent>
 
