@@ -22,126 +22,158 @@
 
   let profilePhoto: string | undefined = undefined; // TODO - get profile photo from data
 
+  let hasDetails = $derived(
+    [
+      userDetail?.company,
+      userDetail?.website,
+      userDetail?.location,
+      userDetail?.github,
+      userDetail?.linkedIn,
+      userDetail?.twitter,
+      userDetail?.bluesky
+    ].some(Boolean)
+  );
+
   let edit = $state(false);
   let confirmDeleteAccount = $state(false);
 </script>
 
 <svelte:head>
-  <title>Frontend Challenge Profile</title>
+  <title>Profile — Frontend Challenge</title>
   <meta name="description" content="Profile for Frontend Challenge" />
 </svelte:head>
 
 <PageContent>
   <ProfileHeader username={userAuthenticated.name} rating={userStats.eloRating} {profilePhoto} />
-  <div>
-    <ProfileBio />
-    <ProfileStats
-      completedQuizzes={userStats.totalQuizzesTaken}
-      accuracy={userStats.totalQuestionsAnswered === 0
-        ? 0
-        : userStats.totalCorrectAnswers / userStats.totalQuestionsAnswered}
-      rank={userStats.rank}
-      currentStreak={userStats.currentStreak}
-      longestStreak={userStats.longestStreak}
-    />
-  </div>
+  <ProfileBio />
+  <ProfileStats
+    completedQuizzes={userStats.totalQuizzesTaken}
+    accuracy={userStats.totalQuestionsAnswered === 0
+      ? 0
+      : userStats.totalCorrectAnswers / userStats.totalQuestionsAnswered}
+    rank={userStats.rank}
+    currentStreak={userStats.currentStreak}
+    longestStreak={userStats.longestStreak}
+  />
 
-  <section>
+  <section class="panel">
+    <h2>Profile Details</h2>
     {#if edit}
-      <form>
+      <form class="details-form">
         <!-- TODO add submit event handling-->
         <!--TODO Name should only be able to be changed every 30 days -->
-        <label for="name">Name</label>
-        <input type="text" id="name" required />
+        <div class="form-field">
+          <label for="name">Name</label>
+          <input class="form-input" type="text" id="name" required />
+        </div>
         <!--TODO Email should only be able to be changed every 30 days -->
-        <label for="email">Email:</label>
-        <input type="email" id="email" required />
-
-        <label for="company">Company</label>
-        <input type="text" id="company" placeholder="company" />
-        <label for="website">Website</label>
-        <input type="text" id="website" placeholder="website" />
-        <label for="location">Location</label>
-        <input type="text" id="location" placeholder="location" />
-
-        <label for="github">GitHub</label>
-        <input type="text" id="github" placeholder="github" />
-        <label for="linkedin">LinkedIn</label>
-        <input type="text" id="linkedin" placeholder="linkedin" />
-        <label for="twitter">Twitter</label>
-        <input type="text" id="twitter" placeholder="twitter" />
-        <label for="bluesky">BlueSky</label>
-        <input type="text" id="bluesky" placeholder="bluesky" />
-        <!-- TODO - handle submit and cancel -->
-        <button type="submit">Save</button><button type="reset">Cancel</button>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input class="form-input" type="email" id="email" required />
+        </div>
+        <div class="form-field">
+          <label for="company">Company</label>
+          <input class="form-input" type="text" id="company" placeholder="Company" />
+        </div>
+        <div class="form-field">
+          <label for="website">Website</label>
+          <input class="form-input" type="text" id="website" placeholder="Website" />
+        </div>
+        <div class="form-field">
+          <label for="location">Location</label>
+          <input class="form-input" type="text" id="location" placeholder="Location" />
+        </div>
+        <div class="form-field">
+          <label for="github">GitHub</label>
+          <input class="form-input" type="text" id="github" placeholder="GitHub" />
+        </div>
+        <div class="form-field">
+          <label for="linkedin">LinkedIn</label>
+          <input class="form-input" type="text" id="linkedin" placeholder="LinkedIn" />
+        </div>
+        <div class="form-field">
+          <label for="twitter">Twitter</label>
+          <input class="form-input" type="text" id="twitter" placeholder="Twitter" />
+        </div>
+        <div class="form-field">
+          <label for="bluesky">BlueSky</label>
+          <input class="form-input" type="text" id="bluesky" placeholder="BlueSky" />
+        </div>
+        <!-- TODO - handle submit -->
+        <div class="form-actions">
+          <Button type="submit" kind="primary">Save</Button>
+          <Button kind="ghost" onclick={() => (edit = false)}>Cancel</Button>
+        </div>
       </form>
     {:else}
-      <ProfileInfo text={userDetail?.company} icon={Building} title="Company" optional />
-      <ProfileInfo text={userDetail?.website} icon={Globe} title="Website" optional />
-      <ProfileInfo text={data.userDetail?.location} icon={MapPin} title="Location" optional />
-      <ProfileInfo
-        text={data.userDetail?.github}
-        iconSrc="/logos/github.svg"
-        iconAlt="GitHub"
-        title="GitHub Profile Link"
-        optional
-      />
-      <ProfileInfo
-        text={data.userDetail?.linkedIn}
-        iconSrc="/logos/in-logo/LI-In-Bug.png"
-        iconAlt="LinkedIn"
-        title="LinkedIn Profile Link"
-        optional
-      />
-      <ProfileInfo
-        text={data.userDetail?.twitter}
-        iconSrc="/logos/x.svg"
-        iconAlt="X (Twitter)"
-        title="X (Twitter) Profile Link"
-        optional
-      />
-      <ProfileInfo
-        text={data.userDetail?.bluesky}
-        iconSrc="/logos/bluesky.svg"
-        iconAlt="Bluesky"
-        title="Bluesky Profile Link"
-        optional
-      />
-      <button onclick={() => (edit = true)}>Edit Settings</button>
+      {#if hasDetails}
+        <div class="details">
+          <ProfileInfo text={userDetail?.company} icon={Building} title="Company" optional />
+          <ProfileInfo text={userDetail?.website} icon={Globe} title="Website" optional />
+          <ProfileInfo text={data.userDetail?.location} icon={MapPin} title="Location" optional />
+          <ProfileInfo
+            text={data.userDetail?.github}
+            iconSrc="/logos/github.svg"
+            iconAlt="GitHub"
+            title="GitHub Profile Link"
+            optional
+          />
+          <ProfileInfo
+            text={data.userDetail?.linkedIn}
+            iconSrc="/logos/in-logo/LI-In-Bug.png"
+            iconAlt="LinkedIn"
+            title="LinkedIn Profile Link"
+            optional
+          />
+          <ProfileInfo
+            text={data.userDetail?.twitter}
+            iconSrc="/logos/x.svg"
+            iconAlt="X (Twitter)"
+            title="X (Twitter) Profile Link"
+            optional
+          />
+          <ProfileInfo
+            text={data.userDetail?.bluesky}
+            iconSrc="/logos/bluesky.svg"
+            iconAlt="Bluesky"
+            title="Bluesky Profile Link"
+            optional
+          />
+        </div>
+      {:else}
+        <p class="muted">No profile details yet.</p>
+      {/if}
+      <Button kind="secondary" onclick={() => (edit = true)}>Edit Settings</Button>
     {/if}
   </section>
 
-  <section>
-    <h2>Achievements</h2>
-    <!--TODO Number of quizzes completed -->
-    <!--TODO Days of participation -->
-    <!--TODO Rank -->
-  </section>
+  <!-- TODO Achievements: quizzes completed, days of participation, rank -->
+  <!-- TODO More stats: time map; rank, question difficulty and speed over time -->
 
-  <section>
-    <h2>Stats</h2>
-    <!--TODO Number of quizzes completed -->
-    <!--TODO Days of participation -->
-    <!--TODO Rank -->
-    <!--TODO Time Map -->
-    <!--TODO Rank, Question Difficulty, Speed over time -->
-  </section>
-
-  <section id="danger-section">
-    <h2>Danger</h2>
+  <section id="danger-section" class="panel danger">
+    <h2>Danger Zone</h2>
     {#if confirmDeleteAccount}
-      <form action="?/deleteAccount" method="POST" use:enhance>
+      <form class="delete-form" action="?/deleteAccount" method="POST" use:enhance>
         <p>
           Are you sure you want to delete your account? Your data can't be recovered if you delete
           your account.
         </p>
         {#if form?.deleteAccountUnauthorized}<ErrorMessage errorMessage={form.message} />{/if}
         {#if form?.deleteAccountIncorrectEmail}<ErrorMessage errorMessage={form.message} />{/if}
-        <label for="confirmDeleteAccount"
-          >Type your email address, {userAuthenticated.email}, to confirm</label
-        >
-        <input type="text" id="confirmDeleteAccount" name="email" autocomplete="off" required />
-        <div>
+        <div class="form-field">
+          <label for="confirmDeleteAccount"
+            >Type your email address, {userAuthenticated.email}, to confirm</label
+          >
+          <input
+            class="form-input"
+            type="text"
+            id="confirmDeleteAccount"
+            name="email"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <div class="form-actions">
           <Button type="reset" kind="secondary" onclick={() => (confirmDeleteAccount = false)}
             >Cancel</Button
           >
@@ -149,6 +181,7 @@
         </div>
       </form>
     {:else}
+      <p class="muted">Deleting your account removes your rating and quiz history for good.</p>
       <Button type="button" kind="warning" onclick={() => (confirmDeleteAccount = true)}
         >Delete Account</Button
       >
@@ -157,12 +190,69 @@
 </PageContent>
 
 <style>
-  h2 {
-    margin-top: 1rem;
-    font-weight: 600;
-    font-size: 1.5rem;
+  .panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
   }
-  #danger-section h2 {
-    color: var(--color-red);
+
+  h2 {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  .muted {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr));
+    gap: var(--space-xs) var(--space-lg);
+    width: 100%;
+  }
+
+  .details-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr));
+    gap: var(--space-md);
+    width: 100%;
+  }
+
+  .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    grid-column: 1 / -1;
+  }
+
+  .danger {
+    border-color: var(--color-error);
+  }
+
+  .danger h2 {
+    color: var(--color-error-text);
+  }
+
+  .delete-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    width: 100%;
+    max-width: 36rem;
+  }
+
+  .delete-form p {
+    margin: 0;
+    color: var(--color-text);
   }
 </style>

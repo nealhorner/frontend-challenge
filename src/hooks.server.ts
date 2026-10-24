@@ -5,10 +5,10 @@ import { auth } from '$lib/auth';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
 import { handleErrorWithSentry, sentryHandle } from '@sentry/sveltekit';
 import * as Sentry from '@sentry/sveltekit';
-import { PUBLIC_SENTRY_DSN } from '$env/static/public';
+import { ENV } from 'varlock/env';
 
 Sentry.init({
-  dsn: PUBLIC_SENTRY_DSN,
+  dsn: ENV.PUBLIC_SENTRY_DSN,
   enabled: import.meta.env.PROD,
   environment: import.meta.env.MODE,
   tracesSampleRate: 0.1

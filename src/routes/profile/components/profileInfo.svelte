@@ -31,11 +31,25 @@
 {/if}
 
 <style>
-  .profile-info-icon-container {
-    margin-right: 0.5rem;
-    width: 16px;
+  .profile-info {
     display: flex;
     align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) 0;
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    overflow-wrap: anywhere;
+  }
+
+  .profile-info-icon-container {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
     justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--radius-button);
+    background-color: var(--color-surface-sunken);
+    color: var(--color-text-secondary);
   }
 </style>

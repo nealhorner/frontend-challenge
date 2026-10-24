@@ -1,4 +1,6 @@
 <script lang="ts">
+  import PageHeader from '$lib/components/PageHeader.svelte';
+  import PageContent from '$lib/components/PageContent.svelte';
   import { untrack } from 'svelte';
   import Button from '$lib/components/Button.svelte';
 
@@ -48,162 +50,123 @@
 </script>
 
 <svelte:head>
-  <title>Feedback – Frontend Challenge</title>
+  <title>Feedback — Frontend Challenge</title>
   <meta name="description" content="Send feedback, report bugs, or flag quiz questions." />
 </svelte:head>
 
-<main>
-  <div class="card">
-    <h1>Send Feedback</h1>
+<PageContent width="medium">
+  <div class="column">
+    <PageHeader eyebrow="Help us improve" title="Send Feedback">
+      <p>
+        Ideas, bugs, or a question that looks wrong: send us a feedback email. Every note will be
+        eventually read.
+      </p>
+    </PageHeader>
 
-    {#if status === 'success'}
-      <div class="success">
-        <p>Thanks — your feedback has been sent!</p>
-        <a href="/">Back to home</a>
-      </div>
-    {:else}
-      <form onsubmit={handleSubmit}>
-        <div class="field">
-          <label for="type">Type</label>
-          <select id="type" bind:value={type} required>
-            <option value="general">General Feedback</option>
-            <option value="bug">Bug Report</option>
-            <option value="question">Question Issue</option>
-          </select>
+    <div class="form-card">
+      {#if status === 'success'}
+        <div class="success" role="status">
+          <p>Thanks — your feedback has been sent!</p>
+          <a href="/">Back to home</a>
         </div>
+      {:else}
+        <form class="form-stack" onsubmit={handleSubmit}>
+          <div class="form-field">
+            <label for="type">Type</label>
+            <select id="type" class="form-input" bind:value={type} required>
+              <option value="general">General Feedback</option>
+              <option value="bug">Bug Report</option>
+              <option value="question">Question Issue</option>
+            </select>
+          </div>
 
-        {#if type === 'question'}
-          <div class="field">
-            <label for="questionId">Question ID</label>
+          {#if type === 'question'}
+            <div class="form-field">
+              <label for="questionId">Question ID</label>
+              <input
+                id="questionId"
+                class="form-input"
+                type="text"
+                bind:value={questionId}
+                placeholder="Paste the question ID here"
+              />
+            </div>
+          {/if}
+
+          <div class="form-field">
+            <label for="subject">Subject</label>
             <input
-              id="questionId"
+              id="subject"
+              class="form-input"
               type="text"
-              bind:value={questionId}
-              placeholder="Paste the question ID here"
+              bind:value={subject}
+              placeholder="Brief description"
+              maxlength="200"
+              required
             />
           </div>
-        {/if}
 
-        <div class="field">
-          <label for="subject">Subject</label>
-          <input
-            id="subject"
-            type="text"
-            bind:value={subject}
-            placeholder="Brief description"
-            maxlength="200"
-            required
-          />
-        </div>
+          <div class="form-field">
+            <label for="message">Message</label>
+            <textarea
+              id="message"
+              class="form-input"
+              bind:value={message}
+              placeholder="Tell us more…"
+              maxlength="5000"
+              rows="6"
+              required
+            ></textarea>
+          </div>
 
-        <div class="field">
-          <label for="message">Message</label>
-          <textarea
-            id="message"
-            bind:value={message}
-            placeholder="Tell us more…"
-            maxlength="5000"
-            rows="6"
-            required
-          ></textarea>
-        </div>
+          <div class="form-field">
+            <label for="replyTo"
+              >Your email <span class="form-hint">(optional — for follow-up)</span></label
+            >
+            <input
+              id="replyTo"
+              class="form-input"
+              type="email"
+              bind:value={replyTo}
+              placeholder="you@example.com"
+            />
+          </div>
 
-        <div class="field">
-          <label for="replyTo"
-            >Your email <span class="optional">(optional — for follow-up)</span></label
-          >
-          <input id="replyTo" type="email" bind:value={replyTo} placeholder="you@example.com" />
-        </div>
+          {#if status === 'error'}
+            <p class="error">{errorMessage}</p>
+          {/if}
 
-        {#if status === 'error'}
-          <p class="error">{errorMessage}</p>
-        {/if}
-
-        <Button kind="primary" type="submit" disabled={status === 'submitting'}>
-          {status === 'submitting' ? 'Sending…' : 'Send Feedback'}
-        </Button>
-      </form>
-    {/if}
+          <div>
+            <Button kind="primary" type="submit" disabled={status === 'submitting'}>
+              {status === 'submitting' ? 'Sending…' : 'Send Feedback'}
+            </Button>
+          </div>
+        </form>
+      {/if}
+    </div>
   </div>
-</main>
+</PageContent>
 
 <style>
-  main {
-    max-width: 560px;
-    margin: 60px auto;
-    padding: 0 1rem;
-  }
-
-  .card {
-    border: 1px solid var(--ocean-color-mist-light);
-    border-radius: var(--card-border-radius);
-    padding: 2rem;
-  }
-
-  h1 {
-    margin: 0 0 1.5rem;
-    font-size: 1.5rem;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  label {
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-
-  .optional {
-    font-weight: 400;
-    color: var(--color-text-secondary, #666);
-  }
-
-  input,
-  select,
-  textarea {
-    padding: 0.5rem;
-    border: 1px solid var(--ocean-color-mist-light);
-    border-radius: 4px;
-    font-size: 1rem;
-    font-family: inherit;
-    box-sizing: border-box;
-    width: 100%;
-  }
-
-  textarea {
-    resize: vertical;
-  }
-
-  .error {
-    color: var(--ocean-color-red-sun, red);
-    margin: 0;
-    font-size: 0.9rem;
+  .column {
+    max-width: 38rem;
   }
 
   .success {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    padding: 2rem 0;
-    text-align: center;
+    gap: var(--space-sm);
   }
 
   .success p {
-    font-size: 1.1rem;
     margin: 0;
+    color: var(--color-success-text);
+    font-weight: 600;
   }
 
-  .success a {
-    color: var(--color-purple);
+  .error {
+    margin: 0;
+    color: var(--color-error-text);
+    font-size: var(--text-sm);
   }
 </style>

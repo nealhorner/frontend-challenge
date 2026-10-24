@@ -33,25 +33,45 @@
 <style>
   label {
     display: block;
-    font-weight: bold;
+    margin-bottom: var(--space-xs);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    font-weight: 500;
   }
 
   input {
-    padding: 0.5rem;
-    border: 1px solid var(--ocean-color-mist-light);
-    border-radius: 4px;
     display: block;
     width: 100%;
     box-sizing: border-box;
+    padding: 0.5625rem 0.75rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    line-height: 1.25rem;
+    transition:
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  input:hover {
+    border-color: var(--color-text-muted);
+  }
+
+  input:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring);
   }
 
   .error-input {
-    border-color: var(--ocean-color-red-sun);
-    background-color: var(--ocean-color-pale-pink);
+    border-color: var(--color-error);
+    background-color: var(--color-error-soft);
   }
 
   .error-message {
-    margin-top: 2px;
-    color: var(--ocean-color-red-sun);
+    margin-top: var(--space-xs);
+    color: var(--color-error-text);
+    font-size: var(--text-sm);
   }
 </style>

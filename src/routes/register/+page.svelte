@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { page } from '$app/state';
+  import PageHeader from '$lib/components/PageHeader.svelte';
+  import PageContent from '$lib/components/PageContent.svelte';
   import { goto } from '$app/navigation';
   import { authClient, formatAuthError } from '$lib/auth-client';
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
@@ -37,50 +40,43 @@
 </script>
 
 <svelte:head>
-  <title>Frontend Challenge Register</title>
+  <title>Register — Frontend Challenge</title>
   <meta name="description" content="Registration for Frontend Challenge" />
 </svelte:head>
 
-<main>
-  <h1>Registration</h1>
+<PageContent width="narrow">
+  <PageHeader eyebrow="Join for free" title="Registration" align="center">
+    <p>Create an account to keep your rating and quiz history.</p>
+  </PageHeader>
 
-  {#if errorMessage}
-    <ErrorMessage {errorMessage} />
-  {/if}
+  <div class="form-card form-stack">
+    {#if errorMessage}
+      <ErrorMessage {errorMessage} />
+    {/if}
 
-  <form onsubmit={handleSubmit}>
-    <AuthTextInput label="Name" id="name" name="name" autocomplete="name" />
-    <AuthTextInput label="Email" id="email" type="email" name="email" autocomplete="email" />
-    <AuthTextInput
-      label="Password"
-      id="password"
-      type="password"
-      name="password"
-      autocomplete="new-password"
-    />
-    <Button type="submit" kind="primary" disabled={loading}>Register</Button>
-    <p>Already have an account? <a href="/login">Login here</a></p>
-  </form>
+    <form class="form-stack" onsubmit={handleSubmit}>
+      <AuthTextInput label="Name" id="name" name="name" autocomplete="name" />
+      <AuthTextInput label="Email" id="email" type="email" name="email" autocomplete="email" />
+      <AuthTextInput
+        label="Password"
+        id="password"
+        type="password"
+        name="password"
+        autocomplete="new-password"
+      />
+      <Button type="submit" kind="primary" disabled={loading}>Register</Button>
+    </form>
+    <p class="form-footnote">Already have an account? <a href="/login">Login here</a></p>
 
-  <SocialLoginButtons />
-</main>
+    {#if page.data.socialProviders?.length}
+      <div class="form-divider">or</div>
+      <SocialLoginButtons />
+    {/if}
+  </div>
+</PageContent>
 
 <style>
-  main {
-    max-width: 400px;
-    margin: 100px auto;
-    padding: 2rem;
-    border: 1px solid var(--ocean-color-mist-light);
-    border-radius: 4px;
-  }
-
-  h1 {
-    text-align: center;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  .form-card :global(.c-button) {
+    width: 100%;
   }
 </style>

@@ -6,4 +6,4 @@
   }
 </script>
 
-<Button kind="primary" onclick={logout}>Logout</Button>
+<Button kind="ghost" onclick={logout}>Logout</Button>

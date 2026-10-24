@@ -1,6 +1,5 @@
 <script lang="ts">
-  /* eslint-disable svelte/no-at-html-tags */
-
+  import { toPlainText } from '$lib/text';
   interface Props {
     title?: string;
     url?: string;
@@ -12,14 +11,16 @@
 
   let safeURL = $derived(/^https?:\/\//i.test(url) ? url : '');
   let displayURL = $derived(safeURL.replace(/(^\w+:|^)\/\//, '').replace(/\/$/, ''));
+  // Descriptions are scraped from other sites, so show them as plain text
+  let plainDescription = $derived(description ? toPlainText(description) : '');
 </script>
 
 <a href={safeURL || '#'} target="_blank" rel="noopener noreferrer" class="card-link">
   <div class="card">
     <div class="resource-content">
       <h3>{title}</h3>
-      {#if description}
-        <p class="resource-description">{@html description}</p>
+      {#if plainDescription}
+        <p class="resource-description">{plainDescription}</p>
       {/if}
       <p class="link-text">
         <svg
@@ -45,54 +46,59 @@
 
 <style>
   .card-link {
-    text-decoration: none;
-    color: var(--ocean-color-charcoal);
     display: block;
     height: 100%;
+    border-radius: var(--radius-card);
+    color: var(--color-text);
+    text-decoration: none;
   }
 
+  /* One fixed height for every card, with or without an image: room for the
+     title, a two-line description (clamped below) and the link. */
   .card {
-    border: 1px solid var(--color-border);
-    border-radius: var(--card-border-radius);
-    box-shadow:
-      0px 1px 2px -1px rgba(0, 0, 0, 0.08),
-      0px 1px 3px 0px rgba(0, 0, 0, 0.06);
-    color: var(--ocean-color-charcoal);
-    background-color: var(--ocean-color-white);
-    overflow: hidden;
     display: flex;
     align-items: stretch;
     width: 100%;
-    height: 100%;
+    height: 7.875rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    color: var(--color-text);
     transition:
-      box-shadow 0.15s ease,
-      border-color 0.15s ease;
+      border-color var(--transition-fast),
+      background-color var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
-  .card:hover {
-    border-color: rgba(0, 0, 0, 0.18);
-    box-shadow:
-      0px 4px 8px -2px rgba(0, 0, 0, 0.1),
-      0px 2px 4px 0px rgba(0, 0, 0, 0.06);
+  .card-link:hover {
+    text-decoration: none;
+  }
+
+  .card-link:hover .card {
+    border-color: var(--color-primary-border);
+    background-color: var(--color-surface-raised);
+    box-shadow: var(--shadow-raised);
   }
 
   .resource-content {
-    flex-grow: 1;
-    padding: 14px 16px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    flex-grow: 1;
+    gap: 0.375rem;
     min-width: 0;
+    padding: var(--space-md);
   }
 
   h3 {
     margin: 0;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--color-blue);
-    white-space: nowrap;
     overflow: hidden;
+    color: var(--color-text);
+    font-size: var(--text-md);
+    font-weight: 600;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   p {
@@ -100,75 +106,57 @@
   }
 
   p.resource-description {
-    font-size: 0.82rem;
-    color: var(--color-text-secondary);
-    line-height: 1.45;
     display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.45;
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   p.link-text {
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: 0.78rem;
-    color: var(--color-text-tertiary);
+    gap: 0.25rem;
     margin-top: auto;
-    white-space: nowrap;
     overflow: hidden;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .card:hover p.link-text {
-    color: var(--color-blue);
+  .card-link:hover p.link-text {
+    color: var(--color-link);
   }
 
   .link-icon {
+    flex-shrink: 0;
     width: 10px;
     height: 10px;
     fill: currentColor;
-    flex-shrink: 0;
   }
 
   .resource-image {
-    width: 120px;
+    position: relative;
     display: flex;
     flex-shrink: 0;
-    position: relative;
+    width: 120px;
   }
 
   .resource-image > div {
-    width: 100%;
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-size: cover;
+    inset: 0;
     background-position: center;
     background-repeat: no-repeat;
+    background-size: cover;
     transition: transform 0.2s ease-in-out;
   }
 
-  .card:hover .resource-image > div {
+  .card-link:hover .resource-image > div {
     transform: scale(1.05);
-  }
-
-  .resource-image > div::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.05) 0%,
-      rgba(255, 255, 255, 0) 60%,
-      rgba(200, 200, 200, 0.4) 100%
-    );
   }
 </style>
