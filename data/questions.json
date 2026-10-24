@@ -272,6 +272,584 @@
       "answers": ["promise"],
       "false_answers": ["An XMLHttpRequest object", "A JSON object", "A function"],
       "tags": ["JavaScript", "fetch"]
+    },
+    {
+      "title": "Doctype Declaration",
+      "prompt": "What does the <!DOCTYPE html> declaration do?",
+      "answers": ["It tells the browser to render the page in standards mode"],
+      "false_answers": [
+        "It links the page to its CSS stylesheet",
+        "It sets the page character encoding",
+        "It loads the HTML5 JavaScript APIs",
+        "It validates the page when it loads"
+      ],
+      "tags": ["HTML"]
+    },
+    {
+      "title": "Data Attributes",
+      "prompt": "What are data-* attributes used for?",
+      "answers": ["Storing custom data on an element"],
+      "false_answers": [
+        "Binding an element to a database",
+        "Loading data from a URL",
+        "Validating form input",
+        "Setting the element's data type"
+      ],
+      "tags": ["HTML"]
+    },
+    {
+      "title": "Script Defer",
+      "prompt": "Which script attribute downloads the file in parallel and runs it after the HTML is parsed, in document order?",
+      "answers": ["defer"],
+      "false_answers": ["async", "lazy", "sync", "preload"],
+      "tags": ["HTML", "Performance"]
+    },
+    {
+      "title": "Script Async",
+      "prompt": "Which script attribute runs the script as soon as it finishes downloading, without guaranteeing execution order?",
+      "answers": ["async"],
+      "false_answers": ["defer", "lazy", "sync", "preload"],
+      "tags": ["HTML", "Performance"]
+    },
+    {
+      "title": "Cookies Sent With Requests",
+      "prompt": "Which browser storage mechanism is automatically sent to the server with every matching HTTP request?",
+      "answers": ["Cookies"],
+      "false_answers": ["localStorage", "sessionStorage", "IndexedDB"],
+      "tags": ["HTML", "HTTP"]
+    },
+    {
+      "title": "Session Storage Lifetime",
+      "prompt": "Which browser storage is cleared when the tab is closed?",
+      "answers": ["sessionStorage"],
+      "false_answers": ["localStorage", "IndexedDB", "Cache Storage"],
+      "tags": ["HTML", "JavaScript"]
+    },
+    {
+      "title": "Responsive Images Srcset",
+      "prompt": "What is the purpose of the srcset attribute on an img element?",
+      "answers": ["To offer several image files so the browser can pick one that fits the device"],
+      "false_answers": [
+        "To lazy-load the image when it scrolls into view",
+        "To set the image's alt text for screen readers",
+        "To crop the image to a given size",
+        "To cache the image for offline use"
+      ],
+      "tags": ["HTML", "Performance"]
+    },
+    {
+      "title": "Canvas vs SVG",
+      "prompt": "Which of these is resolution-independent and made of DOM elements you can style with CSS?",
+      "answers": ["SVG"],
+      "false_answers": ["canvas", "WebGL", "<video>"],
+      "tags": ["HTML"]
+    },
+    {
+      "title": "Empty Elements",
+      "prompt": "Which of these is an empty (void) element in HTML?",
+      "answers": ["<img>"],
+      "false_answers": ["<p>", "<div>", "<span>", "<a>"],
+      "tags": ["HTML"]
+    },
+    {
+      "title": "Image Alt Text",
+      "prompt": "What is the alt attribute on an img element for?",
+      "answers": ["A text alternative for screen readers and for when the image fails to load"],
+      "false_answers": [
+        "A tooltip shown on hover",
+        "A caption displayed beneath the image",
+        "The image's file name",
+        "The link the image points to"
+      ],
+      "tags": ["HTML", "Accessibility"]
+    },
+    {
+      "title": "Selector Specificity",
+      "prompt": "Which of these selectors has the highest specificity?",
+      "answers": ["#nav"],
+      "false_answers": [".nav.active", "li:first-child", "ul li", "nav ul li.item"],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Stacking Context",
+      "prompt": "Which of these CSS declarations creates a new stacking context?",
+      "answers": ["opacity: 0.9"],
+      "false_answers": ["color: red", "margin: 0 auto", "text-align: center", "display: inline"],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Border Box Sizing",
+      "prompt": "What does box-sizing: border-box do?",
+      "answers": ["It includes padding and border in the element's specified width and height"],
+      "false_answers": [
+        "It removes the element's border",
+        "It adds a border around the content box",
+        "It excludes padding from the width",
+        "It makes margins part of the width"
+      ],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Inline Block Display",
+      "prompt": "Which display value lets an element sit in a line of text while still accepting width and height?",
+      "answers": ["inline-block"],
+      "false_answers": ["inline", "block", "contents", "none"],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Absolute Positioning",
+      "prompt": "Which position value places an element relative to its nearest positioned ancestor?",
+      "answers": ["absolute"],
+      "false_answers": ["relative", "fixed", "static", "sticky"],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Rem Unit",
+      "prompt": "A rem unit is relative to what?",
+      "answers": ["The font size of the root (html) element"],
+      "false_answers": [
+        "The font size of the parent element",
+        "The viewport width",
+        "The element's own font size"
+      ],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Pseudo-Elements",
+      "prompt": "Which of these is a pseudo-element?",
+      "answers": ["::before"],
+      "false_answers": [":hover", ":first-child", ":focus", ":nth-child(2)"],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Grid vs Flexbox",
+      "prompt": "Which CSS layout system is designed for two-dimensional layouts, handling rows and columns together?",
+      "answers": ["CSS Grid"],
+      "false_answers": ["Flexbox", "Floats", "display: inline-block"],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Flexbox Main Axis",
+      "prompt": "Which property distributes flex items along the main axis?",
+      "answers": ["justify-content"],
+      "false_answers": ["align-items", "align-content", "flex-wrap"],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Mobile-First Media Queries",
+      "prompt": "In a mobile-first approach, which media feature is typically used to add styles for larger screens?",
+      "answers": ["min-width"],
+      "false_answers": ["max-width", "max-height", "print", "prefers-reduced-motion"],
+      "tags": ["CSS"]
+    },
+    {
+      "title": "Compositor-Only Animation",
+      "prompt": "Which of these CSS properties can typically be animated without triggering layout or paint?",
+      "answers": ["transform"],
+      "false_answers": ["width", "top", "margin-left", "font-size"],
+      "tags": ["CSS", "Performance"]
+    },
+    {
+      "title": "Typeof Null",
+      "prompt": "What does typeof null return?",
+      "answers": ["\"object\""],
+      "false_answers": ["\"null\"", "\"undefined\"", "\"number\""],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Strict Equality",
+      "prompt": "What is the difference between == and ===?",
+      "answers": ["=== compares values without type coercion"],
+      "false_answers": [
+        "=== compares only the types",
+        "== compares types strictly",
+        "They are identical",
+        "=== works only on numbers"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Const Declarations",
+      "prompt": "Which statement about const is true?",
+      "answers": ["The binding cannot be reassigned, but an object it points to can be mutated"],
+      "false_answers": [
+        "It makes objects deeply immutable",
+        "It is function-scoped",
+        "It can be redeclared in the same scope"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "This in Methods",
+      "prompt": "When a regular function is called as obj.fn(), what does this refer to?",
+      "answers": ["obj"],
+      "false_answers": [
+        "The global object",
+        "The function itself",
+        "undefined",
+        "The enclosing function's scope"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Arrow Function This",
+      "prompt": "How do arrow functions handle this?",
+      "answers": ["They inherit this from the enclosing scope"],
+      "false_answers": [
+        "They always bind this to the global object",
+        "They bind this to the arrow function itself",
+        "They bind this to whatever calls them",
+        "They do not allow this"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Call vs Apply",
+      "prompt": "What is the difference between Function.prototype.call and Function.prototype.apply?",
+      "answers": ["call takes arguments individually; apply takes them as an array"],
+      "false_answers": [
+        "apply takes arguments individually; call takes them as an array",
+        "call runs asynchronously; apply runs synchronously",
+        "call returns a new function; apply invokes immediately",
+        "There is no difference"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Function Bind",
+      "prompt": "What does Function.prototype.bind return?",
+      "answers": ["A new function with this (and optionally some arguments) fixed"],
+      "false_answers": [
+        "The result of calling the function",
+        "The original function with its this changed",
+        "A promise that resolves with the result",
+        "undefined"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Event Bubbling",
+      "prompt": "In event bubbling, how does an event propagate?",
+      "answers": ["From the target element up through its ancestors"],
+      "false_answers": [
+        "From the root down to the target element",
+        "Only the target element receives it",
+        "From sibling to sibling in DOM order"
+      ],
+      "tags": ["JavaScript", "Events"]
+    },
+    {
+      "title": "Prevent Default",
+      "prompt": "What does event.preventDefault() do?",
+      "answers": ["It cancels the event's default browser action, such as following a link"],
+      "false_answers": [
+        "It stops the event from bubbling to parent elements",
+        "It removes every listener from the element",
+        "It stops other listeners on the same element from running",
+        "It prevents the event from firing again"
+      ],
+      "tags": ["JavaScript", "Events"]
+    },
+    {
+      "title": "Event Current Target",
+      "prompt": "In a click handler, what is event.currentTarget?",
+      "answers": ["The element the listener is attached to"],
+      "false_answers": [
+        "The element that was actually clicked",
+        "The window object",
+        "The element's parent node"
+      ],
+      "tags": ["JavaScript", "Events"]
+    },
+    {
+      "title": "Microtasks vs Timers",
+      "prompt": "After the current synchronous code finishes, which runs first: a resolved promise callback or a setTimeout(fn, 0) callback?",
+      "answers": ["The promise callback"],
+      "false_answers": [
+        "The setTimeout callback",
+        "They run in parallel",
+        "Whichever was registered first"
+      ],
+      "tags": ["JavaScript", "Async"]
+    },
+    {
+      "title": "Promise All Rejection",
+      "prompt": "What does Promise.all do when one of its promises rejects?",
+      "answers": ["It rejects immediately with that reason"],
+      "false_answers": [
+        "It waits for all promises, then resolves with partial results",
+        "It ignores the rejected promise and resolves with the rest",
+        "It retries the rejected promise",
+        "It resolves with undefined"
+      ],
+      "tags": ["JavaScript", "Async"]
+    },
+    {
+      "title": "Async Function Return",
+      "prompt": "What does an async function always return?",
+      "answers": ["A Promise"],
+      "false_answers": ["The value of its last await", "undefined", "A generator"],
+      "tags": ["JavaScript", "Async"]
+    },
+    {
+      "title": "Rest Destructuring",
+      "prompt": "What does const [first, ...rest] = [1, 2, 3] assign to rest?",
+      "answers": ["[2, 3]"],
+      "false_answers": ["[1, 2, 3]", "2", "[3]"],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Template Literals",
+      "prompt": "Which syntax interpolates a variable in a template literal?",
+      "answers": ["`Hello ${name}`"],
+      "false_answers": ["'Hello ${name}'", "`Hello {name}`", "`Hello #{name}`"],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Immediately Invoked Function",
+      "prompt": "Which of these is a valid immediately invoked function expression (IIFE)?",
+      "answers": ["(function () {})()"],
+      "false_answers": ["function () {}()", "(function () {})", "function () {}"],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Array Filter",
+      "prompt": "Which array method returns a new array containing only the elements that pass a test?",
+      "answers": ["filter"],
+      "false_answers": ["map", "reduce", "find", "forEach"],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Higher-Order Functions",
+      "prompt": "What is a higher-order function?",
+      "answers": ["A function that takes a function as an argument or returns a function"],
+      "false_answers": [
+        "A function declared at the top of a file",
+        "A function that runs before all others",
+        "A function with more than three parameters",
+        "A function that returns an object"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Named Imports",
+      "prompt": "Which statement imports the named export foo from the module \"./mod.js\"?",
+      "answers": ["import { foo } from './mod.js'"],
+      "false_answers": [
+        "import foo from './mod.js'",
+        "require { foo } from './mod.js'",
+        "include { foo } from './mod.js'",
+        "import './mod.js' as foo"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Same-Origin Policy",
+      "prompt": "Which combination makes two URLs the same origin?",
+      "answers": ["The same scheme, host and port"],
+      "false_answers": [
+        "The same domain name only",
+        "The same IP address only",
+        "The same scheme and path",
+        "The same top-level domain"
+      ],
+      "tags": ["JavaScript", "Security"]
+    },
+    {
+      "title": "Strict Mode Assignment",
+      "prompt": "What happens when you assign to an undeclared variable in strict mode?",
+      "answers": ["A ReferenceError is thrown"],
+      "false_answers": [
+        "It creates a global variable",
+        "It is silently ignored",
+        "It creates a local variable",
+        "A SyntaxError is thrown at parse time"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Prototype Chain Lookup",
+      "prompt": "When a property is missing on an object, how does JavaScript look for it?",
+      "answers": ["It walks up the prototype chain"],
+      "false_answers": [
+        "It returns null immediately",
+        "It throws a ReferenceError",
+        "It searches the global scope"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "String Coercion",
+      "prompt": "What does '5' + 3 evaluate to in JavaScript?",
+      "answers": ["\"53\""],
+      "false_answers": ["8", "NaN", "\"8\""],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Truthy Values",
+      "prompt": "Which of these values is truthy in JavaScript?",
+      "answers": ["\"0\""],
+      "false_answers": ["0", "\"\"", "null", "NaN"],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Object Freeze",
+      "prompt": "What does Object.freeze() do?",
+      "answers": [
+        "It prevents adding, removing or changing the object's own properties, without affecting nested objects"
+      ],
+      "false_answers": [
+        "It makes the object and all nested objects immutable",
+        "It prevents the variable from being reassigned",
+        "It converts the object to a string",
+        "It deletes all of its properties"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Ternary Operator",
+      "prompt": "Why is the ?: conditional operator called ternary?",
+      "answers": ["It takes three operands"],
+      "false_answers": [
+        "It has three possible results",
+        "It evaluates three conditions",
+        "It can be nested three levels deep"
+      ],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Logical OR Result",
+      "prompt": "What does console.log('hello' || 'world') print?",
+      "answers": ["hello"],
+      "false_answers": ["world", "true", "hello world"],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "Logical AND Result",
+      "prompt": "What does console.log('foo' && 'bar') print?",
+      "answers": ["bar"],
+      "false_answers": ["foo", "true", "foo bar"],
+      "tags": ["JavaScript"]
+    },
+    {
+      "title": "CDN Benefit",
+      "prompt": "What is the main benefit of serving static assets from a CDN?",
+      "answers": ["Content is served from servers geographically closer to users"],
+      "false_answers": [
+        "It encrypts all traffic automatically",
+        "It removes the need for caching",
+        "It makes JavaScript run faster in the browser"
+      ],
+      "tags": ["HTTP", "Performance"]
+    },
+    {
+      "title": "Cache Control No Store",
+      "prompt": "Which Cache-Control directive tells caches not to store the response at all?",
+      "answers": ["no-store"],
+      "false_answers": ["no-cache", "private", "must-revalidate", "max-age=0"],
+      "tags": ["HTTP", "Performance"]
+    },
+    {
+      "title": "ETag Header",
+      "prompt": "What is the ETag response header used for?",
+      "answers": ["Validating whether a cached resource has changed"],
+      "false_answers": [
+        "Encrypting the response body",
+        "Identifying the user's session",
+        "Setting when the response expires",
+        "Blocking cross-site requests"
+      ],
+      "tags": ["HTTP", "Performance"]
+    },
+    {
+      "title": "Frame Options Header",
+      "prompt": "What does the X-Frame-Options header protect against?",
+      "answers": ["Clickjacking, by controlling whether the page can be embedded in a frame"],
+      "false_answers": [
+        "SQL injection",
+        "Brute-force login attempts",
+        "Man-in-the-middle attacks",
+        "Cross-site scripting"
+      ],
+      "tags": ["HTTP", "Security"]
+    },
+    {
+      "title": "WebSockets",
+      "prompt": "Which technology provides a persistent, two-way connection between browser and server?",
+      "answers": ["WebSockets"],
+      "false_answers": ["Server-Sent Events", "Long polling", "A single fetch() request"],
+      "tags": ["HTTP"]
+    },
+    {
+      "title": "Moved Permanently Status",
+      "prompt": "Which HTTP status code means a resource has moved permanently?",
+      "answers": ["301"],
+      "false_answers": ["302", "304", "404", "500"],
+      "tags": ["HTTP"]
+    },
+    {
+      "title": "Unauthorized Status",
+      "prompt": "Which HTTP status code means authentication is required or has failed?",
+      "answers": ["401"],
+      "false_answers": ["403", "404", "500", "302"],
+      "tags": ["HTTP"]
+    },
+    {
+      "title": "DNS Prefetch",
+      "prompt": "Which link rel value resolves a domain name early to speed up later requests to it?",
+      "answers": ["dns-prefetch"],
+      "false_answers": ["stylesheet", "canonical", "alternate", "manifest"],
+      "tags": ["HTML", "Performance"]
+    },
+    {
+      "title": "Passive Event Listeners",
+      "prompt": "Which addEventListener option tells the browser a touch or wheel handler will not call preventDefault, improving scroll performance?",
+      "answers": ["passive: true"],
+      "false_answers": ["once: true", "capture: true", "signal: true"],
+      "tags": ["JavaScript", "Performance"]
+    },
+    {
+      "title": "Lazy Loading Images",
+      "prompt": "Which attribute defers loading of an offscreen image until it is near the viewport?",
+      "answers": ["loading=\"lazy\""],
+      "false_answers": ["decoding=\"async\"", "async", "defer", "preload"],
+      "tags": ["HTML", "Performance"]
+    },
+    {
+      "title": "Unit Testing",
+      "prompt": "What does a unit test typically verify?",
+      "answers": ["A small piece of code in isolation"],
+      "false_answers": [
+        "The whole application from a user's perspective",
+        "The server's performance under load",
+        "That the UI looks identical across browsers",
+        "Interactions between services in production"
+      ],
+      "tags": ["Testing"]
+    },
+    {
+      "title": "Linting Purpose",
+      "prompt": "What is the main purpose of a linter such as ESLint?",
+      "answers": ["To flag code-quality and style problems without running the code"],
+      "false_answers": [
+        "To minify code for production",
+        "To run unit tests automatically",
+        "To measure runtime performance",
+        "To bundle modules together"
+      ],
+      "tags": ["Testing", "JavaScript"]
+    },
+    {
+      "title": "Test Mocks",
+      "prompt": "What does a mock or stub do in a test?",
+      "answers": ["It replaces a real dependency with a controlled substitute"],
+      "false_answers": [
+        "It measures how much code a test covers",
+        "It runs tests in parallel",
+        "It records a video of the test run",
+        "It generates test data from the database schema"
+      ],
+      "tags": ["Testing"]
     }
   ]
 }
