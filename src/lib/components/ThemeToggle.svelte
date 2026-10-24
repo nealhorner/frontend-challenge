@@ -6,6 +6,11 @@
 
   onMount(() => {
     theme = getTheme();
+    // Follow every change to the applied theme, including the OS switching
+    // it while no choice is saved (handled by the script in src/app.html).
+    const observer = new MutationObserver(() => (theme = getTheme()));
+    observer.observe(document.documentElement, { attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
   });
 
   function toggle() {

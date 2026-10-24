@@ -43,6 +43,12 @@
     }
   }
 
+  // Close on any menu link, including the current page's, where the pathname
+  // effect below wouldn't fire.
+  function closeMenu() {
+    menuOpen = false;
+  }
+
   // Close the mobile menu after navigating
   $effect(() => {
     void page.url.pathname;
@@ -93,7 +99,11 @@
           <div id="mobile-menu" class="menu-panel">
             <nav aria-label="Main">
               {#each links as link (link.href)}
-                <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>
+                <a
+                  href={link.href}
+                  aria-current={isCurrent(link.href) ? 'page' : undefined}
+                  onclick={closeMenu}
+                >
                   {link.label}
                 </a>
               {/each}
@@ -102,8 +112,9 @@
               {#if isAuthenticated}
                 <LogoutButton />
               {:else}
-                <ButtonLink href="/login" kind="secondary">Sign In</ButtonLink>
-                <ButtonLink href="/quiz" kind="primary">Start a Quiz</ButtonLink>
+                <ButtonLink href="/login" kind="secondary" onclick={closeMenu}>Sign In</ButtonLink>
+                <ButtonLink href="/quiz" kind="primary" onclick={closeMenu}>Start a Quiz</ButtonLink
+                >
               {/if}
             </div>
           </div>
