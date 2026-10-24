@@ -64,21 +64,21 @@
     },
     {
       "title": "CSS Box Model",
-      "prompt": "Which property is not part of the CSS box model?",
+      "prompt": "Which of these is not part of the CSS box model?",
       "answers": ["z-index"],
       "false_answers": ["padding", "border", "margin", "content"],
       "tags": ["CSS"]
     },
     {
       "title": "ES6 Destructuring",
-      "prompt": "How do you extract the 'name' property from an object in JavaScript?",
+      "prompt": "Using destructuring, how do you extract the 'name' property from an object named obj?",
       "answers": ["const { name } = obj"],
       "false_answers": ["const name = obj", "const obj.name = name", "extract('name', obj)"],
       "tags": ["JavaScript"]
     },
     {
       "title": "Promise Chaining",
-      "prompt": "What is the correct way to chain promises in JavaScript?",
+      "prompt": "Which chain runs a success handler, then an error handler, then cleanup code that always runs?",
       "answers": ["promise.then().catch().finally()"],
       "false_answers": ["promise.finally().then().catch()", "promise.then().finally().catch()"],
       "tags": ["JavaScript"]
@@ -89,7 +89,7 @@
       "answers": ["localStorage.setItem('key', 'value')"],
       "false_answers": [
         "localStorage.add('key', 'value')",
-        "localStorage['key'] = 'value'",
+        "localStorage.put('key', 'value')",
         "setLocalStorage('key', 'value')"
       ],
       "tags": ["JavaScript", "local storage"]
@@ -100,13 +100,6 @@
       "answers": ["align-items"],
       "false_answers": ["justify-content", "align-content", "flex-direction"],
       "tags": ["CSS"]
-    },
-    {
-      "title": "HTTP Update Method",
-      "prompt": "Which HTTP method is most commonly used to update a resource?",
-      "answers": ["POST"],
-      "false_answers": ["GET", "POST", "DELETE"],
-      "tags": ["HTTP"]
     },
     {
       "title": "HTTP Retrieve Method",
@@ -151,22 +144,22 @@
       "tags": ["HTTP"]
     },
     {
-      "title": "HTTP Possible Methods",
+      "title": "HTTP Options Method",
       "prompt": "Which HTTP method is used to describe the communication options for the target resource?",
       "answers": ["OPTIONS"],
       "false_answers": ["GET", "POST", "PUT", "DELETE"],
       "tags": ["HTTP"]
     },
     {
-      "title": "Difference Between GET, PUT and POST",
+      "title": "Safe Retrieval Method",
       "prompt": "Which HTTP method is typically used to retrieve data without modifying the server's state?",
       "answers": ["GET"],
       "false_answers": ["POST", "PUT"],
       "tags": ["HTTP"]
     },
     {
-      "title": "Difference Between POST and PUT",
-      "prompt": "Which HTTP method is idempotent, meaning multiple identical requests have the same effect as a single request?",
+      "title": "Idempotent Method",
+      "prompt": "Among POST, PUT and PATCH, which HTTP method is idempotent, meaning multiple identical requests have the same effect as a single request?",
       "answers": ["PUT"],
       "false_answers": ["POST", "PATCH"],
       "tags": ["HTTP"]
@@ -193,15 +186,15 @@
       "tags": ["HTTP", "GET", "POST", "DATA"]
     },
     {
-      "title": "Idempotency of GET and PUT",
-      "prompt": "Which two HTTP methods are generally considered idempotent?",
-      "answers": ["GET", "PUT"],
-      "false_answers": ["POST", "DELETE", "PATCH"],
-      "tags": ["HTTP", "GET", "PUT", "Idempotent"]
+      "title": "Non-Idempotent Methods",
+      "prompt": "Which HTTP methods are not guaranteed to be idempotent?",
+      "answers": ["POST", "PATCH"],
+      "false_answers": ["GET", "PUT", "DELETE", "HEAD"],
+      "tags": ["HTTP", "Idempotent"]
     },
     {
       "title": "GET vs POST for Data Submission",
-      "prompt": "Which HTTP method is preferable for submitting data when creating a resource, especially when data privacy is a concern?",
+      "prompt": "Which HTTP method is preferable for submitting data to create a resource, since it keeps the data out of the URL?",
       "answers": ["POST"],
       "false_answers": ["GET", "PUT", "DELETE"],
       "tags": ["HTTP", "GET", "POST", "DATA"]
@@ -226,7 +219,7 @@
     {
       "title": "CSS Media Queries",
       "prompt": "What is the purpose of media queries in CSS?",
-      "answers": ["To apply styles based on screen size"],
+      "answers": ["To apply styles based on viewport or device characteristics"],
       "false_answers": [
         "To change styles on click",
         "To load images based on screen size",
@@ -236,9 +229,9 @@
     },
     {
       "title": "JavaScript Hoisting",
-      "prompt": "What variables are hoisted to the top in JavaScript?",
+      "prompt": "Which kind of declaration is hoisted and initialized to undefined?",
       "answers": ["var"],
-      "false_answers": ["let", "const", "function expressions"],
+      "false_answers": ["let", "const", "class"],
       "tags": ["JavaScript", "hoisting"]
     },
     {
@@ -246,8 +239,8 @@
       "prompt": "Why is event delegation useful?",
       "answers": ["It improves performance by reducing the number of event listeners"],
       "false_answers": [
-        "It applies events randomly",
-        "It makes events run faster",
+        "It prevents events from bubbling up the DOM",
+        "It automatically removes listeners when elements are deleted",
         "It reduces the DOM size"
       ],
       "tags": ["events", "JavaScript"]
