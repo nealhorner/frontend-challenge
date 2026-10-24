@@ -69,7 +69,7 @@
         </ButtonLink>
         <ButtonLink
           kind="secondary"
-          href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fnealhorner%2Ffrontend-challenge"
+          href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Ffrontendchallenge.dev"
           target="_blank"
           rel="noopener noreferrer"
         >
