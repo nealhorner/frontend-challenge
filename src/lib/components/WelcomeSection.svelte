@@ -84,7 +84,7 @@
     margin: var(--space-lg) 0 0;
     padding: 0;
     list-style: none;
-    color: var(--color-text-muted);
+    color: var(--color-text-secondary);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
   }

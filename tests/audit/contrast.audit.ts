@@ -1,9 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
 
-// Contrast audit for the redesign. Visits every page
-// in each theme, measures each visible piece of text against its effective
-// background (WCAG AA: 4.5:1, or 3:1 for large text), and in dark mode flags
-// bright patches left over from hard-coded light colors.
+// Contrast audit. Visits every page in each theme, measures each visible piece
+// of text against its effective background (WCAG AA: 4.5:1, or 3:1 for large
+// text; over a gradient, against its worst color stop), and in dark mode flags
+// bright patches left over from hard-coded light colors. Text over an image
+// can't be measured; it's listed as "unmeasured" without failing the run.
 //
 // Not part of the e2e suite. Run with `npm run audit:contrast`; see README.
 //
@@ -15,7 +16,9 @@ const STRICT = (process.env.AUDIT_STRICT ?? 'dark,light').split(',').map((t) => 
 
 type Issue =
   | { kind: 'contrast'; ratio: number; el: string; text: string }
-  | { kind: 'bright-bg'; bg: string; el: string };
+  | { kind: 'bright-bg'; bg: string; el: string }
+  // Text over an image can't be measured; it's listed but doesn't fail the run
+  | { kind: 'unmeasured'; el: string; text: string };
 
 // Runs in the page. Must be self-contained: Playwright serializes it.
 function auditPage(): Issue[] {
@@ -35,27 +38,66 @@ function auditPage(): Issue[] {
     const y = lum(b);
     return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
   };
-  // Blend translucent background layers down to the first opaque one. Text over
-  // a gradient or image can't be measured this way, so it's skipped.
-  const effectiveBg = (el: Element): number[] | null => {
-    const layers: number[][] = [];
-    for (let e: Element | null = el; e; e = e.parentElement) {
+  const blend = (top: number[], under: number[]) =>
+    under.slice(0, 3).map((v, i) => top[i] * top[3] + v * (1 - top[3]));
+  const gradientColors = (image: string) => (image.match(/rgba?\([^)]*\)/g) ?? []).map(rgba);
+  // Split a background-image list into its layers (top first), ignoring commas
+  // inside parentheses.
+  const splitLayers = (image: string) => {
+    const out: string[] = [];
+    let depth = 0;
+    let start = 0;
+    for (let i = 0; i < image.length; i++) {
+      if (image[i] === '(') depth++;
+      else if (image[i] === ')') depth--;
+      else if (image[i] === ',' && depth === 0) {
+        out.push(image.slice(start, i));
+        start = i + 1;
+      }
+    }
+    out.push(image.slice(start));
+    return out.map((l) => l.trim());
+  };
+  // Every background the element's text could sit on: layers (each gradient
+  // and background color) are composited bottom-up from the first opaque one,
+  // and a gradient contributes each of its color stops, so the worst case gets
+  // measured. Returns null when the text sits over an image.
+  const effectiveBgs = (el: Element | null): number[][] | null => {
+    const layers: number[][][] = [];
+    const isOpaque = (layer: number[][]) => layer.length > 0 && layer.every((c) => c[3] === 1);
+    outer: for (let e = el; e; e = e.parentElement) {
       const cs = getComputedStyle(e);
-      if (cs.backgroundImage !== 'none' && !cs.backgroundImage.startsWith('url(')) return null;
+      const clipsToText = cs.backgroundClip === 'text' || cs.webkitBackgroundClip === 'text';
+      if (cs.backgroundImage !== 'none' && !clipsToText) {
+        for (const layer of splitLayers(cs.backgroundImage)) {
+          if (layer.startsWith('url(')) return null;
+          const colors = gradientColors(layer);
+          if (!colors.length) continue;
+          layers.push(colors);
+          if (isOpaque(colors)) break outer;
+        }
+      }
       const c = rgba(cs.backgroundColor);
-      if (c[3] === 0) continue;
-      layers.push(c);
+      if (c[3] > 0) layers.push([c]);
       if (c[3] === 1) break;
     }
-    let base =
-      layers.length && layers[layers.length - 1][3] === 1
-        ? layers.pop()!.slice(0, 3)
-        : rgba(getComputedStyle(document.body).backgroundColor).slice(0, 3);
+    // Composite from the bottom: the last layer if it's opaque, else the page.
+    let bases =
+      layers.length && isOpaque(layers[layers.length - 1])
+        ? layers.pop()!.map((c) => c.slice(0, 3))
+        : [rgba(getComputedStyle(document.body).backgroundColor).slice(0, 3)];
     while (layers.length) {
-      const c = layers.pop()!;
-      base = base.map((v, i) => c[i] * c[3] + v * (1 - c[3]));
+      const layer = layers.pop()!;
+      const next = new Map<string, number[]>();
+      for (const base of bases) {
+        for (const c of layer) {
+          const b = blend(c, base);
+          next.set(b.map(Math.round).join(), b);
+        }
+      }
+      bases = [...next.values()];
     }
-    return base;
+    return bases;
   };
   const isVisible = (el: Element) => {
     const r = el.getBoundingClientRect();
@@ -95,11 +137,23 @@ function auditPage(): Issue[] {
       .join(' ')
       .trim();
     const isControl = el.matches('input, textarea, select');
-    const bg = ownText || isControl ? effectiveBg(el) : null;
-    if (bg && !el.matches(':disabled')) {
-      const fg = rgba(cs.color);
-      const blended = fg.slice(0, 3).map((v, i) => v * fg[3] + bg[i] * (1 - fg[3]));
-      const r = ratio(blended, bg);
+    // Gradient-filled text (background-clip: text) is drawn in its gradient's
+    // colors, over the parent's background.
+    const gradientText =
+      (cs.backgroundClip === 'text' || cs.webkitBackgroundClip === 'text') &&
+      cs.backgroundImage !== 'none';
+    const bgs = ownText || isControl ? effectiveBgs(gradientText ? el.parentElement : el) : null;
+    if ((ownText || isControl) && !bgs && !el.matches(':disabled')) {
+      const key = 'unmeasured|' + describe(el);
+      if (!seen.has(key)) {
+        seen.add(key);
+        issues.push({ kind: 'unmeasured', el: describe(el), text: ownText.slice(0, 40) });
+      }
+    }
+    if (bgs && !el.matches(':disabled')) {
+      const fgs = gradientText ? gradientColors(cs.backgroundImage) : [rgba(cs.color)];
+      let r = Infinity;
+      for (const bg of bgs) for (const fg of fgs) r = Math.min(r, ratio(blend(fg, bg), bg));
       const size = parseFloat(cs.fontSize);
       const large = size >= 24 || (parseInt(cs.fontWeight) >= 700 && size >= 18.66);
       if (r < (large ? 3 : 4.5) && cs.opacity === '1') {
@@ -221,18 +275,24 @@ for (const theme of THEMES) {
     // --- Report ---
     const lines: string[] = [];
     let total = 0;
-    for (const [name, issues] of Object.entries(results)) {
+    let unmeasured = 0;
+    for (const [name, all] of Object.entries(results)) {
+      const issues = all.filter((i) => i.kind !== 'unmeasured');
       total += issues.length;
+      unmeasured += all.length - issues.length;
       lines.push(`${name}: ${issues.length ? `${issues.length} issue(s)` : 'OK'}`);
-      for (const i of issues) {
+      for (const i of all) {
         lines.push(
           i.kind === 'contrast'
             ? `    ${i.ratio}:1  ${i.el}  "${i.text}"`
-            : `    bright background ${i.bg}  ${i.el}`
+            : i.kind === 'bright-bg'
+              ? `    bright background ${i.bg}  ${i.el}`
+              : `    unmeasured (text over an image)  ${i.el}  "${i.text}"`
         );
       }
     }
-    const report = `Contrast audit (${theme}): ${total} issue(s)\n` + lines.join('\n');
+    const report =
+      `Contrast audit (${theme}): ${total} issue(s), ${unmeasured} unmeasured\n` + lines.join('\n');
     console.log('\n' + report + '\n');
     await testInfo.attach(`contrast-${theme}.txt`, { body: report, contentType: 'text/plain' });
 
