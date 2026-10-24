@@ -398,7 +398,7 @@
     },
     {
       "title": "Absolute Positioning",
-      "prompt": "Which position value places an element relative to its nearest positioned ancestor?",
+      "prompt": "Which position value places an element relative to its containing block, usually its nearest positioned ancestor?",
       "answers": ["absolute"],
       "false_answers": ["relative", "fixed", "static", "sticky"],
       "tags": ["CSS"]
