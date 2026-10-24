@@ -1,4 +1,5 @@
 import { redirect } from '@sveltejs/kit';
+import { getEnabledSocialProviders } from '$lib/server/socialProviders';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -6,5 +7,7 @@ export const load: PageServerLoad = async ({ locals }) => {
   if (locals.isAuthenticated) {
     return redirect(302, '/');
   }
-  return {};
+  return {
+    socialProviders: getEnabledSocialProviders()
+  };
 };
