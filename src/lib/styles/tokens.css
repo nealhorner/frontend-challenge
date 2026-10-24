@@ -33,7 +33,7 @@
   --color-on-primary: #ffffff;
   --color-primary-soft: #f0f9ff;
   --color-primary-border: #bae6fd;
-  --color-link: #0369a1;
+  --color-link: #075985;
 
   /* ─── States: base (borders, icons), text, soft (backgrounds) ─── */
   --color-success: #10b981;
@@ -187,25 +187,33 @@
 
   --shadow-primary-rest: none;
   --shadow-card: var(--shadow-raised);
-  --gradient-accent-text: linear-gradient(90deg, #0284c7 0%, #2563eb 50%, #4f46e5 100%);
+  --gradient-accent-text: linear-gradient(90deg, #0369a1 0%, #1d4ed8 50%, #4338ca 100%);
   --glow-hero: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(2, 132, 199, 0.07), transparent 70%);
   --glow-hero-accent: radial-gradient(
     circle at 100% 70%,
     rgba(245, 158, 11, 0.06),
     transparent 40%
   );
-  /* Home page glows: fixed sizes, so they look the same however tall the page
-     is and fade out well before its end. */
-  --glow-page: radial-gradient(
-    ellipse 768px 380px at 50% 0,
-    rgba(2, 132, 199, 0.07),
-    transparent 70%
-  );
-  --glow-page-accent: radial-gradient(
-    circle 560px at 100% 530px,
-    rgba(245, 158, 11, 0.06),
+  /* Home page background: teal across the top, orange across the bottom,
+     sized to the page so together they cover most of it, plus a fine grain. */
+  --glow-home-top: radial-gradient(
+    ellipse 130% 60% at 75% 0%,
+    rgba(6, 182, 212, 0.2),
+    rgba(6, 182, 212, 0.06) 55%,
     transparent 100%
   );
+  --glow-home-bottom: radial-gradient(
+    ellipse 130% 60% at 25% 100%,
+    rgba(249, 115, 22, 0.16),
+    rgba(249, 115, 22, 0.05) 55%,
+    transparent 100%
+  );
+  /* Colored fractal noise, blended into the glows for a grainy gradient */
+  --noise-home: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  --noise-home-opacity: 0.32;
+  /* Hero lead text, which sits on the brightest part of the home glow */
+  --color-hero-lead: var(--color-text-secondary);
+  --noise-home-blend: soft-light;
 
   /* Code samples: light IDE colors */
   --color-syntax-keyword: #be123c;
@@ -213,17 +221,19 @@
   --color-syntax-function: #0369a1;
   --color-syntax-comment: #64748b;
 
-  /* The closing call-to-action is a dark panel in both themes. */
-  --cta-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 55%, #020617 100%);
-  --cta-text: #f8fafc;
-  --cta-text-secondary: #cbd5e1;
-  --cta-text-muted: #a5b1c2; /* 4.7:1 where the glow is brightest */
-  --cta-accent: #38bdf8;
-  --cta-accent-hover: #7dd3fc;
-  --cta-on-accent: #0f172a;
+  /* The closing call-to-action panel: light in light mode, dark in dark mode. */
+  --cta-bg: linear-gradient(135deg, #ffffff 0%, #f0f9ff 55%, #e0f2fe 100%);
+  --cta-border: var(--color-border);
+  --cta-text: #0f172a;
+  --cta-text-secondary: #334155;
+  --cta-text-muted: #475569;
+  --cta-eyebrow: #075985;
+  --cta-accent: #0277b6;
+  --cta-accent-hover: #0369a1;
+  --cta-on-accent: #ffffff;
   --cta-glow: radial-gradient(
     ellipse 50% 60% at 50% 110%,
-    rgba(56, 189, 248, 0.18),
+    rgba(2, 132, 199, 0.14),
     transparent 70%
   );
 }
@@ -244,16 +254,21 @@
   --gradient-accent-text: linear-gradient(90deg, #00f0ff 0%, #7df4ff 45%, #ffdb9d 100%);
   --glow-hero: radial-gradient(ellipse 55% 45% at 50% 0%, rgba(0, 240, 255, 0.13), transparent 70%);
   --glow-hero-accent: radial-gradient(circle at 100% 75%, rgba(254, 183, 0, 0.09), transparent 35%);
-  --glow-page: radial-gradient(
-    ellipse 704px 340px at 50% 0,
-    rgba(0, 240, 255, 0.13),
-    transparent 70%
-  );
-  --glow-page-accent: radial-gradient(
-    circle 490px at 100% 570px,
-    rgba(254, 183, 0, 0.09),
+  --glow-home-top: radial-gradient(
+    ellipse 130% 60% at 75% 0%,
+    rgba(0, 220, 230, 0.24),
+    rgba(0, 220, 230, 0.07) 55%,
     transparent 100%
   );
+  --glow-home-bottom: radial-gradient(
+    ellipse 130% 60% at 25% 100%,
+    rgba(255, 140, 30, 0.2),
+    rgba(255, 140, 30, 0.06) 55%,
+    transparent 100%
+  );
+  --noise-home-opacity: 0.22;
+  --color-hero-lead: #c0cad8;
+  --noise-home-blend: overlay;
 
   --color-syntax-keyword: #f43f5e;
   --color-syntax-string: #34d399;
@@ -261,9 +276,11 @@
   --color-syntax-comment: #7c8a9e;
 
   --cta-bg: linear-gradient(135deg, #151f32 0%, #0e1522 50%, #070a0f 100%);
+  --cta-border: transparent;
   --cta-text: #e8ecf4;
   --cta-text-secondary: #b9cacb;
   --cta-text-muted: #94a3b8;
+  --cta-eyebrow: #00f0ff;
   --cta-accent: #00f0ff;
   --cta-accent-hover: #7df4ff;
   --cta-on-accent: #070a0f;

@@ -9,6 +9,9 @@
   import IconCheckAll from '~icons/mdi/check-all';
   import IconFileTree from '~icons/mdi/file-tree';
   import IconFire from '~icons/mdi/fire';
+  import IconPodcast from '~icons/mdi/podcast';
+  import IconPost from '~icons/mdi/post-outline';
+  import IconSchool from '~icons/mdi/school-outline';
   import IconSwap from '~icons/mdi/swap-horizontal';
   import IconTrophy from '~icons/mdi/trophy-outline';
 
@@ -28,6 +31,33 @@
     { name: 'HTTP', count: '15 challenges', hue: 'emerald', icon: IconSwap },
     { name: 'DOM', count: '2 challenges', hue: 'rose', icon: IconFileTree },
     { name: 'Closures', count: 'Advanced scope', hue: 'sky', glyph: '()' }
+  ];
+
+  const resourceTypes = [
+    {
+      name: 'Blogs',
+      count: '7 blogs',
+      hue: 'sky',
+      icon: IconPost,
+      description: 'In-depth articles and practical write-ups on JavaScript, CSS and React.',
+      examples: ['Lydia Hallie', 'Dan Abramov', 'Sarah Drasner']
+    },
+    {
+      name: 'Courses',
+      count: '4 courses',
+      hue: 'violet',
+      icon: IconSchool,
+      description: 'Structured paths for when you want to go from the fundamentals to fluency.',
+      examples: ['Frontend Masters', 'Just JavaScript', 'Kent C. Dodds']
+    },
+    {
+      name: 'Podcasts',
+      count: '4 podcasts',
+      hue: 'amber',
+      icon: IconPodcast,
+      description: 'Conversations about the web to keep learning on a walk or a commute.',
+      examples: ['Syntax', 'ShopTalk Show', 'Frontend Happy Hour']
+    }
   ];
 </script>
 
@@ -152,13 +182,41 @@
           </div>
         </li>
       {/each}
-      <li>
-        <a class="topic more" href="/learn">
-          <span class="topic-icon" aria-hidden="true">+</span>
-          <span class="topic-name">Learn more</span>
-          <span class="topic-count link">Browse learning resources</span>
-        </a>
-      </li>
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="resources-heading">
+    <div class="section-head split">
+      <div>
+        <span class="eyebrow">Keep learning</span>
+        <h2 id="resources-heading">Go deeper with curated resources</h2>
+      </div>
+      <p>Hand-picked blogs, courses and podcasts to help you dig into what you practice here.</p>
+    </div>
+
+    <ul class="resource-types">
+      {#each resourceTypes as type (type.name)}
+        <li>
+          <a
+            class="resource-type"
+            href="/learn"
+            style:--hue-text="var(--topic-{type.hue}-text)"
+            style:--hue-bg="var(--topic-{type.hue}-bg)"
+          >
+            <div class="resource-type-head">
+              <span class="resource-icon" aria-hidden="true"><type.icon /></span>
+              <span class="resource-count">{type.count}</span>
+            </div>
+            <h3>{type.name}</h3>
+            <p>{type.description}</p>
+            <ul class="resource-examples" aria-label="Including">
+              {#each type.examples as example (example)}
+                <li>{example}</li>
+              {/each}
+            </ul>
+          </a>
+        </li>
+      {/each}
     </ul>
   </section>
 
@@ -188,12 +246,28 @@
   /* ─── Page glow ─── */
 
   .home {
+    position: relative;
+    /* Own stacking context so the grain layer sits under the content */
+    isolation: isolate;
     flex: 1;
     /* Reach the footer: cover the footer's top margin as well */
     margin-bottom: calc(-1 * var(--space-xl));
     padding-bottom: var(--space-xl);
-    background-image: var(--glow-page), var(--glow-page-accent);
+    background-image: var(--glow-home-top), var(--glow-home-bottom);
     background-repeat: no-repeat;
+  }
+
+  /* Grain over the gradient, on its own layer behind the content */
+  .home::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: var(--noise-home);
+    opacity: var(--noise-home-opacity);
+    /* Blend with the glows underneath so the grain takes on their color */
+    mix-blend-mode: var(--noise-home-blend);
+    pointer-events: none;
   }
 
   /* ─── Shared section layout ─── */
@@ -557,10 +631,10 @@
   /* ─── Topics ─── */
 
   /* Columns are sized so the name and count beside the icon stay on one line
-     (the text column needs about 150px). */
+     (the text column needs about 150px). Three columns: two even rows of six. */
   .topic-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-sm);
     margin: 0;
     padding: 0;
@@ -588,16 +662,6 @@
       border-color var(--transition-fast);
   }
 
-  a.topic:hover {
-    border-color: var(--color-primary-border);
-    background-color: var(--color-surface-raised);
-    text-decoration: none;
-  }
-
-  .topic.more {
-    background-color: var(--color-surface-sunken);
-  }
-
   .topic-icon {
     display: inline-flex;
     align-items: center;
@@ -619,10 +683,6 @@
     font-size: 1.25rem;
   }
 
-  a.topic:hover .topic-icon {
-    transform: scale(1.05);
-  }
-
   .topic-name {
     align-self: end;
     font-size: var(--text-md);
@@ -638,11 +698,102 @@
     font-size: var(--text-xs);
   }
 
-  .topic-count.link {
-    color: var(--color-link);
+  /* ─── Learning resources ─── */
+
+  .resource-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+    gap: var(--space-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  /* ─── Closing call to action (dark panel in both themes) ─── */
+  .resource-type {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    height: 100%;
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-card);
+    color: var(--color-text);
+    text-decoration: none;
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+
+  .resource-type:hover {
+    border-color: var(--color-primary-border);
+    background-color: var(--color-surface-raised);
+    text-decoration: none;
+  }
+
+  .resource-type-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-xs);
+  }
+
+  .resource-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-button);
+    background-color: var(--hue-bg);
+    color: var(--hue-text);
+    font-size: 1.25rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .resource-type:hover .resource-icon {
+    transform: scale(1.05);
+  }
+
+  .resource-count {
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .resource-type h3 {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  .resource-type p {
+    flex: 1;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+  }
+
+  .resource-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin: var(--space-xs) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .resource-examples li {
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface-sunken);
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  /* ─── Closing call to action (light or dark panel, by theme) ─── */
 
   .cta {
     position: relative;
@@ -652,6 +803,7 @@
     gap: var(--space-md);
     padding: 5rem var(--space-xl);
     overflow: hidden;
+    border: 1px solid var(--cta-border);
     border-radius: var(--radius-panel);
     background-image: var(--cta-glow), var(--cta-bg);
     box-shadow: var(--shadow-overlay);
@@ -665,7 +817,7 @@
   }
 
   .cta .eyebrow {
-    color: var(--cta-accent);
+    color: var(--cta-eyebrow);
   }
 
   .cta h2 {
@@ -709,10 +861,6 @@
       grid-template-columns: minmax(0, 1fr);
       max-width: 32rem;
       margin-inline: auto;
-    }
-
-    .topic-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 

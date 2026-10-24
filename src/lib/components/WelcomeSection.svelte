@@ -58,7 +58,7 @@
   .hero-subhead {
     max-width: 42rem;
     margin: var(--space-md) 0 0;
-    color: var(--color-text-secondary);
+    color: var(--color-hero-lead);
     font-size: var(--text-lg);
     line-height: 1.6;
   }

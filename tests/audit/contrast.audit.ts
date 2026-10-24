@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { measureRenderedContrast } from './pixels';
 
 // Contrast audit. Visits every page in each theme, measures each visible piece
 // of text against its effective background (WCAG AA: 4.5:1, or 3:1 for large
@@ -15,7 +16,14 @@ const THEMES = (process.env.AUDIT_THEMES ?? 'dark,light').split(',').map((t) => 
 const STRICT = (process.env.AUDIT_STRICT ?? 'dark,light').split(',').map((t) => t.trim());
 
 type Issue =
-  | { kind: 'contrast'; ratio: number; el: string; text: string }
+  | {
+      kind: 'contrast';
+      ratio: number;
+      el: string;
+      text: string;
+      // Set for text over a gradient: re-measured against rendered pixels
+      pixelCheck?: { id: number; foregrounds: [number, number, number][]; min: number };
+    }
   | { kind: 'bright-bg'; bg: string; el: string }
   // Text over an image can't be measured; it's listed but doesn't fail the run
   | { kind: 'unmeasured'; el: string; text: string };
@@ -125,6 +133,10 @@ function auditPage(): Issue[] {
 
   const dark = document.documentElement.dataset.theme === 'dark';
   const issues: Issue[] = [];
+  let pixelCheckId = 0;
+  document
+    .querySelectorAll('[data-audit-pixel]')
+    .forEach((e) => e.removeAttribute('data-audit-pixel'));
   const seen = new Set<string>();
 
   for (const el of document.querySelectorAll('body *')) {
@@ -156,16 +168,30 @@ function auditPage(): Issue[] {
       for (const bg of bgs) for (const fg of fgs) r = Math.min(r, ratio(blend(fg, bg), bg));
       const size = parseFloat(cs.fontSize);
       const large = size >= 24 || (parseInt(cs.fontWeight) >= 700 && size >= 18.66);
-      if (r < (large ? 3 : 4.5) && cs.opacity === '1') {
+      const min = large ? 3 : 4.5;
+      if (r < min && cs.opacity === '1') {
         const key = describe(el) + '|' + r.toFixed(1);
         if (!seen.has(key)) {
           seen.add(key);
           const field = el as HTMLInputElement;
+          // Over a gradient the estimate assumes every glow at its strongest at
+          // once; mark the element so the test can measure the real pixels.
+          let pixelCheck;
+          if (bgs.length > 1) {
+            pixelCheckId += 1;
+            el.setAttribute('data-audit-pixel', String(pixelCheckId));
+            pixelCheck = {
+              id: pixelCheckId,
+              foregrounds: fgs.map((c) => c.slice(0, 3) as [number, number, number]),
+              min
+            };
+          }
           issues.push({
             kind: 'contrast',
             ratio: +r.toFixed(2),
             el: describe(el),
-            text: (ownText || field.value || field.placeholder || el.tagName).slice(0, 40)
+            text: (ownText || field.value || field.placeholder || el.tagName).slice(0, 40),
+            pixelCheck
           });
         }
       }
@@ -219,7 +245,26 @@ for (const theme of THEMES) {
       // Guard against auditing the wrong colors if the theme stops applying
       const applied = await page.evaluate(() => document.documentElement.dataset.theme);
       expect(applied, `${theme} theme was not applied on ${name}`).toBe(theme);
-      results[name] = await page.evaluate(auditPage);
+      const issues = await page.evaluate(auditPage);
+      // Re-measure text over gradients against the rendered background, and keep
+      // the issue only if the real contrast also falls short.
+      const confirmed: Issue[] = [];
+      for (const issue of issues) {
+        if (issue.kind === 'contrast' && issue.pixelCheck) {
+          const { id, foregrounds, min } = issue.pixelCheck;
+          const measured = await measureRenderedContrast(page, id, foregrounds);
+          if (measured !== null && measured >= min) continue;
+          confirmed.push({
+            kind: 'contrast',
+            ratio: +(measured ?? issue.ratio).toFixed(2),
+            el: issue.el,
+            text: issue.text
+          });
+        } else {
+          confirmed.push(issue);
+        }
+      }
+      results[name] = confirmed;
       await page.screenshot({ path: testInfo.outputPath(`${theme}-${name}.png`), fullPage: true });
     }
 
