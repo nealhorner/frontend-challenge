@@ -53,11 +53,13 @@
     text-decoration: none;
   }
 
+  /* One fixed height for every card, with or without an image: room for the
+     title, a two-line description (clamped below) and the link. */
   .card {
     display: flex;
     align-items: stretch;
     width: 100%;
-    height: 100%;
+    height: 7.875rem;
     overflow: hidden;
     border: 1px solid var(--color-border-card);
     border-radius: var(--radius-card);
