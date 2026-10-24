@@ -1,11 +1,11 @@
-import { env } from '$env/dynamic/private';
 import { Resend } from 'resend';
+import { ENV } from 'varlock/env';
 
 // Lazy singleton — defers instantiation (and reading the key) to first use so
 // the module is safe to import during build analysis when the key is empty.
 // Optional at build time; runtime errors are handled by the callers.
 let _resend: Resend | undefined;
-const getResend = () => (_resend ??= new Resend(env.RESEND_API_KEY ?? ''));
+const getResend = () => (_resend ??= new Resend(ENV.RESEND_API_KEY ?? ''));
 
 export function escapeHtml(value: string): string {
   return value
@@ -26,7 +26,7 @@ export async function sendEmail({
   html: string;
 }) {
   const { error } = await getResend().emails.send({
-    from: env.EMAIL_FROM ?? '',
+    from: ENV.EMAIL_FROM ?? '',
     to,
     subject,
     html

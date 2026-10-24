@@ -1,7 +1,7 @@
-import { env } from '$env/dynamic/private';
+import { ENV } from 'varlock/env';
 
 export type SocialProvider = 'github' | 'google';
-type EnvSource = Record<string, string | undefined>;
+type EnvSource = Record<string, unknown>;
 
 type Credentials = { clientId: string; clientSecret: string };
 
@@ -16,7 +16,7 @@ const ENV_KEYS: Record<SocialProvider, [id: string, secret: string]> = {
  * without OAuth apps and the sign-in page doesn't offer buttons that can't work.
  */
 export function getSocialProviderCredentials(
-  source: EnvSource = env
+  source: EnvSource = ENV
 ): Partial<Record<SocialProvider, Credentials>> {
   const configured: Partial<Record<SocialProvider, Credentials>> = {};
   for (const [provider, [idKey, secretKey]] of Object.entries(ENV_KEYS) as [
@@ -25,12 +25,19 @@ export function getSocialProviderCredentials(
   ][]) {
     const clientId = source[idKey];
     const clientSecret = source[secretKey];
-    if (clientId && clientSecret) configured[provider] = { clientId, clientSecret };
+    if (
+      typeof clientId === 'string' &&
+      clientId &&
+      typeof clientSecret === 'string' &&
+      clientSecret
+    ) {
+      configured[provider] = { clientId, clientSecret };
+    }
   }
   return configured;
 }
 
 /** Names of the social providers that are configured. */
-export function getEnabledSocialProviders(source: EnvSource = env): SocialProvider[] {
+export function getEnabledSocialProviders(source: EnvSource = ENV): SocialProvider[] {
   return Object.keys(getSocialProviderCredentials(source)) as SocialProvider[];
 }

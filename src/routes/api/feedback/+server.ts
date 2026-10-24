@@ -1,5 +1,5 @@
-import { env } from '$env/dynamic/private';
 import { json } from '@sveltejs/kit';
+import { ENV } from 'varlock/env';
 import { sendEmail, escapeHtml } from '$lib/server/email';
 import type { RequestHandler } from './$types';
 
@@ -103,7 +103,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   `;
 
   try {
-    await sendEmail({ to: env.FEEDBACK_EMAIL ?? '', subject: emailSubject, html });
+    await sendEmail({ to: ENV.FEEDBACK_EMAIL ?? '', subject: emailSubject, html });
   } catch (err) {
     console.error('Failed to send feedback email:', err);
     return json({ error: 'Failed to send feedback' }, { status: 500 });

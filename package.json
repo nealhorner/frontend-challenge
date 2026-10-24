@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite dev",
-    "start": "node build",
+    "start": "varlock run -- node build",
     "build": "prisma generate && vite build",
-    "release": "prisma migrate deploy && npm run populateLearningResources",
-    "preview": "vite preview",
+    "release": "varlock run -- prisma migrate deploy && npm run populateLearningResources",
+    "preview": "varlock run -- vite preview",
     "test": "npm run test:integration && npm run test:unit",
     "test:e2e": "playwright test",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -16,11 +16,11 @@
     "test:integration": "playwright test",
     "test:unit": "vitest",
     "audit:contrast": "playwright test -c playwright.audit.config.ts",
-    "populateLearningResources": "tsx --tsconfig scripts/tsconfig.json scripts/populate-open-graph.ts",
-    "cleanupGuests": "tsx --tsconfig scripts/tsconfig.json scripts/cleanup-guests.ts",
-    "db:migrate": "npx prisma migrate dev",
-    "db:seed": "tsx --tsconfig scripts/tsconfig.json prisma/seed.ts",
-    "db:ui": "npx prisma studio",
+    "populateLearningResources": "varlock run -- tsx --tsconfig scripts/tsconfig.json scripts/populate-open-graph.ts",
+    "cleanupGuests": "varlock run -- tsx --tsconfig scripts/tsconfig.json scripts/cleanup-guests.ts",
+    "db:migrate": "varlock run -- prisma migrate dev",
+    "db:seed": "varlock run -- tsx --tsconfig scripts/tsconfig.json prisma/seed.ts",
+    "db:ui": "varlock run -- prisma studio",
     "postinstall": "prisma generate",
     "prepare": "husky"
   },
@@ -34,6 +34,7 @@
     "@sveltejs/kit": "^2.70.2",
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
     "@types/node": "^24.0.0",
+    "@varlock/vite-integration": "^1.5.4",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-svelte": "^3.23.1",
@@ -57,7 +58,7 @@
     "node": ">=24"
   },
   "prisma": {
-    "seed": "tsx --tsconfig scripts/tsconfig.json prisma/seed.ts"
+    "seed": "varlock run -- tsx --tsconfig scripts/tsconfig.json prisma/seed.ts"
   },
   "overrides": {
     "cookie": "^0.7.0",
@@ -72,6 +73,7 @@
     "isomorphic-dompurify": "^2.21.0",
     "lucide-svelte": "^1.0.1",
     "resend": "^6.12.4",
-    "tsx": "^4.10.2"
+    "tsx": "^4.10.2",
+    "varlock": "^1.23.0"
   }
 }

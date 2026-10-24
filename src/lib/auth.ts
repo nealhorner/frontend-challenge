@@ -1,5 +1,5 @@
-import { env } from '$env/dynamic/private';
 import { betterAuth } from 'better-auth';
+import { ENV } from 'varlock/env';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { sveltekitCookies } from 'better-auth/svelte-kit';
 import { anonymous } from 'better-auth/plugins';
@@ -23,17 +23,16 @@ const ARGON2_OPTIONS = {
 
 function createAuth() {
   return betterAuth({
-    // Read from $env so local dev picks these up from .env too; `vite dev`
-    // doesn't load .env into process.env.
-    baseURL: env.BETTER_AUTH_URL,
-    secret: env.BETTER_AUTH_SECRET,
+    // Validated and typed by Varlock (see .env.schema)
+    baseURL: ENV.BETTER_AUTH_URL,
+    secret: ENV.BETTER_AUTH_SECRET,
     database: prismaAdapter(prisma, { provider: 'postgresql' }),
 
-    // Rate limiting is on by default in production. It is disabled only for the
-    // e2e suite (AUTH_DISABLE_RATE_LIMIT=true), which exercises the auth flows
+    // Rate limiting is on by default. It is disabled only for the e2e suite
+    // (AUTH_DISABLE_RATE_LIMIT=true), which exercises the auth flows
     // with many rapid sign-ups/sign-ins that would otherwise be throttled.
     rateLimit: {
-      enabled: env.AUTH_DISABLE_RATE_LIMIT !== 'true'
+      enabled: !ENV.AUTH_DISABLE_RATE_LIMIT
     },
 
     emailVerification: {
@@ -51,13 +50,13 @@ function createAuth() {
       },
       // Skipped in e2e tests via REQUIRE_EMAIL_VERIFICATION=false so the suite
       // can register + sign in without a real email provider.
-      sendOnSignUp: env.REQUIRE_EMAIL_VERIFICATION !== 'false',
+      sendOnSignUp: ENV.REQUIRE_EMAIL_VERIFICATION,
       autoSignInAfterVerification: true
     },
 
     emailAndPassword: {
       enabled: true,
-      requireEmailVerification: env.REQUIRE_EMAIL_VERIFICATION !== 'false',
+      requireEmailVerification: ENV.REQUIRE_EMAIL_VERIFICATION,
       // Keep Argon2 hashing so pre-migration credentials still authenticate.
       password: {
         hash: (password) => argon2Hash(password, ARGON2_OPTIONS),

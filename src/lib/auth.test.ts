@@ -6,14 +6,18 @@ vi.mock('$app/server', () => ({
   getRequestEvent: () => ({})
 }));
 
-// auth.ts reads its settings from $env (so local dev picks up .env). Provide
+// auth.ts reads its settings from Varlock's ENV (see .env.schema). Provide
 // test values, including credentials for both social providers.
-vi.mock('$env/dynamic/private', () => ({
-  env: {
-    // prisma.ts requires a URL at import; the test never connects
+vi.mock('varlock/env', async (importOriginal) => ({
+  // Keep the real exports (the Varlock Vite plugin calls initVarlockEnv)
+  ...(await importOriginal<typeof import('varlock/env')>()),
+  ENV: {
+    // prisma.ts reads this at import; the test never connects
     DATABASE_URL: 'postgresql://test:test@localhost:5432/test',
     BETTER_AUTH_URL: 'http://localhost:5173',
     BETTER_AUTH_SECRET: 'test-secret-test-secret-test-secret-123',
+    REQUIRE_EMAIL_VERIFICATION: true,
+    AUTH_DISABLE_RATE_LIMIT: false,
     GITHUB_CLIENT_ID: 'gh-id',
     GITHUB_CLIENT_SECRET: 'gh-secret',
     GOOGLE_CLIENT_ID: 'g-id',

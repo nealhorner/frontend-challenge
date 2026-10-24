@@ -4,12 +4,28 @@ A simple CRUD application to help users practice their frontend skills.
 
 ## Developing
 
-Create a `.env` file based on .env.example
+Environment variables are managed with [Varlock](https://varlock.dev).
+`.env.schema` (committed) declares every variable the app reads: its type,
+whether it's required, and whether it's secret. Put your local values in
+`.env.local` (or `.env`); both are gitignored. Real environment variables, such
+as Railway's, always take precedence over files.
 
 ```bash
 npm install
+touch .env.local          # then fill in the required values from .env.schema
+npx varlock load          # check your values against the schema
 npm run dev
 ```
+
+The required values are `DATABASE_URL`, `BETTER_AUTH_SECRET` and
+`BETTER_AUTH_URL`. Dev, build and the npm scripts fail with a clear message if
+one is missing or invalid.
+
+App code reads values from `ENV` (`import { ENV } from 'varlock/env'`), which
+is typed from the schema (`src/env.d.ts` is generated; don't edit it) and keeps
+secrets out of browser bundles. Anything that runs app code outside Vite goes
+through `varlock run --` (see the `start`, `preview`, `db:*` and script
+commands in `package.json`).
 
 ### Updating the database
 
@@ -22,7 +38,7 @@ npm run db:migrate
 Seed the database
 
 ```bash
-npx tsx prisma/seed.ts
+npm run db:seed
 ```
 
 ### Checking color contrast
@@ -52,4 +68,6 @@ npm run build
 ## Deploying
 
 Production runs on Railway with `@sveltejs/adapter-node`, configured in
-`railway.json`. See `.env.example` for the environment variables.
+`railway.json`. See `.env.schema` for the environment variables; set them as
+Railway service variables. `npm run start` runs `varlock run -- node build`,
+which validates them at boot.
