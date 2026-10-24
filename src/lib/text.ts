@@ -1,10 +1,32 @@
+// The entities scraped descriptions actually use: markup characters plus
+// common typography. Numeric references (&#8212;) cover anything else.
 const NAMED_ENTITIES: Record<string, string> = {
   amp: '&',
   lt: '<',
   gt: '>',
   quot: '"',
   apos: "'",
-  nbsp: ' '
+  nbsp: ' ',
+  mdash: '—',
+  ndash: '–',
+  hellip: '…',
+  lsquo: '‘',
+  rsquo: '’',
+  sbquo: '‚',
+  ldquo: '“',
+  rdquo: '”',
+  bdquo: '„',
+  laquo: '«',
+  raquo: '»',
+  bull: '•',
+  middot: '·',
+  copy: '©',
+  reg: '®',
+  trade: '™',
+  deg: '°',
+  times: '×',
+  rarr: '→',
+  larr: '←'
 };
 
 function decodeEntities(text: string): string {
@@ -25,8 +47,12 @@ function decodeEntities(text: string): string {
  * never with {@html}.
  */
 export function toPlainText(html: string): string {
-  return decodeEntities(html)
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return (
+    decodeEntities(html)
+      // Only tag-shaped text: `<` followed by a letter, `/` or `!` (comments).
+      // Plain comparisons such as "1 < 2 and 3 > 0" are kept.
+      .replace(/<!--[\s\S]*?-->|<\/?[a-z][^<>]*>/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
 }

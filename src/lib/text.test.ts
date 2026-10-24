@@ -24,10 +24,25 @@ describe('toPlainText', () => {
     );
   });
 
-  it('never returns markup that could run as HTML', () => {
+  it('never returns tags that could run as HTML', () => {
     expect(toPlainText('<img src=x onerror="alert(1)">Hi<script>alert(1)</script>')).not.toMatch(
-      /<|>/
+      /<\/?[a-z]/i
     );
+  });
+
+  it('decodes common typographic entities', () => {
+    expect(toPlainText('It&rsquo;s fast &mdash; really &hellip; &ldquo;fast&rdquo;')).toBe(
+      'It’s fast — really … “fast”'
+    );
+  });
+
+  it('keeps plain-text comparisons', () => {
+    expect(toPlainText('Use 1 < 2 and 3 > 0')).toBe('Use 1 < 2 and 3 > 0');
+    expect(toPlainText('Use 1 &lt; 2 and 3 &gt; 0')).toBe('Use 1 < 2 and 3 > 0');
+  });
+
+  it('removes HTML comments', () => {
+    expect(toPlainText('Hello <!-- hidden --> world')).toBe('Hello world');
   });
 
   it('collapses whitespace', () => {
