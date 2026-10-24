@@ -16,6 +16,7 @@
     "test:integration": "playwright test",
     "test:unit": "vitest",
     "audit:contrast": "playwright test -c playwright.audit.config.ts",
+    "check:version": "git fetch --no-tags origin main && node scripts/check-version-bump.mjs origin/main",
     "populateLearningResources": "varlock run -- tsx --tsconfig scripts/tsconfig.json scripts/populate-open-graph.ts",
     "cleanupGuests": "varlock run -- tsx --tsconfig scripts/tsconfig.json scripts/cleanup-guests.ts",
     "db:migrate": "varlock run -- prisma migrate dev",

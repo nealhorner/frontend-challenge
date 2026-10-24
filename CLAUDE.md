@@ -6,7 +6,8 @@
 
 The app version is `version` in `package.json` (mirrored in `package-lock.json`).
 Every pull request must raise it by exactly one step compared with `main`, as
-part of the PR's own commits.
+part of the PR's own commits. The "Check version bump" CI job enforces this, so
+a PR fails until it's done. Check locally with `npm run check:version`.
 
 1. Check the version on `main` and on the branch:
 

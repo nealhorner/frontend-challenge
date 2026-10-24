@@ -21,6 +21,32 @@ env:
   PUBLIC_SENTRY_DSN: ''
 
 jobs:
+  version-bump:
+    name: Check version bump
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # Every PR must raise package.json's version by exactly one semver step
+      # over the base branch (see CLAUDE.md). Only the base branch is fetched;
+      # its name goes through env, not straight into the script.
+      - name: Fetch base branch
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: git fetch --no-tags --depth=1 origin "$BASE_REF"
+
+      - name: Check the version was bumped
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: node scripts/check-version-bump.mjs "origin/$BASE_REF"
+
   lint-test:
     name: Run Prettier, ESLint, and Vitest
     runs-on: ubuntu-latest
