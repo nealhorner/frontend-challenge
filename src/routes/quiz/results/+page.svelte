@@ -1,6 +1,10 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import ButtonLink from '$lib/components/ButtonLink.svelte';
+  import PageContent from '$lib/components/PageContent.svelte';
+  import PageHeader from '$lib/components/PageHeader.svelte';
+  import IconChevronRight from '~icons/mdi/chevron-right';
+  import IconPlay from '~icons/mdi/play';
 
   interface Props {
     data: PageData;
@@ -9,80 +13,95 @@
   let { data }: Props = $props();
 </script>
 
-<main>
-  <div class="results-header">
-    <div>
-      <h1>Quiz Results</h1>
-      <p>A list of all quiz results</p>
-    </div>
-    <ButtonLink href="/quiz">Back to Quiz</ButtonLink>
-  </div>
+<svelte:head>
+  <title>Quiz Results — Frontend Challenge</title>
+</svelte:head>
 
-  {#each data.quizResult as result}
-    <a href={`/quiz/results/${result.id}`}>
-      <section>
-        <h2>{result.title}</h2>
-        <p>Score: {result.score} pts</p>
-      </section>
-    </a>
-  {/each}
-</main>
+<PageContent width="medium">
+  <PageHeader eyebrow="Quiz history" title="Quiz Results">
+    <p>Every quiz you've finished. Open one to review each answer.</p>
+    {#snippet actions()}
+      <ButtonLink href="/quiz"><IconPlay />Start a Quiz</ButtonLink>
+    {/snippet}
+  </PageHeader>
+
+  {#if data.quizResult.length}
+    <ul class="results">
+      {#each data.quizResult as result (result.id)}
+        <li>
+          <a href={`/quiz/results/${result.id}`}>
+            <span class="title">{result.title}</span>
+            <span class="score">Score: {result.score} pts</span>
+            <IconChevronRight class="chevron" aria-hidden="true" />
+          </a>
+        </li>
+      {/each}
+    </ul>
+  {:else}
+    <p class="empty">No finished quizzes yet. Your results will show up here.</p>
+  {/if}
+</PageContent>
 
 <style>
-  .results-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  h1 {
-    text-align: left;
+  .results {
     margin: 0;
-  }
-  p {
-    text-align: left;
-  }
-  main {
-    padding: var(--page-content-padding);
-    width: 100%;
-    max-width: var(--page-content-max-width);
-    margin: 0 auto;
-  }
-  a {
-    text-decoration: none;
-    color: var(--link-color);
-  }
-  a:visited {
-    color: var(--link-visited-color);
-  }
-  section {
-    padding: 1rem;
-    border: 1px solid var(--color-border);
-    border-top: none;
-    display: flex;
-    justify-content: space-between;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-card);
   }
 
-  section:hover {
-    outline: 1px solid var(--color-border);
-  }
-
-  a:first-of-type section {
+  li + li {
     border-top: 1px solid var(--color-border);
-    border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
   }
 
-  a:last-of-type section {
-    border-radius: 0 0 var(--card-border-radius) var(--card-border-radius);
+  a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background-color var(--transition-fast);
   }
 
-  h2 {
-    text-decoration: underline;
-    font-weight: bold;
+  a:hover {
+    background-color: var(--color-hover);
+    text-decoration: none;
+  }
+
+  a:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .title {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .score {
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+
+  a :global(.chevron) {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+  }
+
+  .empty {
     margin: 0;
-  }
-
-  p {
-    margin: 0;
+    padding: var(--space-xl);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-card);
+    color: var(--color-text-secondary);
+    text-align: center;
   }
 </style>

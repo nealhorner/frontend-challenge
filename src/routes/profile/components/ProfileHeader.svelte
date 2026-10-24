@@ -12,35 +12,75 @@
     class="profile-photo"
     src={profilePhoto}
     alt={`${username}'s Profile Photo`}
-    width="160"
-    height="160"
+    width="96"
+    height="96"
   />
-  <div>
+  <div class="identity">
+    <span class="eyebrow">Your profile</span>
     <h1 class="username">{username}</h1>
-    <div class="rating">Rating {rating}</div>
+    <div class="rating"><span class="rating-label">Rating</span> {rating}</div>
   </div>
 </section>
 
 <style>
   .profile-header {
     display: flex;
-    align-items: end;
-    gap: 1rem;
-    margin: 20px 0;
-    text-align: left;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
   }
+
   .profile-photo {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
+    flex-shrink: 0;
+    width: 96px;
+    height: 96px;
+    border: 3px solid var(--color-surface);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface-sunken);
+    box-shadow:
+      0 0 0 1px var(--color-primary-border),
+      var(--shadow-raised);
     object-fit: cover;
-    background-color: var(--ocean-color-ice);
   }
-  .username {
-    font-size: 24px;
+
+  .identity {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    min-width: 0;
+  }
+
+  .eyebrow {
+    color: var(--color-link);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
+
+  .username {
+    margin: 0;
+    font-size: var(--text-3xl);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
   .rating {
-    font-size: 20px;
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--color-primary-border);
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-soft);
+    color: var(--color-link);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+
+  .rating-label {
+    color: var(--color-text-secondary);
+    font-weight: 500;
   }
 </style>

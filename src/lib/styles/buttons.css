@@ -1,0 +1,102 @@
+/*
+ * Shared button styles for Button.svelte and ButtonLink.svelte, so a <button>
+ * and a link styled as a button always match. Imported globally from
+ * src/routes/styles.css.
+ */
+
+.c-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 0.5625rem 1.125rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.25rem;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.c-button:hover {
+  text-decoration: none;
+}
+
+.c-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.c-button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.c-button:disabled,
+.c-button[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.c-button-lg {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-button-lg);
+  font-size: var(--text-md);
+  line-height: 1.5rem;
+}
+
+/* Primary: solid fill. Light: cobalt with white text. Dark: cyan with a glow. */
+.c-button-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow-primary-rest);
+}
+
+.c-button-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  box-shadow: var(--shadow-primary-glow);
+}
+
+/* Secondary: outlined on the surface color. */
+.c-button-secondary {
+  background-color: var(--color-surface);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.c-button-secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-sunken);
+  border-color: var(--color-text-muted);
+}
+
+/* Ghost: no fill or border until hovered. */
+.c-button-ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+}
+
+.c-button-ghost:hover:not(:disabled) {
+  background-color: var(--color-surface-sunken);
+  color: var(--color-text);
+}
+
+/* Warning: destructive actions, such as deleting an account. */
+.c-button-warning {
+  background-color: var(--color-error-soft);
+  border-color: var(--color-error);
+  color: var(--color-error-text);
+}
+
+.c-button-warning:hover:not(:disabled) {
+  background-color: var(--color-error);
+  color: #ffffff;
+}

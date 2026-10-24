@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { page } from '$app/state';
+  import PageHeader from '$lib/components/PageHeader.svelte';
+  import PageContent from '$lib/components/PageContent.svelte';
   import { goto, invalidateAll } from '$app/navigation';
   import { authClient, formatAuthError } from '$lib/auth-client';
   import AuthTextInput from '$lib/components/auth/AuthTextInput.svelte';
@@ -40,19 +43,21 @@
 </script>
 
 <svelte:head>
-  <title>Frontend Challenge Login</title>
+  <title>Login — Frontend Challenge</title>
   <meta name="description" content="Login for Frontend Challenge" />
 </svelte:head>
 
-<main>
-  <div>
-    <h1>Login</h1>
+<PageContent width="narrow">
+  <PageHeader eyebrow="Welcome back" title="Login" align="center">
+    <p>Sign in to keep your rating and quiz history.</p>
+  </PageHeader>
 
+  <div class="form-card form-stack">
     {#if errorMessage}
       <ErrorMessage {errorMessage} />
     {/if}
 
-    <form onsubmit={handleSubmit}>
+    <form class="form-stack" onsubmit={handleSubmit}>
       <AuthTextInput label="Email" id="email" name="email" autocomplete="username" error="" />
       <AuthTextInput
         label="Password"
@@ -63,35 +68,18 @@
         error=""
       />
       <Button kind="primary" type="submit" disabled={loading}>Login</Button>
-      <p>Don't have an account? <a href="/register"> Register here</a></p>
     </form>
+    <p class="form-footnote">Don't have an account? <a href="/register">Register here</a></p>
 
-    <SocialLoginButtons />
+    {#if page.data.socialProviders?.length}
+      <div class="form-divider">or</div>
+      <SocialLoginButtons />
+    {/if}
   </div>
-</main>
+</PageContent>
 
 <style>
-  main {
-    max-width: 400px;
-    padding: 10px;
-    margin: 0 auto;
-  }
-
-  div {
-    max-width: 400px;
-    margin: 100px auto;
-    border: 1px solid var(--ocean-color-mist-light);
-    border-radius: var(--card-border-radius);
-    padding: 2rem;
-  }
-
-  h1 {
-    text-align: center;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  .form-card :global(.c-button) {
+    width: 100%;
   }
 </style>

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import PageHeader from '$lib/components/PageHeader.svelte';
+  import PageContent from '$lib/components/PageContent.svelte';
   import { authClient } from '$lib/auth-client';
   import Button from '$lib/components/Button.svelte';
 
@@ -19,13 +21,14 @@
 </script>
 
 <svelte:head>
-  <title>Verify your email – Frontend Challenge</title>
+  <title>Verify your email — Frontend Challenge</title>
 </svelte:head>
 
-<main>
-  <div class="card">
-    <h1>Check your email</h1>
-    <p>
+<PageContent width="narrow">
+  <PageHeader eyebrow="Almost there" title="Check your email" align="center" />
+
+  <div class="form-card form-stack">
+    <p class="intro">
       We sent a verification link to
       {#if data.email}
         <strong>{data.email}</strong>
@@ -36,7 +39,7 @@
     <p class="hint">Don't see it? Check your spam folder.</p>
 
     {#if data.email}
-      <div class="resend">
+      <div class="resend form-stack">
         {#if resendStatus === 'sent'}
           <p class="success">Verification email resent.</p>
         {:else if resendStatus === 'error'}
@@ -47,63 +50,46 @@
           disabled={resendStatus === 'sending' || resendStatus === 'sent'}
           onclick={resend}
         >
-          {resendStatus === 'sending' ? 'Sending…' : 'Resend verification email'}
+          {resendStatus === 'sending' ? 'Sending…' : 'Resend Verification Email'}
         </Button>
       </div>
     {/if}
 
-    <p class="back"><a href="/login">Back to login</a></p>
+    <p class="form-footnote"><a href="/login">Back to login</a></p>
   </div>
-</main>
+</PageContent>
 
 <style>
-  main {
-    max-width: 400px;
-    margin: 100px auto;
-    padding: 0 1rem;
-  }
-
-  .card {
-    border: 1px solid var(--ocean-color-mist-light);
-    border-radius: var(--card-border-radius);
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  h1 {
-    text-align: center;
-    margin: 0;
-  }
-
   p {
     margin: 0;
   }
 
+  .intro {
+    color: var(--color-text);
+    overflow-wrap: anywhere;
+  }
+
   .hint {
-    color: var(--ocean-color-mist-dark, #666);
-    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
   }
 
   .resend {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .resend :global(.c-button) {
+    width: 100%;
   }
 
   .success {
-    color: green;
-    font-size: 0.875rem;
+    color: var(--color-success-text);
+    font-size: var(--text-sm);
   }
 
   .error {
-    color: red;
-    font-size: 0.875rem;
-  }
-
-  .back {
-    text-align: center;
-    font-size: 0.875rem;
+    color: var(--color-error-text);
+    font-size: var(--text-sm);
   }
 </style>

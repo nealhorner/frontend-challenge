@@ -5,7 +5,7 @@ node_modules
 /package
 .env
 .env.*
-!.env.example
+!.env.schema
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
@@ -24,4 +24,5 @@ test-results/**/error-context.md
 
 # Claude Code agent worktrees
 .claude/worktrees/
+
 design/
