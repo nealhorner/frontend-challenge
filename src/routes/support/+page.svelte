@@ -18,8 +18,8 @@
 <PageContent width="medium">
   <PageHeader eyebrow="Free for everyone" title="Support Frontend Challenge">
     <p>
-      Frontend Challenge is completely free — no paywalls, no subscriptions. If you find it useful,
-      any support is genuinely appreciated.
+      Frontend Challenge is completely free for everyone. If you find it useful, any support is
+      genuinely appreciated.
     </p>
   </PageHeader>
 
