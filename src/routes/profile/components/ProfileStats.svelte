@@ -49,7 +49,7 @@
   }
 </script>
 
-<section>
+<section class="stats">
   <h2>Stats</h2>
   <div class="kpis">
     <ProfileStatKpi kpi="Quizzes Completed" value={formatNumber(completedQuizzes)} />
@@ -61,17 +61,18 @@
 </section>
 
 <style>
-  section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    border: 1px solid var(--ocean-color-cheese-yellow);
-    padding: 20px;
+  .stats {
+    margin-bottom: var(--space-xl);
+  }
+
+  h2 {
+    margin: 0 0 var(--space-md);
+    font-size: var(--text-2xl);
   }
 
   .kpis {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
+    gap: var(--space-md);
   }
 </style>

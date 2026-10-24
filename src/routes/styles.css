@@ -2,10 +2,9 @@
 @import '@fontsource-variable/jetbrains-mono';
 @import '$lib/styles/tokens.css';
 @import '$lib/styles/buttons.css';
+@import '$lib/styles/forms.css';
 
 :root {
-  --column-width: 42rem;
-  --column-margin-top: 4rem;
   font-family: var(--font-sans);
   font-size: 100%;
   line-height: 1.5;
@@ -46,26 +45,23 @@ h4 {
   letter-spacing: var(--tracking-snug);
 }
 
-/*
- * Heading sizes stay at the old values while pages are restyled one phase at
- * a time, since many unmigrated components rely on them (an `h2` was 1rem).
- * Restyled components set their own size from the --text-* scale. Move these
- * onto the scale in redesign phase 5.
- */
+/* Defaults from the type scale; components usually set their own size. */
 h1 {
-  font-size: 2rem;
+  font-size: var(--text-4xl);
   font-weight: 700;
   letter-spacing: var(--tracking-tight);
 }
 
 h2 {
-  font-size: 1rem;
+  font-size: var(--text-2xl);
 }
 
-@media (min-width: 720px) {
-  h1 {
-    font-size: 2.4rem;
-  }
+h3 {
+  font-size: var(--text-xl);
+}
+
+h4 {
+  font-size: var(--text-md);
 }
 
 p {
@@ -139,15 +135,6 @@ button:focus:not(:focus-visible) {
 }
 
 /* ─── Utilities ─── */
-
-.text-column {
-  display: flex;
-  max-width: 48rem;
-  flex: 0.6;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0 auto;
-}
 
 .visually-hidden {
   border: 0;

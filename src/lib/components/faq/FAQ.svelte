@@ -13,6 +13,7 @@
 
   let { faqItems = [] }: Props = $props();
 
+  const id = $props.id();
   let activeItem: number | null = $state(null);
 
   function toggleItem(index: number) {
@@ -20,82 +21,103 @@
   }
 </script>
 
-<div>
-  <h3>FAQ</h3>
+<div class="faq">
+  <h2>FAQ</h2>
   <div class="faq-container">
-    {#each faqItems as item, index}
+    {#each faqItems as item, index (item.question)}
       <div class="faq-item">
-        <summary
-          class="faq-question no-select {activeItem === index ? 'active' : ''}"
-          onclick={() => toggleItem(index)}
-        >
-          {item.question}
-          {#if activeItem === index}
-            <MdiMinus />
-          {:else}
-            <MdiPlus />
-          {/if}
-        </summary>
-        {#if activeItem === index}
-          <div class="faq-answer active">{item.answer}</div>
-        {/if}
+        <h3>
+          <button
+            type="button"
+            class="faq-question"
+            class:active={activeItem === index}
+            aria-expanded={activeItem === index}
+            aria-controls="{id}-answer-{index}"
+            onclick={() => toggleItem(index)}
+          >
+            <span>{item.question}</span>
+            {#if activeItem === index}
+              <MdiMinus aria-hidden="true" />
+            {:else}
+              <MdiPlus aria-hidden="true" />
+            {/if}
+          </button>
+        </h3>
+        <div id="{id}-answer-{index}" class="faq-answer" hidden={activeItem !== index}>
+          {item.answer}
+        </div>
       </div>
     {/each}
   </div>
 </div>
 
 <style>
-  h3 {
-    text-align: center;
-    font-size: larger;
+  h2 {
+    margin: 0 0 var(--space-md);
+    font-size: var(--text-2xl);
   }
 
   .faq-container {
-    border: 1px solid var(--color-border);
-    border-radius: var(--card-border-radius);
-    box-shadow:
-      0px 1px 2px -1px rgba(0, 0, 0, 0.1),
-      0px 1px 3px 0px rgba(0, 0, 0, 0.1);
-  }
-  .faq-item {
-    border-bottom: 1px solid var(--color-border);
     overflow: hidden;
-  }
-  .faq-question:hover {
-    background-color: var(--color-hover);
-    cursor: pointer;
-  }
-
-  .faq-question.active {
-    color: var(--color-orange);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
   }
 
-  .faq-item:first-child {
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
+  .faq-item + .faq-item {
+    border-top: 1px solid var(--color-border);
   }
 
-  .faq-item:last-child {
-    border-bottom: none;
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
+  h3 {
+    margin: 0;
+    font-size: inherit;
   }
 
   .faq-question {
-    padding: 10px;
-    font-weight: bold;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: var(--space-md);
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    border: 0;
+    background: none;
+    color: var(--color-text);
+    font-size: var(--text-md);
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .faq-question:hover {
+    background-color: var(--color-hover);
+  }
+
+  .faq-question:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .faq-question.active {
+    color: var(--color-link);
+  }
+
+  .faq-question :global(svg) {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+  }
+
+  .faq-question.active :global(svg) {
+    color: var(--color-link);
   }
 
   .faq-answer {
-    display: none;
+    padding: 0 var(--space-lg) var(--space-md);
     color: var(--color-text-secondary);
-    font-size: smaller;
-    padding: 5px 10px 10px 10px;
-  }
-
-  .faq-answer.active {
-    display: block;
+    font-size: var(--text-sm);
+    line-height: 1.6;
   }
 </style>

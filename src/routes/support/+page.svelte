@@ -1,3 +1,12 @@
+<script lang="ts">
+  import ButtonLink from '$lib/components/ButtonLink.svelte';
+  import PageContent from '$lib/components/PageContent.svelte';
+  import PageHeader from '$lib/components/PageHeader.svelte';
+  import IconCoffee from '~icons/mdi/coffee-outline';
+  import IconGithub from '~icons/mdi/github';
+  import IconShare from '~icons/mdi/share-variant-outline';
+</script>
+
 <svelte:head>
   <title>Support — Frontend Challenge</title>
   <meta
@@ -6,172 +15,143 @@
   />
 </svelte:head>
 
-<div class="page">
-  <div class="inner">
-    <h1>Support Frontend Challenge</h1>
-    <p class="subtitle">
+<PageContent width="medium">
+  <PageHeader eyebrow="Free for everyone" title="Support Frontend Challenge">
+    <p>
       Frontend Challenge is completely free — no paywalls, no subscriptions. If you find it useful,
       any support is genuinely appreciated.
     </p>
+  </PageHeader>
 
-    <div class="ways">
-      <div class="way-card">
-        <div class="way-icon">&#128187;</div>
-        <h2>Contribute on GitHub</h2>
-        <p>
-          Found a bug? Have an idea for a new feature or question? Open an issue or submit a pull
-          request on GitHub.
-        </p>
-        <a
-          class="link-btn"
+  <div class="ways">
+    <article
+      class="way-card"
+      style:--hue-text="var(--topic-violet-text)"
+      style:--hue-bg="var(--topic-violet-bg)"
+    >
+      <span class="way-icon" aria-hidden="true"><IconGithub /></span>
+      <h2>Contribute on GitHub</h2>
+      <p>
+        Found a bug? Have an idea for a new feature or question? Open an issue or submit a pull
+        request on GitHub.
+      </p>
+      <div class="actions">
+        <ButtonLink
+          kind="secondary"
           href="https://github.com/nealhorner/frontend-challenge"
           target="_blank"
           rel="noopener noreferrer"
         >
           View the Repository
-        </a>
+        </ButtonLink>
       </div>
+    </article>
 
-      <div class="way-card">
-        <div class="way-icon">&#128172;</div>
-        <h2>Share on Social Media</h2>
-        <p>
-          Tell your fellow developers about Frontend Challenge. Sharing the app helps the community
-          grow and keeps the project alive.
-        </p>
-        <div class="share-links">
-          <a
-            class="link-btn secondary"
-            href="https://twitter.com/intent/tweet?text=Check%20out%20Frontend%20Challenge%20%E2%80%94%20a%20free%20app%20to%20test%20your%20JavaScript%2C%20CSS%2C%20and%20React%20skills!%20https%3A%2F%2Fgithub.com%2Fnealhorner%2Ffrontend-challenge"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Share on X
-          </a>
-          <a
-            class="link-btn secondary"
-            href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fnealhorner%2Ffrontend-challenge"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Share on LinkedIn
-          </a>
-        </div>
+    <article
+      class="way-card"
+      style:--hue-text="var(--topic-sky-text)"
+      style:--hue-bg="var(--topic-sky-bg)"
+    >
+      <span class="way-icon" aria-hidden="true"><IconShare /></span>
+      <h2>Share on Social Media</h2>
+      <p>
+        Tell your fellow developers about Frontend Challenge. Sharing the app helps the community
+        grow and keeps the project alive.
+      </p>
+      <div class="actions">
+        <ButtonLink
+          kind="secondary"
+          href="https://twitter.com/intent/tweet?text=Check%20out%20Frontend%20Challenge%20%E2%80%94%20a%20free%20app%20to%20test%20your%20JavaScript%2C%20CSS%2C%20and%20React%20skills!%20https%3A%2F%2Fgithub.com%2Fnealhorner%2Ffrontend-challenge"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Share on X
+        </ButtonLink>
+        <ButtonLink
+          kind="secondary"
+          href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fnealhorner%2Ffrontend-challenge"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Share on LinkedIn
+        </ButtonLink>
       </div>
+    </article>
 
-      <div class="way-card">
-        <div class="way-icon">&#9749;</div>
-        <h2>Buy Me a Coffee</h2>
-        <p>
-          If you'd like to say thanks with a small donation, I'd really appreciate it. Every coffee
-          helps keep the project running.
-        </p>
-        <a href="https://www.buymeacoffee.com/nealhorner" target="_blank" rel="noopener noreferrer">
-          <img
-            src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
-            alt="Buy Me a Coffee"
-            loading="lazy"
-            style="height: 60px !important; width: 217px !important;"
-          />
-        </a>
+    <article
+      class="way-card"
+      style:--hue-text="var(--topic-amber-text)"
+      style:--hue-bg="var(--topic-amber-bg)"
+    >
+      <span class="way-icon" aria-hidden="true"><IconCoffee /></span>
+      <h2>Buy Me a Coffee</h2>
+      <p>
+        If you'd like to say thanks with a small donation, I'd really appreciate it. Every coffee
+        helps keep the project running.
+      </p>
+      <div class="actions">
+        <ButtonLink
+          kind="primary"
+          href="https://www.buymeacoffee.com/nealhorner"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <IconCoffee aria-hidden="true" />Buy Me a Coffee
+        </ButtonLink>
       </div>
-    </div>
+    </article>
   </div>
-</div>
+</PageContent>
 
 <style>
-  .page {
-    padding: 56px var(--page-content-padding);
-    flex: 1;
-  }
-
-  .inner {
-    max-width: 860px;
-    margin: 0 auto;
-  }
-
-  h1 {
-    font-size: clamp(1.8rem, 5vw, 2.4rem);
-    font-weight: 500;
-    color: var(--color-blue-text);
-    margin: 0 0 16px;
-  }
-
-  .subtitle {
-    font-size: 1.05rem;
-    color: var(--color-text);
-    line-height: 1.6;
-    margin: 0 0 48px;
-    max-width: 600px;
-  }
-
   .ways {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+    gap: var(--space-lg);
   }
 
   .way-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--card-border-radius);
-    padding: 32px 28px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
-    box-shadow: var(--shadow-raised);
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border-card);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-card);
   }
 
   .way-icon {
-    font-size: 2rem;
-    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: var(--space-xs);
+    border-radius: var(--radius-button);
+    background-color: var(--hue-bg);
+    color: var(--hue-text);
+    font-size: 1.25rem;
   }
 
   h2 {
-    font-size: 1.15rem;
-    font-weight: 500;
-    color: var(--color-purple);
     margin: 0;
+    font-size: var(--text-xl);
   }
 
-  p {
-    color: var(--color-text);
-    line-height: 1.6;
-    margin: 0;
-    font-size: 0.95rem;
+  .way-card p {
     flex: 1;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.6;
   }
 
-  .share-links {
+  .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .link-btn {
-    display: inline-block;
-    padding: 10px 18px;
-    background-color: var(--color-blue);
-    color: var(--color-yellow);
-    text-decoration: none;
-    border-radius: var(--border-radius-md);
-    font-size: 0.9rem;
-    transition: opacity 0.15s;
-  }
-
-  .link-btn:hover {
-    opacity: 0.85;
-  }
-
-  .link-btn.secondary {
-    background-color: var(--color-purple);
-    color: var(--color-on-primary);
-  }
-
-  @media (max-width: 600px) {
-    .page {
-      padding: 40px 20px;
-    }
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
   }
 </style>

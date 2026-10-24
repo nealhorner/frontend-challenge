@@ -1,6 +1,8 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
   import { authClient } from '$lib/auth-client';
+  import IconGithub from '~icons/mdi/github';
+  import IconGoogle from '~icons/mdi/google';
 
   type Provider = 'github' | 'google';
 
@@ -28,7 +30,7 @@
     disabled={loadingProvider !== null}
     onclick={() => signInWith('github')}
   >
-    Continue with GitHub
+    <IconGithub aria-hidden="true" />Continue with GitHub
   </Button>
   <Button
     kind="secondary"
@@ -37,7 +39,7 @@
     disabled={loadingProvider !== null}
     onclick={() => signInWith('google')}
   >
-    Continue with Google
+    <IconGoogle aria-hidden="true" />Continue with Google
   </Button>
 </div>
 
@@ -45,7 +47,10 @@
   .social-buttons {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 1rem;
+    gap: var(--space-sm);
+  }
+
+  .social-buttons :global(.c-button) {
+    width: 100%;
   }
 </style>

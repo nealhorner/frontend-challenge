@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import Faq from '$lib/components/faq/FAQ.svelte';
+  import PageContent from '$lib/components/PageContent.svelte';
+  import PageHeader from '$lib/components/PageHeader.svelte';
   import ResourceListing from './components/ResourceListing.svelte';
 
   interface Props {
@@ -54,196 +56,152 @@
   />
 </svelte:head>
 
-<div class="hero">
-  <div class="hero-inner">
-    <h1>Learning Resources</h1>
-    <p class="hero-sub">
-      Curated blogs, courses, and podcasts hand-picked to level up your frontend skills.
-    </p>
-    <div class="stats">
-      <span class="stat">{blogs.length} blogs</span>
-      <span class="divider">·</span>
-      <span class="stat">{courses.length} courses</span>
-      <span class="divider">·</span>
-      <span class="stat">{podcasts.length} podcasts</span>
-    </div>
+<PageContent>
+  <PageHeader eyebrow="Keep learning" title="Learning Resources">
+    <p>Curated blogs, courses, and podcasts hand-picked to level up your frontend skills.</p>
+    <ul class="stats">
+      <li>{blogs.length} blogs</li>
+      <li>{courses.length} courses</li>
+      <li>{podcasts.length} podcasts</li>
+    </ul>
+  </PageHeader>
+
+  <div class="filter-bar" role="group" aria-label="Filter resources">
+    {#each filters as f (f.value)}
+      <button
+        type="button"
+        aria-pressed={activeFilter === f.value}
+        class:active={activeFilter === f.value}
+        onclick={() => (activeFilter = f.value)}
+      >
+        {f.label}
+      </button>
+    {/each}
   </div>
-</div>
 
-<div class="content">
-  <div class="content-inner">
-    <div class="filter-bar" aria-label="Filter resources">
-      {#each filters as f (f.value)}
-        <button
-          aria-pressed={activeFilter === f.value}
-          class:active={activeFilter === f.value}
-          onclick={() => (activeFilter = f.value)}
-        >
-          {f.label}
-        </button>
+  {#if activeFilter === 'all'}
+    {#each [{ label: 'Blogs', type: 'blog', items: blogs }, { label: 'Courses', type: 'course', items: courses }, { label: 'Podcasts', type: 'podcast', items: podcasts }] as section (section.type)}
+      <section>
+        <h2>{section.label}</h2>
+        <ul class="resource-grid">
+          {#each section.items as resource (resource.url)}
+            <li>
+              <ResourceListing
+                title={resource.title}
+                url={resource.url}
+                description={resource.description}
+                imageURL={resource.imageUrl}
+              />
+            </li>
+          {/each}
+        </ul>
+      </section>
+    {/each}
+  {:else}
+    <ul class="resource-grid">
+      {#each filtered as resource (resource.url)}
+        <li>
+          <ResourceListing
+            title={resource.title}
+            url={resource.url}
+            description={resource.description}
+            imageURL={resource.imageUrl}
+          />
+        </li>
       {/each}
-    </div>
+    </ul>
+  {/if}
 
-    {#if activeFilter === 'all'}
-      {#each [{ label: 'Blogs', type: 'blog', items: blogs }, { label: 'Courses', type: 'course', items: courses }, { label: 'Podcasts', type: 'podcast', items: podcasts }] as section (section.type)}
-        <section>
-          <h2>{section.label}</h2>
-          <ul class="resource-grid">
-            {#each section.items as resource (resource.url)}
-              <li>
-                <ResourceListing
-                  title={resource.title}
-                  url={resource.url}
-                  description={resource.description}
-                  imageURL={resource.imageUrl}
-                />
-              </li>
-            {/each}
-          </ul>
-        </section>
-      {/each}
-    {:else}
-      <ul class="resource-grid">
-        {#each filtered as resource (resource.url)}
-          <li>
-            <ResourceListing
-              title={resource.title}
-              url={resource.url}
-              description={resource.description}
-              imageURL={resource.imageUrl}
-            />
-          </li>
-        {/each}
-      </ul>
-    {/if}
-
-    <section class="faq-section">
-      <Faq {faqItems} />
-    </section>
-  </div>
-</div>
+  <section class="faq-section">
+    <Faq {faqItems} />
+  </section>
+</PageContent>
 
 <style>
-  .hero {
-    background-color: var(--color-blue);
-    padding: 56px var(--page-content-padding);
-    display: flex;
-    justify-content: center;
-  }
-  .hero-inner {
-    max-width: var(--page-content-max-width);
-    width: 100%;
-    text-align: center;
-  }
-  .hero h1 {
-    color: var(--color-yellow);
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
-    font-weight: 500;
-    margin: 0 0 0.75rem;
-    text-shadow: 2px 2px var(--color-orange);
-    line-height: 1.15;
-  }
-  .hero-sub {
-    color: rgba(255, 255, 255, 0.88);
-    font-size: clamp(1rem, 2vw, 1.1rem);
-    line-height: 1.6;
-    margin: 0 auto 1.5rem;
-    max-width: 34rem;
-  }
   .stats {
     display: flex;
-    justify-content: center;
-    gap: 10px;
-    color: var(--color-yellow);
-    font-size: 0.875rem;
-    opacity: 0.8;
-  }
-  .divider {
-    opacity: 0.5;
-  }
-
-  .content {
-    padding: 40px var(--page-content-padding) 64px;
-    display: flex;
-    justify-content: center;
-  }
-  .content-inner {
-    width: 100%;
-    max-width: var(--page-content-max-width);
-  }
-
-  .filter-bar {
-    display: flex;
-    gap: 8px;
     flex-wrap: wrap;
-    margin-bottom: 36px;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    list-style: none;
   }
-  .filter-bar button {
-    padding: 7px 18px;
-    border-radius: 999px;
-    border: 1.5px solid var(--color-border);
-    background: var(--color-surface);
+
+  .stats li {
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background-color: var(--color-surface);
     color: var(--color-text-secondary);
-    font-size: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  /* Segmented control, matching the header's nav pill */
+  .filter-bar {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-bottom: var(--space-xl);
+    padding: 3px;
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface-sunken);
+  }
+
+  .filter-bar button {
+    padding: 0.375rem 1rem;
+    border: 0;
+    border-radius: var(--radius-button);
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 500;
     cursor: pointer;
     transition:
-      background 0.15s,
-      border-color 0.15s,
-      color 0.15s;
+      color var(--transition-fast),
+      background-color var(--transition-fast);
   }
+
   .filter-bar button:hover {
-    border-color: var(--color-blue-text);
-    color: var(--color-blue-text);
+    color: var(--color-text);
   }
+
   .filter-bar button.active {
-    background-color: var(--color-blue);
-    border-color: var(--color-blue);
-    color: white;
-  }
-  /* In dark mode the unselected pills sit on a dark surface too, so mark the
-     selected one in cyan, like the active item in the header nav. */
-  :global([data-theme='dark']) .filter-bar button.active {
-    background-color: var(--color-primary-soft);
-    border-color: var(--color-primary-border);
+    background-color: var(--color-surface);
     color: var(--color-link);
+    box-shadow: var(--shadow-sm);
   }
 
   section {
-    margin-bottom: 48px;
+    margin-bottom: var(--space-xl);
   }
+
   h2 {
-    font-size: 1rem;
+    margin: 0 0 var(--space-md);
+    color: var(--color-link);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
     font-weight: 600;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-text-secondary);
-    margin: 0 0 16px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--color-border);
   }
 
   .resource-grid {
-    list-style: none;
-    padding: 0;
-    margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
-    gap: 14px;
+    gap: var(--space-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   .faq-section {
-    margin-top: 16px;
+    margin: var(--space-2xl) 0 0;
+    padding-top: var(--space-xl);
     border-top: 1px solid var(--color-border);
-    padding-top: 40px;
   }
 
   @media (max-width: 600px) {
-    .hero {
-      padding: 44px 20px;
-    }
-    .content {
-      padding: 28px 16px 48px;
-    }
     .resource-grid {
       /* minmax(0, …) lets cards shrink below long unbreakable URLs. */
       grid-template-columns: minmax(0, 1fr);
