@@ -9,7 +9,8 @@
   });
 
   function toggle() {
-    theme = theme === 'dark' ? 'light' : 'dark';
+    // Read the live theme: the OS may have switched it since mount.
+    theme = getTheme() === 'dark' ? 'light' : 'dark';
     setTheme(theme);
   }
 </script>

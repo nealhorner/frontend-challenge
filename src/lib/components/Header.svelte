@@ -4,7 +4,6 @@
   import Logo from '$lib/components/Logo.svelte';
   import ThemeToggle from '$lib/components/ThemeToggle.svelte';
   import LogoutButton from '$lib/components/auth/LogoutButton.svelte';
-  import { DARK_MODE_ENABLED } from '$lib/theme';
   import IconAccount from '~icons/mdi/account';
   import IconClose from '~icons/mdi/close';
   import IconMenu from '~icons/mdi/menu';
@@ -67,9 +66,7 @@
     </div>
 
     <div class="end">
-      {#if DARK_MODE_ENABLED}
-        <ThemeToggle />
-      {/if}
+      <ThemeToggle />
       <div class="desktop-actions">
         {#if isAuthenticated}
           <LogoutButton />

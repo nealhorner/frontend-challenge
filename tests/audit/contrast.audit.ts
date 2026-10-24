@@ -8,11 +8,10 @@ import { expect, test, type Page } from '@playwright/test';
 // Not part of the e2e suite. Run with `npm run audit:contrast`; see README.
 //
 // AUDIT_THEMES picks the themes to audit (default "dark,light"), and
-// AUDIT_STRICT the ones whose issues fail the run (default "dark"; light mode
-// still has known issues on pages that phases 4–5 will restyle).
+// AUDIT_STRICT the ones whose issues fail the run (default: both).
 
 const THEMES = (process.env.AUDIT_THEMES ?? 'dark,light').split(',').map((t) => t.trim());
-const STRICT = (process.env.AUDIT_STRICT ?? 'dark').split(',').map((t) => t.trim());
+const STRICT = (process.env.AUDIT_STRICT ?? 'dark,light').split(',').map((t) => t.trim());
 
 type Issue =
   | { kind: 'contrast'; ratio: number; el: string; text: string }

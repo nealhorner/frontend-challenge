@@ -36,18 +36,24 @@
       // Apply the theme before first paint so the page never flashes the wrong
       // one. Keep the storage key in sync with src/lib/theme.ts.
       (function () {
-        // Off until every page is restyled for dark mode (redesign phase 5);
-        // until then only an explicit saved choice turns dark mode on.
-        var followSystem = false;
-        var theme;
-        try {
-          theme = localStorage.getItem('theme');
-        } catch (e) {}
-        if (theme !== 'light' && theme !== 'dark') {
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          theme = followSystem && prefersDark ? 'dark' : 'light';
-        }
-        document.documentElement.dataset.theme = theme;
+        // A saved choice (from the header toggle) wins; otherwise follow the OS.
+        var saved = function () {
+          try {
+            var t = localStorage.getItem('theme');
+            return t === 'light' || t === 'dark' ? t : null;
+          } catch (e) {
+            return null;
+          }
+        };
+        var media = window.matchMedia('(prefers-color-scheme: dark)');
+        var apply = function () {
+          document.documentElement.dataset.theme = saved() || (media.matches ? 'dark' : 'light');
+        };
+        apply();
+        // Keep following the OS if it switches while the page is open.
+        media.addEventListener('change', function () {
+          if (!saved()) apply();
+        });
       })();
     </script>
     %sveltekit.head%
