@@ -99,8 +99,11 @@
 </script>
 
 <Card>
+  <div class="progress-row">
+    <Progress {completedQuestions} {totalQuestions} />
+  </div>
   {#if quizData.isCompleted}
-    <p>Finished Quiz</p>
+    <p class="finished">Quiz finished. Loading your results…</p>
   {:else if currentQuestionId}
     <DebugInfo>Question ID: {currentQuestionId}</DebugInfo>
     <Question
@@ -115,5 +118,17 @@
       </div>
     {/if}
   {/if}
-  <Progress {completedQuestions} {totalQuestions} />
 </Card>
+
+<style>
+  .progress-row {
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .finished {
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+</style>

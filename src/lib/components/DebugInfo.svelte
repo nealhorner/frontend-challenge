@@ -15,11 +15,14 @@
 
 <style>
   p {
-    color: red;
-    background-color: lime;
     display: inline-block;
-    padding: 0.5rem;
-    margin: 0;
-    font-weight: bold;
+    margin: 0 0 var(--space-sm);
+    padding: 0.25rem 0.5rem;
+    border: 1px dashed var(--color-warning);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-warning-soft);
+    color: var(--color-warning-text);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
   }
 </style>

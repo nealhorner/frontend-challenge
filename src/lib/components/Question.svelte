@@ -117,32 +117,40 @@
   }
 </script>
 
-<main bind:this={containerEl}>
+<div class="question-view" bind:this={containerEl}>
   {#await questionPromise}
-    <p>...waiting</p>
+    <p class="status">Loading question…</p>
   {:then question}
     {#if question}
       <div class="question no-select">
-        <form>
+        <form onsubmit={(event) => event.preventDefault()}>
           {#if question.title}
-            <p id="question-title">{question.title}</p>
+            <p class="question-title">{question.title}</p>
           {/if}
           <h2>{question.prompt}</h2>
           {#if question.type === QuestionType.BlindAnswer}
-            <input type="text" placeholder="Enter your answer" onchange={handleAnswerChange} />
+            <label class="visually-hidden" for="blind-answer">Your answer</label>
+            <input
+              id="blind-answer"
+              class="text-answer"
+              type="text"
+              placeholder="Enter your answer"
+              autocomplete="off"
+              onchange={handleAnswerChange}
+            />
           {:else if question.type === QuestionType.MultipleChoice}
             <RadioGroup
-              label="label"
+              label="Answer options"
               options={parseMultipleChoiceOptions(question.multipleChoiceOptions)}
               onchange={handleAnswerChange}
             />
           {:else}
-            <p>No Implemented: {question.type}</p>
+            <p class="status">Not implemented: {question.type}</p>
           {/if}
           <div class="submit-container">
             <Button
               onclick={() => submitHandler(answer)}
-              kind="secondary"
+              kind="primary"
               disabled={isSubmitting ||
                 (question.type !== QuestionType.MultipleChoice && !haveAnswer(answer))}
               >{isSubmitting ? 'Submitting…' : 'Submit'}</Button
@@ -179,7 +187,7 @@
                 >
                   {flagStatus === 'submitting' ? 'Sending…' : 'Submit Report'}
                 </Button>
-                <button class="flag-cancel" onclick={() => (flagOpen = false)}>Cancel</button>
+                <Button kind="ghost" onclick={() => (flagOpen = false)}>Cancel</Button>
               </div>
             </div>
           {/if}
@@ -187,106 +195,130 @@
       </div>
     {/if}
   {:catch error}
-    <p style="color: red">{error.message}</p>
+    <p class="status error">{error.message}</p>
   {/await}
-</main>
+</div>
 
 <style>
-  main {
-    text-align: center;
+  .question-view {
     min-height: 250px;
   }
 
-  #question-title {
-    color: #888;
-    margin: 5px 0px;
+  .status {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .status.error {
+    color: var(--color-error-text);
+  }
+
+  .question-title {
+    margin: 0 0 var(--space-xs);
+    color: var(--color-link);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
   }
 
   h2 {
-    font-size: 1.5rem;
-    margin-top: 0px;
-    margin-bottom: 1rem;
+    margin: 0 0 var(--space-lg);
+    font-size: var(--text-2xl);
+    line-height: 1.35;
   }
 
-  .question {
-    text-align: left;
+  .text-answer {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-button);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    transition:
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .text-answer:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring);
   }
 
   .submit-container {
-    margin: 15px 0px;
+    margin-top: var(--space-lg);
   }
 
   .flag-section {
-    margin-top: 1.5rem;
-    border-top: 1px solid var(--color-border, #e5e7eb);
-    padding-top: 0.75rem;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
   }
 
   .flag-toggle {
-    background: none;
-    border: none;
     padding: 0;
-    font-size: 0.8rem;
-    color: var(--color-text-secondary, #666);
-    cursor: pointer;
+    border: 0;
+    background: none;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
     text-decoration: underline;
     text-underline-offset: 2px;
+    cursor: pointer;
   }
 
   .flag-toggle:hover {
-    color: var(--color-text, #111);
+    color: var(--color-text);
   }
 
   .flag-form {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--space-sm);
   }
 
   .flag-label {
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     font-weight: 600;
   }
 
   .flag-form textarea {
-    padding: 0.4rem 0.5rem;
-    border: 1px solid var(--ocean-color-mist-light);
-    border-radius: 4px;
-    font-size: 0.9rem;
-    font-family: inherit;
-    resize: vertical;
-    box-sizing: border-box;
     width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-button);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    resize: vertical;
+  }
+
+  .flag-form textarea:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring);
   }
 
   .flag-actions {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-  }
-
-  .flag-cancel {
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: 0.85rem;
-    color: var(--color-text-secondary, #666);
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    gap: var(--space-sm);
   }
 
   .flag-sent,
   .flag-error {
-    font-size: 0.85rem;
     margin: 0;
+    font-size: var(--text-sm);
   }
 
   .flag-sent {
-    color: var(--color-affirmative-dark, green);
+    color: var(--color-success-text);
   }
 
   .flag-error {
-    color: var(--ocean-color-red-sun, red);
+    color: var(--color-error-text);
   }
 </style>
