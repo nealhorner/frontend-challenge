@@ -39,154 +39,160 @@
   />
 </svelte:head>
 
-<div class="hero-zone">
+<!-- The glow covers the whole page, down to the footer -->
+<div class="home">
   <WelcomeSection />
   <TryQuestion />
+
+  <section class="section" aria-labelledby="depth-heading">
+    <div class="section-head centered">
+      <span class="eyebrow">Methodical mastery</span>
+      <h2 id="depth-heading">Built for frontend depth, not trivia memorization</h2>
+    </div>
+
+    <div class="value-grid">
+      <article class="value-card">
+        <!-- Illustration only: example numbers, not the visitor's data -->
+        <div class="visual" aria-hidden="true">
+          <div class="visual-row">
+            <span class="mono muted">RUNNING_ACCURACY</span>
+            <span class="chip success">+6.4% this week</span>
+          </div>
+          <div class="accuracy">
+            <svg class="ring" viewBox="0 0 36 36">
+              <circle class="ring-track" cx="18" cy="18" r="15.9155" />
+              <circle class="ring-value" cx="18" cy="18" r="15.9155" pathLength="100" />
+            </svg>
+            <div class="ring-label">
+              <strong>84%</strong>
+              <span>ACC</span>
+            </div>
+            <div class="stat-stack">
+              <span class="stat"><IconFire class="amber" />12 streak</span>
+              <span class="stat muted"><IconCheckAll class="info" />324 solved</span>
+            </div>
+          </div>
+          <div class="bar"><span style:width="84%"></span></div>
+        </div>
+        <h3>Track your accuracy</h3>
+        <p>Every answer feeds your running score so you can watch your progress over time.</p>
+        <a class="card-link" href="/profile">View your stats <IconArrowRight /></a>
+      </article>
+
+      <article class="value-card">
+        <div class="visual" aria-hidden="true">
+          <div class="visual-row">
+            <span class="mono strong"><IconTrophy class="amber" />1,842 ELO</span>
+            <span class="chip amber">Rank #14</span>
+          </div>
+          <ol class="ladder">
+            <li><span><b class="amber">#1</b> alex.dev</span><span class="string">2,190</span></li>
+            <li class="you"><span><b>#14</b> You</span><span>1,842</span></li>
+            <li class="muted"><span><b>#15</b> k_nakamura</span><span>1,838</span></li>
+          </ol>
+          <div class="visual-row mono muted small">
+            <span>ELO-style rating</span>
+            <span class="live"><span class="live-dot"></span>Updates every quiz</span>
+          </div>
+        </div>
+        <h3>Climb the rankings</h3>
+        <p>An ELO-style rating pits your skills against the rest of the community.</p>
+        <a class="card-link" href="/profile">See your rating <IconArrowRight /></a>
+      </article>
+
+      <article class="value-card">
+        <div class="visual" aria-hidden="true">
+          <div class="visual-row">
+            <span class="chip function">spec: MDN / W3C</span>
+            <IconBookmark class="muted" />
+          </div>
+          <pre class="snippet"><span class="kw">const</span> <span class="fn">memoizedVal</span
+            > = <span class="fn">useMemo</span>(() =&gt; &#123;
+    <span class="cm">// recalculate only when deps change</span>
+    <span class="kw">return</span> computeExpensive(<span class="var">data</span>);
+  &#125;, [<span class="var">data</span>]);</pre>
+          <div class="visual-row mono muted small">
+            <span class="with-icon"
+              ><IconBookOpen class="info" />Curated deep-dives with each quiz</span
+            >
+          </div>
+        </div>
+        <h3>Learn as you go</h3>
+        <p>See the right answer instantly and dig into curated resources to level up.</p>
+        <a class="card-link" href="/learn">Browse learning resources <IconArrowRight /></a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="topics-heading">
+    <div class="section-head split">
+      <div>
+        <span class="eyebrow">Targeted curricula</span>
+        <h2 id="topics-heading">Covering the topics that matter</h2>
+      </div>
+      <p>
+        From runtime subtleties and DOM performance to CSS layout algorithms and HTTP protocols.
+      </p>
+    </div>
+
+    <ul class="topic-grid">
+      {#each topics as topic (topic.name)}
+        <li>
+          <!-- Not links: quizzes can't be filtered by topic yet (roadmap item 2) -->
+          <div
+            class="topic"
+            style:--hue-text="var(--topic-{topic.hue}-text)"
+            style:--hue-bg="var(--topic-{topic.hue}-bg)"
+          >
+            <span class="topic-icon" aria-hidden="true">
+              {#if topic.icon}<topic.icon />{:else}{topic.glyph}{/if}
+            </span>
+            <span class="topic-name">{topic.name}</span>
+            <span class="topic-count">{topic.count}</span>
+          </div>
+        </li>
+      {/each}
+      <li>
+        <a class="topic more" href="/learn">
+          <span class="topic-icon" aria-hidden="true">+</span>
+          <span class="topic-name">Learn more</span>
+          <span class="topic-count link">Browse learning resources</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="cta">
+      <span class="eyebrow">Learn at your own pace</span>
+      <h2>Ready to find out where you stand?</h2>
+      <p>
+        Take a short quiz to see where your skills are today, then keep going and watch your rating
+        grow as you pick up something new each time.
+      </p>
+      <ButtonLink href="/quiz" kind="primary" size="lg">
+        Start Your First Quiz <IconArrowRight />
+      </ButtonLink>
+      <!-- True today: guests can take quizzes, results show every correct answer,
+           and each quiz draws one question per family, so the topics vary. -->
+      <ul class="cta-notes">
+        <li>No account needed</li>
+        <li>See the answer to every question</li>
+        <li>A new mix of topics each time</li>
+      </ul>
+    </div>
+  </section>
 </div>
 
-<section class="section" aria-labelledby="depth-heading">
-  <div class="section-head centered">
-    <span class="eyebrow">Methodical mastery</span>
-    <h2 id="depth-heading">Built for frontend depth, not trivia memorization</h2>
-  </div>
-
-  <div class="value-grid">
-    <article class="value-card">
-      <!-- Illustration only: example numbers, not the visitor's data -->
-      <div class="visual" aria-hidden="true">
-        <div class="visual-row">
-          <span class="mono muted">RUNNING_ACCURACY</span>
-          <span class="chip success">+6.4% this week</span>
-        </div>
-        <div class="accuracy">
-          <svg class="ring" viewBox="0 0 36 36">
-            <circle class="ring-track" cx="18" cy="18" r="15.9155" />
-            <circle class="ring-value" cx="18" cy="18" r="15.9155" pathLength="100" />
-          </svg>
-          <div class="ring-label">
-            <strong>84%</strong>
-            <span>ACC</span>
-          </div>
-          <div class="stat-stack">
-            <span class="stat"><IconFire class="amber" />12 streak</span>
-            <span class="stat muted"><IconCheckAll class="info" />324 solved</span>
-          </div>
-        </div>
-        <div class="bar"><span style:width="84%"></span></div>
-      </div>
-      <h3>Track your accuracy</h3>
-      <p>Every answer feeds your running score so you can watch your progress over time.</p>
-      <a class="card-link" href="/profile">View your stats <IconArrowRight /></a>
-    </article>
-
-    <article class="value-card">
-      <div class="visual" aria-hidden="true">
-        <div class="visual-row">
-          <span class="mono strong"><IconTrophy class="amber" />1,842 ELO</span>
-          <span class="chip amber">Rank #14</span>
-        </div>
-        <ol class="ladder">
-          <li><span><b class="amber">#1</b> alex.dev</span><span class="string">2,190</span></li>
-          <li class="you"><span><b>#14</b> You</span><span>1,842</span></li>
-          <li class="muted"><span><b>#15</b> k_nakamura</span><span>1,838</span></li>
-        </ol>
-        <div class="visual-row mono muted small">
-          <span>ELO-style rating</span>
-          <span class="live"><span class="live-dot"></span>Updates every quiz</span>
-        </div>
-      </div>
-      <h3>Climb the rankings</h3>
-      <p>An ELO-style rating pits your skills against the rest of the community.</p>
-      <a class="card-link" href="/profile">See your rating <IconArrowRight /></a>
-    </article>
-
-    <article class="value-card">
-      <div class="visual" aria-hidden="true">
-        <div class="visual-row">
-          <span class="chip function">spec: MDN / W3C</span>
-          <IconBookmark class="muted" />
-        </div>
-        <pre class="snippet"><span class="kw">const</span> <span class="fn">memoizedVal</span
-          > = <span class="fn">useMemo</span>(() =&gt; &#123;
-  <span class="cm">// recalculate only when deps change</span>
-  <span class="kw">return</span> computeExpensive(<span class="var">data</span>);
-&#125;, [<span class="var">data</span>]);</pre>
-        <div class="visual-row mono muted small">
-          <span class="with-icon"
-            ><IconBookOpen class="info" />Curated deep-dives with each quiz</span
-          >
-        </div>
-      </div>
-      <h3>Learn as you go</h3>
-      <p>See the right answer instantly and dig into curated resources to level up.</p>
-      <a class="card-link" href="/learn">Browse learning resources <IconArrowRight /></a>
-    </article>
-  </div>
-</section>
-
-<section class="section" aria-labelledby="topics-heading">
-  <div class="section-head split">
-    <div>
-      <span class="eyebrow">Targeted curricula</span>
-      <h2 id="topics-heading">Covering the topics that matter</h2>
-    </div>
-    <p>From runtime subtleties and DOM performance to CSS layout algorithms and HTTP protocols.</p>
-  </div>
-
-  <ul class="topic-grid">
-    {#each topics as topic (topic.name)}
-      <li>
-        <!-- Not links: quizzes can't be filtered by topic yet (roadmap item 2) -->
-        <div
-          class="topic"
-          style:--hue-text="var(--topic-{topic.hue}-text)"
-          style:--hue-bg="var(--topic-{topic.hue}-bg)"
-        >
-          <span class="topic-icon" aria-hidden="true">
-            {#if topic.icon}<topic.icon />{:else}{topic.glyph}{/if}
-          </span>
-          <span class="topic-name">{topic.name}</span>
-          <span class="topic-count">{topic.count}</span>
-        </div>
-      </li>
-    {/each}
-    <li>
-      <a class="topic more" href="/learn">
-        <span class="topic-icon" aria-hidden="true">+</span>
-        <span class="topic-name">Learn more</span>
-        <span class="topic-count link">Browse learning resources</span>
-      </a>
-    </li>
-  </ul>
-</section>
-
-<section class="section">
-  <div class="cta">
-    <span class="eyebrow">Learn at your own pace</span>
-    <h2>Ready to find out where you stand?</h2>
-    <p>
-      Take a short quiz to see where your skills are today, then keep going and watch your rating
-      grow as you pick up something new each time.
-    </p>
-    <ButtonLink href="/quiz" kind="primary" size="lg">
-      Start Your First Quiz <IconArrowRight />
-    </ButtonLink>
-    <!-- True today: guests can take quizzes, results show every correct answer,
-         and each quiz draws one question per family, so the topics vary. -->
-    <ul class="cta-notes">
-      <li>No account needed</li>
-      <li>See the answer to every question</li>
-      <li>A new mix of topics each time</li>
-    </ul>
-  </div>
-</section>
-
 <style>
-  /* ─── Hero glow ─── */
+  /* ─── Page glow ─── */
 
-  .hero-zone {
-    position: relative;
-    background-image: var(--glow-hero), var(--glow-hero-accent);
+  .home {
+    flex: 1;
+    /* Reach the footer: cover the footer's top margin as well */
+    margin-bottom: calc(-1 * var(--space-xl));
+    padding-bottom: var(--space-xl);
+    background-image: var(--glow-page), var(--glow-page-accent);
     background-repeat: no-repeat;
   }
 

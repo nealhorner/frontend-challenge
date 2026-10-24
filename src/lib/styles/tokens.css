@@ -194,6 +194,18 @@
     rgba(245, 158, 11, 0.06),
     transparent 40%
   );
+  /* Home page glows: fixed sizes, so they look the same however tall the page
+     is and fade out well before its end. */
+  --glow-page: radial-gradient(
+    ellipse 768px 380px at 50% 0,
+    rgba(2, 132, 199, 0.07),
+    transparent 70%
+  );
+  --glow-page-accent: radial-gradient(
+    circle 560px at 100% 530px,
+    rgba(245, 158, 11, 0.06),
+    transparent 100%
+  );
 
   /* Code samples: light IDE colors */
   --color-syntax-keyword: #be123c;
@@ -232,6 +244,16 @@
   --gradient-accent-text: linear-gradient(90deg, #00f0ff 0%, #7df4ff 45%, #ffdb9d 100%);
   --glow-hero: radial-gradient(ellipse 55% 45% at 50% 0%, rgba(0, 240, 255, 0.13), transparent 70%);
   --glow-hero-accent: radial-gradient(circle at 100% 75%, rgba(254, 183, 0, 0.09), transparent 35%);
+  --glow-page: radial-gradient(
+    ellipse 704px 340px at 50% 0,
+    rgba(0, 240, 255, 0.13),
+    transparent 70%
+  );
+  --glow-page-accent: radial-gradient(
+    circle 490px at 100% 570px,
+    rgba(254, 183, 0, 0.09),
+    transparent 100%
+  );
 
   --color-syntax-keyword: #f43f5e;
   --color-syntax-string: #34d399;
