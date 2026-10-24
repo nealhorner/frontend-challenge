@@ -75,6 +75,14 @@
         >
           Share on LinkedIn
         </ButtonLink>
+        <ButtonLink
+          kind="secondary"
+          href="https://bsky.app/intent/compose?text=Check%20out%20Frontend%20Challenge%20%E2%80%94%20a%20free%20app%20to%20test%20your%20JavaScript%2C%20CSS%2C%20and%20React%20skills!%20https%3A%2F%2Fgithub.com%2Fnealhorner%2Ffrontend-challenge"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Share on Bluesky
+        </ButtonLink>
       </div>
     </article>
 
