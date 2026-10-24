@@ -57,7 +57,10 @@
 <PageContent width="medium">
   <div class="column">
     <PageHeader eyebrow="Help us improve" title="Send Feedback">
-      <p>Ideas, bugs, or a question that looks wrong: every note is read.</p>
+      <p>
+        Ideas, bugs, or a question that looks wrong: send us a feedback email. Every note will be
+        eventually read.
+      </p>
     </PageHeader>
 
     <div class="form-card">
