@@ -29,7 +29,7 @@ const NAMED_ENTITIES: Record<string, string> = {
   larr: '←'
 };
 
-function decodeEntities(text: string): string {
+export function decodeEntities(text: string): string {
   return text.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, entity: string) => {
     if (entity.startsWith('#')) {
       const hex = entity[1].toLowerCase() === 'x';
