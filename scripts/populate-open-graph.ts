@@ -3,9 +3,12 @@
  * the data is rich on first load.
  *
  * Invoked two ways:
- *  - `npm run populateLearningResources`, which the Railway `preDeployCommand`
- *    runs after migrations on every deploy (seed step).
- *  - the scheduled Railway cron service that runs the same script daily.
+ *  - `npm run populateLearningResources`, which the `predeploy` script (the
+ *    Railway pre-deploy command) runs after migrations and `seedReferenceData`
+ *    on every deploy.
+ *  - a scheduled Railway cron service that runs the same script daily.
+ *
+ * It only updates resources that already exist; `seedReferenceData` creates them.
  *
  * Best-effort by design: a flaky third-party site must not block a deploy, so
  * failures are logged and the process still exits 0. The next run retries.
