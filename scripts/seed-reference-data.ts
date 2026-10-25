@@ -6,7 +6,7 @@
  * population. It is safe to run on every deploy:
  *  - learning resources are matched by `url` (or by `title` when only the url
  *    changed) and only title, url and type are updated, so Open Graph data
- *    already fetched is kept;
+ *    already fetched is kept (it is cleared when the url changes);
  *  - questions are inserted only when the Question table is empty. Existing
  *    questions are never changed, because quizzes reference them. To replace
  *    them, use `npm run db:seed` (destructive, wipes all quizzes).
@@ -50,7 +50,12 @@ const upsertLearningResources = async () => {
     }
     const byTitle = await prisma.learningResources.findUnique({ where: { title } });
     if (byTitle) {
-      await prisma.learningResources.update({ where: { title }, data: { url, type } });
+      // The url changed, so drop Open Graph data fetched from the old one; the
+      // populate step refills it from the new url.
+      await prisma.learningResources.update({
+        where: { title },
+        data: { url, type, imageUrl: null, description: null }
+      });
       continue;
     }
     await prisma.learningResources.create({ data: { title, type, url } });
