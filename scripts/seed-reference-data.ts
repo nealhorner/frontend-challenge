@@ -4,8 +4,9 @@
  *
  * Runs in the `predeploy` step, after migrations and before the Open Graph
  * population. It is safe to run on every deploy:
- *  - learning resources are upserted by their unique `url`, and only title and
- *    type are updated, so Open Graph data already fetched is kept;
+ *  - learning resources are matched by `url` (or by `title` when only the url
+ *    changed) and only title, url and type are updated, so Open Graph data
+ *    already fetched is kept;
  *  - questions are inserted only when the Question table is empty. Existing
  *    questions are never changed, because quizzes reference them. To replace
  *    them, use `npm run db:seed` (destructive, wipes all quizzes).
@@ -39,13 +40,22 @@ const seedQuestionsIfEmpty = async () => {
 const upsertLearningResources = async () => {
   const records = readRecords<RawLearningResource>('data/learning_resources.json');
   for (const { title, type, url } of records) {
-    await prisma.learningResources.upsert({
-      where: { url },
-      update: { title, type },
-      create: { title, type, url }
-    });
+    // Both url and title are unique. Match by url first; if the url changed
+    // but the title didn't, update that row's url rather than failing on a
+    // duplicate title (which would block every deploy).
+    const byUrl = await prisma.learningResources.findUnique({ where: { url } });
+    if (byUrl) {
+      await prisma.learningResources.update({ where: { url }, data: { title, type } });
+      continue;
+    }
+    const byTitle = await prisma.learningResources.findUnique({ where: { title } });
+    if (byTitle) {
+      await prisma.learningResources.update({ where: { title }, data: { url, type } });
+      continue;
+    }
+    await prisma.learningResources.create({ data: { title, type, url } });
   }
-  console.log(`✓ Learning resources: ${records.length} upserted`);
+  console.log(`✓ Learning resources: ${records.length} synced`);
 };
 
 try {
