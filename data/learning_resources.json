@@ -22,6 +22,11 @@
       "type": "podcast"
     },
     {
+      "title": "The Laravel Podcast",
+      "url": "https://laravelpodcast.com/",
+      "type": "podcast"
+    },
+    {
       "title": "Frontend Masters",
       "url": "https://frontendmasters.com/",
       "type": "course"
@@ -74,6 +79,191 @@
     {
       "title": "Scott Tolinski",
       "url": "https://tolin.ski",
+      "type": "blog"
+    },
+    {
+      "title": "web.dev Learn",
+      "url": "https://web.dev/learn",
+      "type": "course"
+    },
+    {
+      "title": "Josh W. Comeau",
+      "url": "https://www.joshwcomeau.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Kevin Powell",
+      "url": "https://www.kevinpowell.co/",
+      "type": "course"
+    },
+    {
+      "title": "freeCodeCamp",
+      "url": "https://www.freecodecamp.org/",
+      "type": "course"
+    },
+    {
+      "title": "Frontend Mentor",
+      "url": "https://www.frontendmentor.io/",
+      "type": "course"
+    },
+    {
+      "title": "The A11y Project",
+      "url": "https://www.a11yproject.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Web Dev Simplified",
+      "url": "https://blog.webdevsimplified.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Web Dev Simplified Courses",
+      "url": "https://courses.webdevsimplified.com/",
+      "type": "course"
+    },
+    {
+      "title": "GoRails",
+      "url": "https://gorails.com/",
+      "type": "course"
+    },
+    {
+      "title": "Nina Zakharenko",
+      "url": "https://www.nnja.io/",
+      "type": "blog"
+    },
+    {
+      "title": "Frontend at Scale",
+      "url": "https://frontendatscale.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Frontend Architecture",
+      "url": "https://frontendatscale.com/courses/frontend-architecture/",
+      "type": "course"
+    },
+    {
+      "title": "Steve Kinney",
+      "url": "https://stevekinney.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Evgenii Ray",
+      "url": "https://evgeniiray.medium.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Kevin Powell (YouTube)",
+      "url": "https://www.youtube.com/kevinpowell",
+      "type": "course"
+    },
+    {
+      "title": "Will Sentance",
+      "url": "https://www.willsentance.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Mike.Works",
+      "url": "https://mike.works/",
+      "type": "course"
+    },
+    {
+      "title": "Maximiliano Firtman",
+      "url": "https://firt.dev/",
+      "type": "blog"
+    },
+    {
+      "title": "Jon Kuperman",
+      "url": "https://jonkuperman.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Todd H. Gardner",
+      "url": "https://www.toddhgardner.com/",
+      "type": "blog"
+    },
+    {
+      "title": "FSadikin",
+      "url": "https://www.fsadikin.com/#/",
+      "type": "blog"
+    },
+    {
+      "title": "Boagworld",
+      "url": "https://boagworld.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Marcy Sutton",
+      "url": "https://marcysutton.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Mark Thompson",
+      "url": "https://medium.com/@markathompson",
+      "type": "blog"
+    },
+    {
+      "title": "Compiled",
+      "url": "https://compiled.netlify.app/",
+      "type": "blog"
+    },
+    {
+      "title": "Ben Callahan",
+      "url": "https://bencallahan.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Ryan Carniato",
+      "url": "https://dev.to/ryansolid",
+      "type": "blog"
+    },
+    {
+      "title": "David East",
+      "url": "https://davidea.st/",
+      "type": "blog"
+    },
+    {
+      "title": "Dave Rupert",
+      "url": "https://daverupert.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Matt DesLauriers",
+      "url": "https://www.mattdesl.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Lea Verou",
+      "url": "https://lea.verou.me/",
+      "type": "blog"
+    },
+    {
+      "title": "Shortdiv",
+      "url": "https://shortdiv.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Brian Lonsdorf",
+      "url": "https://medium.com/@drboolean",
+      "type": "blog"
+    },
+    {
+      "title": "Jason Rodriguez",
+      "url": "https://www.rodriguezcommaj.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Jason Pamental",
+      "url": "https://www.rwt.io/",
+      "type": "blog"
+    },
+    {
+      "title": "Rachel Lee Nabors",
+      "url": "https://nearestnabors.com/",
+      "type": "blog"
+    },
+    {
+      "title": "Chris Coyier's Blog",
+      "url": "https://chriscoyier.net/",
       "type": "blog"
     }
   ]
