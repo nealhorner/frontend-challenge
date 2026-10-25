@@ -1,4 +1,5 @@
 import prisma from '$lib/prisma';
+import { decodeEntities } from '$lib/text';
 
 interface OpenGraphData {
   title: string;
@@ -24,7 +25,8 @@ const parseOpenGraphTags = (html: string): OpenGraphData => {
         if (!properties.includes(property)) {
           return;
         }
-        ogData[property as keyof OpenGraphData] = content;
+        ogData[property as keyof OpenGraphData] =
+          property === 'image' ? decodeEntities(content) : content;
       }
     });
   }
