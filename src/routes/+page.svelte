@@ -14,6 +14,7 @@
   import IconSchool from '~icons/mdi/school-outline';
   import IconSwap from '~icons/mdi/swap-horizontal';
   import IconTrophy from '~icons/mdi/trophy-outline';
+  import learningResources from '../../data/learning_resources.json';
 
   // Question counts per topic, from the seed data in data/questions.json.
   // Hardcoded on purpose: the homepage is prerendered (see +page.ts), and the
@@ -33,10 +34,17 @@
     { name: 'Closures', count: 'Advanced scope', hue: 'sky', glyph: '()' }
   ];
 
+  // Counted from data/learning_resources.json at build time. Unlike the
+  // questions, it holds no answers, so it is safe to bundle into the prerender.
+  const countOf = (type: string, noun: string) => {
+    const total = learningResources.records.filter((r) => r.type === type).length;
+    return `${total} ${noun}${total === 1 ? '' : 's'}`;
+  };
+
   const resourceTypes = [
     {
       name: 'Blogs',
-      count: '7 blogs',
+      count: countOf('blog', 'blog'),
       hue: 'sky',
       icon: IconPost,
       description: 'In-depth articles and practical write-ups on JavaScript, CSS and React.',
@@ -44,7 +52,7 @@
     },
     {
       name: 'Courses',
-      count: '4 courses',
+      count: countOf('course', 'course'),
       hue: 'violet',
       icon: IconSchool,
       description: 'Structured paths for when you want to go from the fundamentals to fluency.',
@@ -52,7 +60,7 @@
     },
     {
       name: 'Podcasts',
-      count: '4 podcasts',
+      count: countOf('podcast', 'podcast'),
       hue: 'amber',
       icon: IconPodcast,
       description: 'Conversations about the web to keep learning on a walk or a commute.',

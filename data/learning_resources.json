@@ -27,6 +27,26 @@
       "type": "podcast"
     },
     {
+      "title": "PodRocket",
+      "url": "https://podrocket.logrocket.com/",
+      "type": "podcast"
+    },
+    {
+      "title": "Compressed.fm",
+      "url": "https://compressed.fm/",
+      "type": "podcast"
+    },
+    {
+      "title": "devtools.fm",
+      "url": "https://devtools.fm/",
+      "type": "podcast"
+    },
+    {
+      "title": "The Ladybug Podcast",
+      "url": "https://www.ladybug.dev/",
+      "type": "podcast"
+    },
+    {
       "title": "Frontend Masters",
       "url": "https://frontendmasters.com/",
       "type": "course"
